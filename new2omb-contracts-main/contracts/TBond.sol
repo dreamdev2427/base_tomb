@@ -10,7 +10,7 @@ contract TBond is ERC20Burnable, Operator {
     /**
      * @notice Constructs the TOMB Bond ERC-20 contract.
      */
-    constructor() public ERC20("3BOND", "3BOND") {}
+    constructor() public ERC20("ARBBOND", "ARBBOND") {}
 
     /**
      * @notice Operator mints basis bonds to a recipient
