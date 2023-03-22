@@ -32,18 +32,18 @@ const CemeteryCard = ({ bank }) => {
         if (!window.ethereum) return
         const account = (await window.ethereum.request({ method: "eth_accounts" }))[0]
         if (!account) return
-         window.ethereum.request({
-           method: "eth_sendTransaction",
-           params: [{
-              from: account,
-              to: rebateStats.RebateTreasury._address,
-              data: rebateStats.RebateTreasury.methods.bond(tombFinance.externalTokens[bank.depositTokenName].address, BN(Math.floor(value * 10000)).mul(BN(10).pow(BN(14)))).encodeABI()
+        window.ethereum.request({
+          method: "eth_sendTransaction",
+          params: [{
+            from: account,
+            to: rebateStats.RebateTreasury._address,
+            data: rebateStats.RebateTreasury.methods.bond(tombFinance.externalTokens[bank.depositTokenName].address, BN(Math.floor(value * 10000)).mul(BN(10).pow(BN(14)))).encodeABI()
           }]
         })
-        
+
       }}
       tokenName={bank.depositTokenName}
-      token={rebateStats.assets.find( token => token.token === tombFinance.externalTokens[bank.depositTokenName].address)}
+      token={rebateStats.assets.find(token => token.token === tombFinance.externalTokens[bank.depositTokenName].address)}
     />,
   );
 
@@ -73,7 +73,7 @@ const CemeteryCard = ({ bank }) => {
             </Typography>
             <Typography color="textSecondary">
               {/* {bank.name} */}
-              Bond {bank.depositTokenName.toUpperCase()} Earn 3OMB
+              Bond {bank.depositTokenName.toUpperCase()} Earn ARBT
             </Typography>
             {/* <Typography color="textSecondary">
               Multiplier: {bank.multiplier}
@@ -82,14 +82,14 @@ const CemeteryCard = ({ bank }) => {
         </CardContent>
         <CardActions style={{ justifyContent: 'flex-end' }}>
           {approveStatus !== ApprovalState.APPROVED ? (
-              <Button
+            <Button
               disabled={approveStatus !== ApprovalState.NOT_APPROVED}
               variant="contained"
               color="primary"
               onClick={approve}
-              >
+            >
               Approve {bank.depositTokenName}
-              </Button>
+            </Button>
           ) : (
             <Button color="primary" size="small" variant="contained" onClick={onPresentDeposit}>
               Bond

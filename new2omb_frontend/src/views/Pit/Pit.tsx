@@ -72,7 +72,7 @@ const Pit: React.FC = () => {
         {!!account ? (
           <>
             <Typography color="textPrimary" align="center" variant="h3" gutterBottom>
-              3Bonds
+              Bonds
             </Typography>
             <Route exact path={path}>
               <PageHeader icon={'🏦'} subtitle="Earn premiums upon redemption" />
@@ -82,13 +82,13 @@ const Pit: React.FC = () => {
                 <ExchangeCard
                   action="Purchase"
                   fromToken={tombFinance.TOMB}
-                  fromTokenName="3OMB"
+                  fromTokenName="ARBT"
                   toToken={tombFinance.TBOND}
-                  toTokenName="3BOND"
+                  toTokenName="ARBBOND"
                   priceDesc={
                     !isBondPurchasable
-                      ? '3OMB is over peg'
-                      : getDisplayBalance(bondsPurchasable, 18, 4) + ' 3BOND available for purchase'
+                      ? 'ARBT is over peg'
+                      : getDisplayBalance(bondsPurchasable, 18, 4) + ' ARBBOND available for purchase'
                   }
                   onExchange={handleBuyBonds}
                   disabled={!bondStat || isBondRedeemable}
@@ -96,14 +96,14 @@ const Pit: React.FC = () => {
               </StyledCardWrapper>
               <StyledStatsWrapper>
                 <ExchangeStat
-                  tokenName="3OMB"
+                  tokenName="ARBT"
                   description="Last-Hour TWAP Price"
                   price={getDisplayBalance(cashPrice, 18, 4)}
                 />
                 <Spacer size="md" />
                 <ExchangeStat
-                  tokenName="3BOND"
-                  description="Current Price: (3OMB)^2"
+                  tokenName="ARBBOND"
+                  description="Current Price: (ARBT)^2"
                   price={Number(bondStat?.tokenInFtm).toFixed(2) || '-'}
                 />
               </StyledStatsWrapper>
@@ -111,13 +111,13 @@ const Pit: React.FC = () => {
                 <ExchangeCard
                   action="Redeem"
                   fromToken={tombFinance.TBOND}
-                  fromTokenName="3BOND"
+                  fromTokenName="ARBBOND"
                   toToken={tombFinance.TOMB}
-                  toTokenName="3OMB"
-                  priceDesc={`${getDisplayBalance(bondBalance)} 3BOND Available in wallet`}
+                  toTokenName="ARBT"
+                  priceDesc={`${getDisplayBalance(bondBalance)} ARBBOND Available in wallet`}
                   onExchange={handleRedeemBonds}
                   disabled={!bondStat || bondBalance.eq(0) || !isBondRedeemable}
-                  disabledDescription={!isBondRedeemable ? `Enabled when 3OMB > ${BOND_REDEEM_PRICE}FTM` : null}
+                  disabledDescription={!isBondRedeemable ? `Enabled when ARBT > ${BOND_REDEEM_PRICE}FTM` : null}
                 />
               </StyledCardWrapper>
             </StyledBond>

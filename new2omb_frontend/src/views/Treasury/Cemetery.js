@@ -25,13 +25,13 @@ const assetList = [
     depositTokenName: '2SHARES-WFTM LP',
   },
   {
-    depositTokenName: '3OMB-WFTM LP',
+    depositTokenName: 'ARBT-WFTM LP',
   },
   {
-    depositTokenName: '3SHARES',
+    depositTokenName: 'ARBSHARES',
   },
   {
-    depositTokenName: '3SHARES-WFTM LP',
+    depositTokenName: 'ARBSHARES-WFTM LP',
   },
 ]
 
@@ -96,7 +96,7 @@ const Cemetery = () => {
                   </Grid>
                 </div>
               </Box> */}
-              
+
               <Box mt={2}>
                 <Grid container justify="center" spacing={3}>
                   <Grid item xs={12} md={4} lg={4} className={classes.gridItem}>
@@ -113,21 +113,21 @@ const Cemetery = () => {
               </Box>
 
               <Box mt={2} style={{ marginTop: '100px' }}>
-              <Typography color="textPrimary" align="center" variant="h4" gutterBottom style={{ marginBottom: '50px' }}>
-                Protocol Owned Liquidity
-              </Typography>
+                <Typography color="textPrimary" align="center" variant="h4" gutterBottom style={{ marginBottom: '50px' }}>
+                  Protocol Owned Liquidity
+                </Typography>
                 <Grid container justify="center" spacing={3}>
                   <Grid item xs={12} md={4} lg={4} className={classes.gridItem}>
                     <Card style={{ height: "auto" }}>
                       <CardContent align="center">
                         <Typography variant="h5">
-                          3OMB-WFTM LP:
+                          ARBT-WFTM LP:
                         </Typography>
                         <CountUp style={{ fontSize: '25px' }} end={balance_3omb_wftm} separator="," prefix="$" />
                       </CardContent>
                       <CardContent align="center">
                         <Typography variant="h5">
-                          3SHARES-WFTM LP:
+                          ARBSHARES-WFTM LP:
                         </Typography>
                         <CountUp style={{ fontSize: '25px' }} end={balance_3shares_wftm} separator="," prefix="$" />
                       </CardContent>
@@ -143,13 +143,13 @@ const Cemetery = () => {
                     <Card style={{ height: "auto" }}>
                       <CardContent align="center">
                         <Typography variant="h5">
-                          3OMB:
+                          ARBT:
                         </Typography>
                         <CountUp style={{ fontSize: '25px' }} end={balance_3omb} separator="," prefix="$" />
                       </CardContent>
                       <CardContent align="center">
                         <Typography variant="h5">
-                          3SHARES:
+                          ARBSHARES:
                         </Typography>
                         <CountUp style={{ fontSize: '25px' }} end={balance_3shares} separator="," prefix="$" />
                       </CardContent>
@@ -175,7 +175,7 @@ const Cemetery = () => {
 
 
 
-              
+
 
             </Container>
           ) : (

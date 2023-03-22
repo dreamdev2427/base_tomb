@@ -79,7 +79,7 @@ const Masonry = () => {
       {!!account ? (
         <>
           <Typography color="textPrimary" align="center" variant="h3" gutterBottom>
-            3Room
+            Room
           </Typography>
           <Box mt={5}>
             <Grid container justify="center" spacing={3}>
@@ -103,7 +103,7 @@ const Masonry = () => {
                 <Card className={classes.gridItem}>
                   <CardContent align="center">
                     <Typography>
-                      3OMB Price<small> (TWAP)</small>
+                      ARBT Price<small> (TWAP)</small>
                     </Typography>
                     <Typography>{rebateStats.tombPrice.toFixed(4)} FTM</Typography>
                   </CardContent>
@@ -120,7 +120,7 @@ const Masonry = () => {
               <Grid item xs={12} md={2} lg={2}>
                 <Card className={classes.gridItem}>
                   <CardContent align="center">
-                    <Typography>3SHARES Staked</Typography>
+                    <Typography>ARBSHARES Staked</Typography>
                     <Typography>{getDisplayBalance(totalStaked)}</Typography>
                   </CardContent>
                 </Card>
@@ -130,7 +130,7 @@ const Masonry = () => {
             <Grid container justify="center">
               <Box mt={3} style={{ width: '525px' }}>
                 <Alert variant="transparent" severity="info">
-                  Staked 3SHARES can only be withdrawn after 3 epochs since deposit.
+                  Staked ARBSHARES can only be withdrawn after 3 epochs since deposit.
                 </Alert>
               </Box>
             </Grid>

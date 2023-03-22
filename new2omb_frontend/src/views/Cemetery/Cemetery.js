@@ -45,13 +45,13 @@ const Cemetery = () => {
           {!!account ? (
             <Container maxWidth="lg">
               <Typography color="textPrimary" align="center" variant="h3" gutterBottom>
-                3Farms
+                Farms
               </Typography>
 
               <Box mt={5}>
                 <div hidden={activeBanks.filter((bank) => bank.sectionInUI === 2).length === 0}>
                   <Typography color="textPrimary" variant="h4" gutterBottom>
-                    Earn 3SHARES by staking LP Tokens
+                    Earn ARBSHARES by staking LP Tokens
                   </Typography>
                   <Grid container spacing={3}>
                     {activeBanks
@@ -81,7 +81,7 @@ const Cemetery = () => {
                       ))}
                   </Grid>
                 </div> */}
-                
+
                 <Alert variant="filled" severity="info" style={{ marginTop: '50px' }}>
                   All below pools have ended. Please unstake and collect your rewards.
                 </Alert>
