@@ -47,7 +47,7 @@ contract TShareRewardPool {
     // The time when tSHARE mining ends.
     uint256 public poolEndTime;
 
-    uint256 public tSharePerSecond = 0.00187687 ether; // 60000 3share / (370 days * 24h * 60min * 60s)
+    uint256 public tSharePerSecond = 0.00187687 ether; // 60000 arbshare / (370 days * 24h * 60min * 60s)
     uint256 public runningTime = 370 days; // 370 days
     uint256 public constant TOTAL_REWARDS = 60000 ether;
 
