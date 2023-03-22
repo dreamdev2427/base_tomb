@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 
 import "./owner/Operator.sol";
 
-contract TBond is ERC20Burnable, Operator {
+contract ArbBond is ERC20Burnable, Operator {
     /**
      * @notice Constructs the TOMB Bond ERC-20 contract.
      */

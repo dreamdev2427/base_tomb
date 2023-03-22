@@ -1,1 +1,4 @@
+deploy-js/node_modules
+deploy-js/.env
+node_modules/
 /node_modules
