@@ -9,9 +9,10 @@ const Loader = () => {
         left: '50%',
         top: '50%',
         transform: 'translate(-50%, -50%)',
+        color: 'black'
       }}
     >
-      <Typography>Loading</Typography>
+      <Typography sx={{ color: '#000' }}>Loading</Typography>
     </div>
   );
 };
