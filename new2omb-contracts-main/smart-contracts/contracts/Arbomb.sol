@@ -161,7 +161,7 @@ contract Tomb is ERC20, Operator {
     /**
      * @notice Constructs the TOMB ERC-20 contract.
      */
-    constructor(uint256 _taxRate, address _taxCollectorAddress) public ERC20("ARBOMB", "ARBOMB Token") {
+    constructor(uint256 _taxRate, address _taxCollectorAddress) ERC20("ARBOMB", "ARBOMB Token") {
         // Mints 1 TOMB to contract creator for initial pool setup
         require(_taxRate < 10000, "tax equal or bigger to 100%");
         //require(_taxCollectorAddress != address(0), "tax collector address must be non-zero address");
@@ -209,6 +209,7 @@ contract Tomb is ERC20, Operator {
 
     function setBurnThreshold(uint256 _burnThreshold) public onlyTaxOffice returns (bool) {
         burnThreshold = _burnThreshold;
+        return true;
     }
 
     function _getTombPrice() internal view returns (uint256 _tombPrice) {
@@ -229,6 +230,7 @@ contract Tomb is ERC20, Operator {
                 }
             }
         }
+        return 0;
     }
 
     function enableAutoCalculateTax() public onlyTaxOffice {

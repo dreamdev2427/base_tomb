@@ -114,7 +114,7 @@ contract ArbBond is ERC20, Operator {
     /**
      * @notice Constructs the TOMB Bond ERC-20 contract.
      */
-    constructor() public ERC20("ARBBOND", "ARBBOND") {}
+    constructor()  ERC20("ARBBOND", "ARBBOND") {}
 
     /**
      * @notice Operator mints basis bonds to a recipient

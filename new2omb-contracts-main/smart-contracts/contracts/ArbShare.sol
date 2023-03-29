@@ -133,7 +133,7 @@ contract TShare is ERC20, Operator {
 
     bool public rewardPoolDistributed = false;
 
-    constructor(uint256 _startTime, address _communityFund, address _devFund) public ERC20("ARBSHARES", "ARBSHARE Token") {
+    constructor(uint256 _startTime, address _communityFund, address _devFund)  ERC20("ARBSHARES", "ARBSHARE Token") {
         _mint(msg.sender, 1 ether); // mint 1 TOMB Share for initial pools deployment
 
         startTime = _startTime;
