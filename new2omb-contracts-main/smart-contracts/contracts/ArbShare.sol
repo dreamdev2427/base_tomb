@@ -110,7 +110,7 @@ contract Operator is Context, Ownable {
     }
 }
 
-contract TShare is ERC20, Operator {
+contract ArbShare is ERC20, Operator {
     using SafeMath for uint256;
 
     // TOTAL MAX SUPPLY = 70,000 tSHAREs

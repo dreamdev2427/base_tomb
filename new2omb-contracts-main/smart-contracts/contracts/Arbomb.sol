@@ -109,7 +109,7 @@ contract Operator is Context, Ownable {
     }
 }
 
-contract Tomb is ERC20, Operator {
+contract Arbomb is ERC20, Operator {
     using SafeMath8 for uint8;
     using SafeMath for uint256;
 

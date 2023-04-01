@@ -3,15 +3,14 @@
 pragma solidity 0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 
+import "./lib/SafeMath.sol";
 import "./utils/ContractGuard.sol";
 import "./interfaces/IBasisAsset.sol";
 import "./interfaces/ITreasury.sol";
 
 contract ShareWrapper {
     using SafeMath for uint256;
-    using SafeERC20 for IERC20;
 
     IERC20 public share;
 
@@ -29,7 +28,7 @@ contract ShareWrapper {
     function stake(uint256 amount) public virtual {
         _totalSupply = _totalSupply.add(amount);
         _balances[msg.sender] = _balances[msg.sender].add(amount);
-        share.safeTransferFrom(msg.sender, address(this), amount);
+        share.transferFrom(msg.sender, address(this), amount);
     }
 
     function withdraw(uint256 amount) public virtual {
@@ -37,13 +36,11 @@ contract ShareWrapper {
         require(masonShare >= amount, "Masonry: withdraw request greater than staked amount");
         _totalSupply = _totalSupply.sub(amount);
         _balances[msg.sender] = masonShare.sub(amount);
-        share.safeTransfer(msg.sender, amount);
+        share.transfer(msg.sender, amount);
     }
 }
 
 contract Masonry is ShareWrapper, ContractGuard {
-    using SafeERC20 for IERC20;
-    using Address for address;
     using SafeMath for uint256;
 
     /* ========== DATA STRUCTURES ========== */
@@ -68,7 +65,7 @@ contract Masonry is ShareWrapper, ContractGuard {
     // flags
     bool public initialized = false;
 
-    IERC20 public tomb;
+    IERC20 public arbtomb;
     ITreasury public treasury;
 
     mapping(address => Masonseat) public masons;
@@ -115,11 +112,11 @@ contract Masonry is ShareWrapper, ContractGuard {
     /* ========== GOVERNANCE ========== */
 
     function initialize(
-        IERC20 _tomb,
+        IERC20 _arbtomb,
         IERC20 _share,
         ITreasury _treasury
     ) public notInitialized {
-        tomb = _tomb;
+        arbtomb = _arbtomb;
         share = _share;
         treasury = _treasury;
 
@@ -224,7 +221,7 @@ contract Masonry is ShareWrapper, ContractGuard {
             require(masons[msg.sender].epochTimerStart.add(rewardLockupEpochs) <= treasury.epoch(), "Masonry: still in reward lockup");
             masons[msg.sender].epochTimerStart = treasury.epoch(); // reset timer
             masons[msg.sender].rewardEarned = 0;
-            tomb.safeTransfer(msg.sender, reward);
+            arbtomb.transfer(msg.sender, reward);
             emit RewardPaid(msg.sender, reward);
         }
     }
@@ -244,14 +241,14 @@ contract Masonry is ShareWrapper, ContractGuard {
         });
         masonryHistory.push(newSnapshot);
 
-        tomb.safeTransferFrom(msg.sender, address(this), amount);
+        arbtomb.transferFrom(msg.sender, address(this), amount);
         emit RewardAdded(msg.sender, amount);
     }
 
     function governanceRecoverUnsupported(IERC20 _token, uint256 _amount, address _to) external onlyOperator {
         // do not allow to drain core tokens
-        require(address(_token) != address(tomb), "tomb");
+        require(address(_token) != address(arbtomb), "arbtomb");
         require(address(_token) != address(share), "share");
-        _token.safeTransfer(_to, _amount);
+        _token.transfer(_to, _amount);
     }
 }

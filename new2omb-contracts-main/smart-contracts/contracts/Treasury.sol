@@ -4,9 +4,8 @@ pragma solidity 0.8.0;
 
 import "@openzeppelin/contracts/math/Math.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
+import "./lib/SafeMath.sol";
 import "./lib/Babylonian.sol";
 import "./owner/Operator.sol";
 import "./utils/ContractGuard.sol";
@@ -19,8 +18,6 @@ interface IBondTreasury {
 }
 
 contract Treasury is ContractGuard {
-    using SafeERC20 for IERC20;
-    using Address for address;
     using SafeMath for uint256;
 
     /* ========= CONSTANT VARIABLES ======== */
@@ -107,13 +104,13 @@ contract Treasury is ContractGuard {
     }
 
     modifier checkCondition {
-        require(now >= startTime, "Treasury: not started yet");
+        require(block.timestamp >= startTime, "Treasury: not started yet");
 
         _;
     }
 
     modifier checkEpoch {
-        require(now >= nextEpochPoint(), "Treasury: not opened yet");
+        require(block.timestamp >= nextEpochPoint(), "Treasury: not opened yet");
 
         _;
 
@@ -469,7 +466,7 @@ contract Treasury is ContractGuard {
         seigniorageSaved = seigniorageSaved.sub(Math.min(seigniorageSaved, _tombAmount));
 
         IBasisAsset(tbond).burnFrom(msg.sender, _bondAmount);
-        IERC20(tomb).safeTransfer(msg.sender, _tombAmount);
+        IERC20(tomb).transfer(msg.sender, _tombAmount);
 
         _updateTombPrice();
 
@@ -483,22 +480,22 @@ contract Treasury is ContractGuard {
         if (daoFundSharedPercent > 0) {
             _daoFundSharedAmount = _amount.mul(daoFundSharedPercent).div(10000);
             IERC20(tomb).transfer(daoFund, _daoFundSharedAmount);
-            emit DaoFundFunded(now, _daoFundSharedAmount);
+            emit DaoFundFunded(block.timestamp, _daoFundSharedAmount);
         }
 
         uint256 _devFundSharedAmount = 0;
         if (devFundSharedPercent > 0) {
             _devFundSharedAmount = _amount.mul(devFundSharedPercent).div(10000);
             IERC20(tomb).transfer(devFund, _devFundSharedAmount);
-            emit DevFundFunded(now, _devFundSharedAmount);
+            emit DevFundFunded(block.timestamp, _devFundSharedAmount);
         }
 
         _amount = _amount.sub(_daoFundSharedAmount).sub(_devFundSharedAmount);
 
-        IERC20(tomb).safeApprove(masonry, 0);
-        IERC20(tomb).safeApprove(masonry, _amount);
+        IERC20(tomb).approve(masonry, 0);
+        IERC20(tomb).approve(masonry, _amount);
         IMasonry(masonry).allocateSeigniorage(_amount);
-        emit MasonryFunded(now, _amount);
+        emit MasonryFunded(block.timestamp, _amount);
     }
 
     function _sendToBondTreasury(uint256 _amount) internal {
@@ -558,7 +555,7 @@ contract Treasury is ContractGuard {
                 if (_savedForBond > 0) {
                     seigniorageSaved = seigniorageSaved.add(_savedForBond);
                     IBasisAsset(tomb).mint(address(this), _savedForBond);
-                    emit TreasuryFunded(now, _savedForBond);
+                    emit TreasuryFunded(block.timestamp, _savedForBond);
                 }
             }
         }
@@ -573,7 +570,7 @@ contract Treasury is ContractGuard {
         require(address(_token) != address(tomb), "tomb");
         require(address(_token) != address(tbond), "bond");
         require(address(_token) != address(tshare), "share");
-        _token.safeTransfer(_to, _amount);
+        _token.transfer(_to, _amount);
     }
 
     function masonrySetOperator(address _operator) external onlyOperator {
