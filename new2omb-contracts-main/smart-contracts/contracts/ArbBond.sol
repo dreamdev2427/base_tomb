@@ -110,11 +110,11 @@ contract Operator is Context, Ownable {
 }
 
 
-contract ArbBond is ERC20, Operator {
+contract RrbBond is ERC20, Operator {
     /**
      * @notice Constructs the TOMB Bond ERC-20 contract.
      */
-    constructor()  ERC20("ARBBOND", "ARBBOND") {}
+    constructor()  ERC20("RRBBOND", "RRBBOND") {}
 
     /**
      * @notice Operator mints basis bonds to a recipient
