@@ -107,9 +107,9 @@ const Cemetery = () => {
                     <Card className={classes.gridItem}>
                       <CardContent align="center">
                         <Typography variant="h5">
-                          ARBT Price <small>(TWAP)</small>
+                          ARBTOMB Price <small>(TWAP)</small>
                         </Typography>
-                        <Typography variant="h6">{tombPriceInFTM ? tombPriceInFTM : '-.----'} FTM</Typography>
+                        <Typography variant="h6">{tombPriceInFTM ? tombPriceInFTM : '-.----'} ETH</Typography>
                       </CardContent>
                     </Card>
                   </Grid>
@@ -148,7 +148,7 @@ const Cemetery = () => {
                     <Card style={{ height: "auto" }}>
                       <CardContent align="center">
                         <Typography variant="h5">
-                          ARBT Vesting
+                          ARBTOMB Vesting
                         </Typography>
                         <Typography variant="h6">{vested.toFixed(4)} Total Vested</Typography>
                         <Typography variant="h6">{claimable3omb.toFixed(4)} Claimable</Typography>

@@ -31,7 +31,7 @@ export class TombFinance {
   TOMB: ERC20;
   TSHARE: ERC20;
   TBOND: ERC20;
-  FTM: ERC20;
+  ETH: ERC20;
 
   constructor(cfg: Configuration) {
     const { deployments, externalTokens } = cfg;
@@ -46,13 +46,13 @@ export class TombFinance {
     for (const [symbol, [address, decimal]] of Object.entries(externalTokens)) {
       this.externalTokens[symbol] = new ERC20(address, provider, symbol, decimal);
     }
-    this.TOMB = new ERC20(deployments.tomb.address, provider, 'ARBT');
+    this.TOMB = new ERC20(deployments.tomb.address, provider, 'ARBTOMB');
     this.TSHARE = new ERC20(deployments.tShare.address, provider, 'ARBSHARE');
     this.TBOND = new ERC20(deployments.tBond.address, provider, 'ARBBOND');
-    this.FTM = this.externalTokens['WFTM'];
+    this.ETH = this.externalTokens['WFTM'];
 
     // Uniswap V2 Pair
-    this.TOMBWFTM_LP = new Contract(externalTokens['TOMB-FTM-LP'][0], IUniswapV2PairABI, provider);
+    this.TOMBWFTM_LP = new Contract(externalTokens['TOMB-ETH-LP'][0], IUniswapV2PairABI, provider);
 
     this.config = cfg;
     this.provider = provider;
@@ -130,7 +130,7 @@ export class TombFinance {
     const tokenAmountBN = await token0.balanceOf(lpToken.address);
     const tokenAmount = getDisplayBalance(tokenAmountBN, 18);
 
-    const ftmAmountBN = await this.FTM.balanceOf(lpToken.address);
+    const ftmAmountBN = await this.ETH.balanceOf(lpToken.address);
     const ftmAmount = getDisplayBalance(ftmAmountBN, 18);
     const tokenAmountInOneLP = Number(tokenAmount) / Number(lpTokenSupply);
     const ftmAmountInOneLP = Number(ftmAmount) / Number(lpTokenSupply);
@@ -234,7 +234,7 @@ export class TombFinance {
     console.log("deposit token price:", depositTokenPrice)
     const stakeInPool = await depositToken.balanceOf(bank.address);
     const TVL = Number(depositTokenPrice) * Number(getDisplayBalance(stakeInPool, depositToken.decimal));
-    const stat = bank.earnTokenName === 'ARBT' ? await this.getTombStat() : await this.getShareStat();
+    const stat = bank.earnTokenName === 'ARBTOMB' ? await this.getTombStat() : await this.getShareStat();
     const tokenPerSecond = await this.getTokenPerSecond(
       bank.earnTokenName,
       bank.contract,
@@ -270,7 +270,7 @@ export class TombFinance {
     poolContract: Contract,
     depositTokenName: string,
   ) {
-    if (earnTokenName === 'ARBT') {
+    if (earnTokenName === 'ARBTOMB') {
       if (!contractName.endsWith('TombRewardPool')) {
         const rewardPerSecond = await poolContract.tombPerSecond();
         if (depositTokenName === '2SHARES') {
@@ -301,7 +301,7 @@ export class TombFinance {
       return await poolContract.epochTombPerSecond(0);
     }
     const rewardPerSecond = await poolContract.tSharePerSecond();
-    if (depositTokenName.startsWith('ARBT')) {
+    if (depositTokenName.startsWith('ARBTOMB')) {
       return rewardPerSecond.mul(35500).div(89500);
     } else if (depositTokenName.startsWith('2OMB')) {
       return rewardPerSecond.mul(15000).div(89500);
@@ -327,7 +327,7 @@ export class TombFinance {
       tokenPrice = priceOfOneFtmInDollars;
     } else {
       console.log("token name:", tokenName)
-      if (tokenName === 'ARBT-WFTM LP') {
+      if (tokenName === 'ARBTOMB-WFTM LP') {
         tokenPrice = await this.getLPTokenPrice(token, this.TOMB, true, false);
       } else if (tokenName === 'ARBSHARES-WFTM LP') {
         tokenPrice = await this.getLPTokenPrice(token, this.TSHARE, false, false);
@@ -408,7 +408,7 @@ export class TombFinance {
    * Calculates the price of an LP token
    * Reference https://github.com/DefiDebauchery/discordpricebot/blob/4da3cdb57016df108ad2d0bb0c91cd8dd5f9d834/pricebot/pricebot.py#L150
    * @param lpToken the token under calculation
-   * @param token the token pair used as reference (the other one would be FTM in most cases)
+   * @param token the token pair used as reference (the other one would be ETH in most cases)
    * @param isTomb sanity check for usage of tomb token or tShare
    * @returns price of the LP token
    */
@@ -489,7 +489,7 @@ async getShareStatFake() {
   ): Promise<BigNumber> {
     const pool = this.contracts[poolName];
     try {
-      if (earnTokenName === 'ARBT') {
+      if (earnTokenName === 'ARBTOMB') {
         return await pool.pendingTOMB(poolId, account);
       } else {
         return await pool.pendingShare(poolId, account);
@@ -613,7 +613,7 @@ async getShareStatFake() {
     if (!ready) return;
     const { WFTM, USDC } = this.externalTokens;
     try {
-      const fusdt_wftm_lp_pair = this.externalTokens['USDT-FTM-LP'];
+      const fusdt_wftm_lp_pair = this.externalTokens['USDT-ETH-LP'];
       let ftm_amount_BN = await WFTM.balanceOf(fusdt_wftm_lp_pair.address);
       let ftm_amount = Number(getFullDisplayBalance(ftm_amount_BN, WFTM.decimal));
       let USDC_amount_BN = await USDC.balanceOf(fusdt_wftm_lp_pair.address);

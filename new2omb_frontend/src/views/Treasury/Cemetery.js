@@ -25,7 +25,7 @@ const assetList = [
     depositTokenName: '2SHARES-WFTM LP',
   },
   {
-    depositTokenName: 'ARBT-WFTM LP',
+    depositTokenName: 'ARBTOMB-WFTM LP',
   },
   {
     depositTokenName: 'ARBSHARES',
@@ -121,7 +121,7 @@ const Cemetery = () => {
                     <Card style={{ height: "auto" }}>
                       <CardContent align="center">
                         <Typography variant="h5">
-                          ARBT-WFTM LP:
+                          ARBTOMB-WFTM LP:
                         </Typography>
                         <CountUp style={{ fontSize: '25px' }} end={balance_3omb_wftm} separator="," prefix="$" />
                       </CardContent>
@@ -143,7 +143,7 @@ const Cemetery = () => {
                     <Card style={{ height: "auto" }}>
                       <CardContent align="center">
                         <Typography variant="h5">
-                          ARBT:
+                          ARBTOMB:
                         </Typography>
                         <CountUp style={{ fontSize: '25px' }} end={balance_3omb} separator="," prefix="$" />
                       </CardContent>
