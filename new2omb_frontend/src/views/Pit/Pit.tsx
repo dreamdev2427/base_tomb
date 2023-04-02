@@ -82,12 +82,12 @@ const Pit: React.FC = () => {
                 <ExchangeCard
                   action="Purchase"
                   fromToken={tombFinance.TOMB}
-                  fromTokenName="ARBT"
+                  fromTokenName="ARBTOMB"
                   toToken={tombFinance.TBOND}
                   toTokenName="ARBBOND"
                   priceDesc={
                     !isBondPurchasable
-                      ? 'ARBT is over peg'
+                      ? 'ARBTOMB is over peg'
                       : getDisplayBalance(bondsPurchasable, 18, 4) + ' ARBBOND available for purchase'
                   }
                   onExchange={handleBuyBonds}
@@ -96,14 +96,14 @@ const Pit: React.FC = () => {
               </StyledCardWrapper>
               <StyledStatsWrapper>
                 <ExchangeStat
-                  tokenName="ARBT"
+                  tokenName="ARBTOMB"
                   description="Last-Hour TWAP Price"
                   price={getDisplayBalance(cashPrice, 18, 4)}
                 />
                 <Spacer size="md" />
                 <ExchangeStat
                   tokenName="ARBBOND"
-                  description="Current Price: (ARBT)^2"
+                  description="Current Price: (ARBTOMB)^2"
                   price={Number(bondStat?.tokenInFtm).toFixed(2) || '-'}
                 />
               </StyledStatsWrapper>
@@ -113,11 +113,11 @@ const Pit: React.FC = () => {
                   fromToken={tombFinance.TBOND}
                   fromTokenName="ARBBOND"
                   toToken={tombFinance.TOMB}
-                  toTokenName="ARBT"
+                  toTokenName="ARBTOMB"
                   priceDesc={`${getDisplayBalance(bondBalance)} ARBBOND Available in wallet`}
                   onExchange={handleRedeemBonds}
                   disabled={!bondStat || bondBalance.eq(0) || !isBondRedeemable}
-                  disabledDescription={!isBondRedeemable ? `Enabled when ARBT > ${BOND_REDEEM_PRICE}FTM` : null}
+                  disabledDescription={!isBondRedeemable ? `Enabled when ARBTOMB > ${BOND_REDEEM_PRICE}ETH` : null}
                 />
               </StyledCardWrapper>
             </StyledBond>

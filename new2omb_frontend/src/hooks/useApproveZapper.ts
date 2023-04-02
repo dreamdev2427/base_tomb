@@ -20,7 +20,7 @@ export enum ApprovalState {
 function useApproveZapper(zappingToken: string): [ApprovalState, () => Promise<void>] {
   const tombFinance = useTombFinance();
   let token: ERC20;
-  if (zappingToken === FTM_TICKER) token = tombFinance.FTM;
+  if (zappingToken === FTM_TICKER) token = tombFinance.ETH;
   else if (zappingToken === TOMB_TICKER) token = tombFinance.TOMB;
   else if (zappingToken === TSHARE_TICKER) token = tombFinance.TSHARE;
   const pendingApproval = useHasPendingApproval(token.address, ZAPPER_ROUTER_ADDR);
@@ -29,7 +29,7 @@ function useApproveZapper(zappingToken: string): [ApprovalState, () => Promise<v
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     // we might not have enough data to know whether or not we need to approve
-    if (token === tombFinance.FTM) return ApprovalState.APPROVED;
+    if (token === tombFinance.ETH) return ApprovalState.APPROVED;
     if (!currentAllowance) return ApprovalState.UNKNOWN;
 
     // amountToApprove will be defined if currentAllowance is

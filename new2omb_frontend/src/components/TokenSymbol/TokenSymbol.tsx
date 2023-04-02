@@ -1,9 +1,9 @@
 import React from 'react';
 
 //Graveyard ecosystem logos
-import tombLogo from '../../assets/img/ARBT.png';
+import tombLogo from '../../assets/img/ARBTOMB.png';
 import tShareLogo from '../../assets/img/ARBSHARES.png';
-import tombLogoPNG from '../../assets/img/ARBT.png';
+import tombLogoPNG from '../../assets/img/ARBTOMB.png';
 import tShareLogoPNG from '../../assets/img/ARBSHARES.png';
 import tBondLogo from '../../assets/img/ARBBOND-01.png';
 
@@ -26,7 +26,7 @@ import TwoombTwosharesLPLogo from '../../assets/img/2OMB-2SHARES.png';
 
 import UsdcLogo from '../../assets/img/USDC.png';
 
-import ThreeombLPLogo from '../../assets/img/ARBT-WFTM.png';
+import ThreeombLPLogo from '../../assets/img/ARBTOMB-WFTM.png';
 import ThreesharesLPLogo from '../../assets/img/ARBSHARES-WFTM.png';
 
 const logosBySymbol: { [title: string]: string } = {
@@ -50,15 +50,15 @@ const logosBySymbol: { [title: string]: string } = {
   '2SHARES-WFTM LP': TwosharesLPLogo,
   '2OMB-2SHARES LP': TwoombTwosharesLPLogo,
 
-  'ARBT-WFTM LP': ThreeombLPLogo,
+  'ARBTOMB-WFTM LP': ThreeombLPLogo,
   'ARBSHARES-WFTM LP': ThreesharesLPLogo,
 
 
   'wFTM': wftmLogo,
   '2OMB': twoombLogo,
   '2SHARES': twoshareLogo,
-  'TOMB-FTM-LP': tombFtmLpLogo,
-  'TSHARE-FTM-LP': tshareFtmLpLogo,
+  'TOMB-ETH-LP': tombFtmLpLogo,
+  'TSHARE-ETH-LP': tshareFtmLpLogo,
 };
 
 type LogoProps = {
