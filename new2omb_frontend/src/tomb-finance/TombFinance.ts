@@ -46,9 +46,9 @@ export class TombFinance {
     for (const [symbol, [address, decimal]] of Object.entries(externalTokens)) {
       this.externalTokens[symbol] = new ERC20(address, provider, symbol, decimal);
     }
-    this.TOMB = new ERC20(deployments.tomb.address, provider, 'ARBTOMB');
-    this.TSHARE = new ERC20(deployments.tShare.address, provider, 'ARBSHARE');
-    this.TBOND = new ERC20(deployments.tBond.address, provider, 'ARBBOND');
+    this.TOMB = new ERC20(deployments.tomb.address, provider, 'RRBOMB');
+    this.TSHARE = new ERC20(deployments.tShare.address, provider, 'RRBSHARE');
+    this.TBOND = new ERC20(deployments.tBond.address, provider, 'RRBBOND');
     this.ETH = this.externalTokens['WETH'];
 
     // Uniswap V2 Pair
@@ -434,8 +434,8 @@ export class TombFinance {
           ? await this.get2ombStatFake()
           : await this.get2ShareStatFake()
         : isTomb === true
-          ? await this.getTombStat()
-          : await this.getShareStat();
+        ? await this.getTombStat()
+        : await this.getShareStat();
     const priceOfToken = stat.priceInDollars;
     const tokenInLP = Number(tokenSupply) / Number(totalSupply);
     const tokenPrice = (Number(priceOfToken) * tokenInLP * 2) //We multiply by 2 since half the price of the lp token is the price of each piece of the pair. So twice gives the total

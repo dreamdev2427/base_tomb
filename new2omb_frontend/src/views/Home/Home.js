@@ -62,16 +62,18 @@ const Home = () => {
 
   let tomb;
   let tShare;
-  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-    tomb = tombTesting;
-    tShare = tShareTesting;
-  } else {
-    tomb = tombProd;
-    tShare = tShareProd;
-  }
+  // if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  //   tomb = tombTesting;
+  //   tShare = tShareTesting;
+  // } else {
+  tomb = tombProd;
+  tShare = tShareProd;
+  // }
 
-  const buyTombAddress = 'https://spookyswap.finance/swap?outputCurrency=' + tomb.address;
-  const buyTShareAddress = 'https://spookyswap.finance/swap?outputCurrency=' + tShare.address;
+  console.log('tomb ===> ', tomb, ' tShare ===> ', tShare);
+
+  const buyTombAddress = 'https://app.camelot.exchange/';
+  const buyTShareAddress = 'https://app.camelot.exchange/';
 
   const tombLPStats = useMemo(() => (tombFtmLpStats ? tombFtmLpStats : null), [tombFtmLpStats]);
   const tshareLPStats = useMemo(() => (tShareFtmLpStats ? tShareFtmLpStats : null), [tShareFtmLpStats]);
@@ -152,15 +154,16 @@ const Home = () => {
         </Grid>
         {/* Explanation text */}
         <Grid item xs={12} sm={6}>
-          <Paper style={{ backgroundColor: "transparent", boxShadow: "none", border: "1px solid var(--white)" }}>
+          <Paper style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <Box p={4}>
               <h2>Welcome to ArbTomb Finance!</h2>
               <p>An algorithmic stablecoin on the Arbitrum blockchain, pegged to the price of 1 ETH</p>
               {/* <p>ArbTomb utilizes multiple bonding mechanisms at the <StyledLink href="/">3DAO</StyledLink> as well as seigniorage.</p>
               <p>Built on top of <StyledLink target="_blank" href="https://2omb.finance">2omb.finance</StyledLink>.</p> */}
               <p>
-                Stake your ARBTOMB-WETH LP in the <StyledLink href="/farms">Farms</StyledLink> to earn ARBSHARES rewards.
-                Then stake your earned ARBSHARES in the <StyledLink href="/">Room</StyledLink> to maximize profits!
+                Stake your ARBTOMB-WETH LP in the <StyledLink href="/farms">Farms</StyledLink> to earn ARBSHARES
+                rewards. Then stake your earned ARBSHARES in the <StyledLink href="/">Room</StyledLink> to maximize
+                profits!
               </p>
             </Box>
           </Paper>
@@ -184,7 +187,7 @@ const Home = () => {
 
         {/* TVL */}
         <Grid item xs={12} sm={4}>
-          <Card style={{ backgroundColor: "transparent", boxShadow: "none", border: "1px solid var(--white)" }}>
+          <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center">
               <h2>Total Value Locked</h2>
               <CountUp style={{ fontSize: '25px' }} end={totalTVL} separator="," prefix="$" />
@@ -194,7 +197,18 @@ const Home = () => {
 
         {/* Wallet */}
         <Grid item xs={12} sm={8}>
-          <Card style={{ height: '100%', backgroundColor: "transparent", boxShadow: "none", border: "1px solid var(--white)", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+          <Card
+            style={{
+              height: '100%',
+              backgroundColor: 'transparent',
+              boxShadow: 'none',
+              border: '1px solid var(--white)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <CardContent align="center">
               {/* <h2 style={{ marginBottom: '20px' }}>Wallet Balance</h2> */}
               <Button color="primary" href="/farms" variant="contained" style={{ marginRight: '10px' }}>
@@ -218,13 +232,30 @@ const Home = () => {
               >
                 Buy ARBTOMB
               </Button>
-              <Button variant="contained" target="_blank" href="https://spookyswap.finance/swap?outputCurrency=0x6437adac543583c4b31bf0323a0870430f5cc2e7" style={{ marginRight: '10px' }} className={classes.button}>
+              <Button
+                variant="contained"
+                target="_blank"
+                href="https://spookyswap.finance/swap?outputCurrency=0x6437adac543583c4b31bf0323a0870430f5cc2e7"
+                style={{ marginRight: '10px' }}
+                className={classes.button}
+              >
                 Buy ARBSHARES
               </Button>
-              <Button variant="contained" target="_blank" href="https://dexscreener.com/fantom/0x83a52eff2e9d112e9b022399a9fd22a9db7d33ae" style={{ marginRight: '10px' }} className={classes.button}>
+              <Button
+                variant="contained"
+                target="_blank"
+                href="https://dexscreener.com/fantom/0x83a52eff2e9d112e9b022399a9fd22a9db7d33ae"
+                style={{ marginRight: '10px' }}
+                className={classes.button}
+              >
                 ARBTOMB Chart
               </Button>
-              <Button variant="contained" target="_blank" href="https://dexscreener.com/fantom/0xd352dac95a91afefb112dbbb3463ccfa5ec15b65" className={classes.button}>
+              <Button
+                variant="contained"
+                target="_blank"
+                href="https://dexscreener.com/fantom/0xd352dac95a91afefb112dbbb3463ccfa5ec15b65"
+                className={classes.button}
+              >
                 ARBSHARES Chart
               </Button>
             </CardContent>
@@ -233,12 +264,12 @@ const Home = () => {
 
         {/* TOMB */}
         <Grid item xs={12} sm={3}>
-          <Card style={{ backgroundColor: "transparent", boxShadow: "none", border: "1px solid var(--white)" }}>
+          <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center" style={{ position: 'relative' }}>
               <h2>ETH</h2>
-              <Box mt={2} style={{ backgroundColor: "transparent !important" }}>
-                <CardIcon style={{ backgroundColor: "transparent !important" }}>
-                  <TokenSymbol symbol="wFTM" style={{ backgroundColor: "transparent !important" }} />
+              <Box mt={2} style={{ backgroundColor: 'transparent !important' }}>
+                <CardIcon style={{ backgroundColor: 'transparent !important' }}>
+                  <TokenSymbol symbol="wFTM" style={{ backgroundColor: 'transparent !important' }} />
                 </CardIcon>
               </Box>
               Current Price
@@ -257,7 +288,7 @@ const Home = () => {
 
         {/* TOMB */}
         <Grid item xs={12} sm={3}>
-          <Card style={{ backgroundColor: "transparent", boxShadow: "none", border: "1px solid var(--white)" }}>
+          <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center" style={{ position: 'relative' }}>
               <h2>ARBTOMB</h2>
               {/* <Button
@@ -271,9 +302,9 @@ const Home = () => {
                 +&nbsp;
                 <img alt="metamask fox" style={{ width: '20px' }} src={MetamaskFox} />
               </Button> */}
-              <Box mt={2} style={{ backgroundColor: "transparent !important" }}>
-                <CardIcon style={{ backgroundColor: "transparent !important" }}>
-                  <TokenSymbol symbol="TOMB" style={{ backgroundColor: "transparent !important" }} />
+              <Box mt={2} style={{ backgroundColor: 'transparent !important' }}>
+                <CardIcon style={{ backgroundColor: 'transparent !important' }}>
+                  <TokenSymbol symbol="TOMB" style={{ backgroundColor: 'transparent !important' }} />
                 </CardIcon>
               </Box>
               Current Price
@@ -296,7 +327,7 @@ const Home = () => {
 
         {/* TSHARE */}
         <Grid item xs={12} sm={3}>
-          <Card style={{ backgroundColor: "transparent", boxShadow: "none", border: "1px solid var(--white)" }}>
+          <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center" style={{ position: 'relative' }}>
               <h2>ARBSHARES</h2>
               {/* <Button
@@ -333,7 +364,7 @@ const Home = () => {
 
         {/* TBOND */}
         <Grid item xs={12} sm={3}>
-          <Card style={{ backgroundColor: "transparent", boxShadow: "none", border: "1px solid var(--white)" }}>
+          <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center" style={{ position: 'relative' }}>
               <h2>ARBBOND</h2>
               {/* <Button
@@ -368,7 +399,7 @@ const Home = () => {
           </Card>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Card style={{ backgroundColor: "transparent", boxShadow: "none", border: "1px solid var(--white)" }}>
+          <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center">
               <h2>ARBTOMB-WETH Spooky LP</h2>
               <Box mt={2}>
@@ -397,7 +428,7 @@ const Home = () => {
           </Card>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Card style={{ backgroundColor: "transparent", boxShadow: "none", border: "1px solid var(--white)" }}>
+          <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center">
               <h2>ARBSHARES-WETH Spooky LP</h2>
               <Box mt={2}>
