@@ -38,7 +38,7 @@ const treasuryAddress = "0x8f555E00ea0FAc871b3Aa70C015915dB094E7f88"
 
 function useTotalTreasuryBalance() {
     const ThreeShares = new web3.eth.Contract(ERC20ABI, '0x6437ADAC543583C4b31Bf0323A0870430F5CC2e7')
-    const WFTM = new web3.eth.Contract(ERC20ABI, '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83')
+    const WETH = new web3.eth.Contract(ERC20ABI, '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83')
     const [balance, setBalance] = useState(0)
     const [balance_2shares_wftm, setBalance_2shares_wftm] = useState(0)
     const [balance_3omb_wftm, setBalance_3omb_wftm] = useState(0)
@@ -112,7 +112,7 @@ function useTotalTreasuryBalance() {
         const token = new web3.eth.Contract(ERC20ABI, tokenAddress)
         const LPtoken = new web3.eth.Contract(ERC20ABI, LPAddress)
         const { data } = await axios('https://api.binance.com/api/v1/ticker/price?symbol=FTMUSDT')
-        const wftmValue = Number(web3.utils.fromWei(await WFTM.methods.balanceOf(LPAddress).call())) * Number(data.price)
+        const wftmValue = Number(web3.utils.fromWei(await WETH.methods.balanceOf(LPAddress).call())) * Number(data.price)
 
         const tokenValue = Number(await getTokenPrice(tokenAddress)) * Number(web3.utils.fromWei(await token.methods.balanceOf(LPAddress).call()))
 

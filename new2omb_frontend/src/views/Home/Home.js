@@ -159,7 +159,7 @@ const Home = () => {
               {/* <p>ArbTomb utilizes multiple bonding mechanisms at the <StyledLink href="/">3DAO</StyledLink> as well as seigniorage.</p>
               <p>Built on top of <StyledLink target="_blank" href="https://2omb.finance">2omb.finance</StyledLink>.</p> */}
               <p>
-                Stake your ARBTOMB-WFTM LP in the <StyledLink href="/farms">Farms</StyledLink> to earn ARBSHARES rewards.
+                Stake your ARBTOMB-WETH LP in the <StyledLink href="/farms">Farms</StyledLink> to earn ARBSHARES rewards.
                 Then stake your earned ARBSHARES in the <StyledLink href="/">Room</StyledLink> to maximize profits!
               </p>
             </Box>
@@ -370,7 +370,7 @@ const Home = () => {
         <Grid item xs={12} sm={6}>
           <Card style={{ backgroundColor: "transparent", boxShadow: "none", border: "1px solid var(--white)" }}>
             <CardContent align="center">
-              <h2>ARBTOMB-WFTM Spooky LP</h2>
+              <h2>ARBTOMB-WETH Spooky LP</h2>
               <Box mt={2}>
                 <CardIcon>
                   <TokenSymbol symbol="TOMB-ETH-LP" />
@@ -399,7 +399,7 @@ const Home = () => {
         <Grid item xs={12} sm={6}>
           <Card style={{ backgroundColor: "transparent", boxShadow: "none", border: "1px solid var(--white)" }}>
             <CardContent align="center">
-              <h2>ARBSHARES-WFTM Spooky LP</h2>
+              <h2>ARBSHARES-WETH Spooky LP</h2>
               <Box mt={2}>
                 <CardIcon>
                   <TokenSymbol symbol="TSHARE-ETH-LP" />

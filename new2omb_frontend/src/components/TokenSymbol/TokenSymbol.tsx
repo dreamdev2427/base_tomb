@@ -20,14 +20,14 @@ import shibaLogo from '../../assets/img/shiba_logo.svg';
 import bifiLogo from '../../assets/img/COW.svg';
 import mimLogo from '../../assets/img/mimlogopng.png';
 import bloomLogo from '../../assets/img/BLOOM.jpg';
-import TwoombLPLogo from '../../assets/img/2OMB-WFTM.png';
-import TwosharesLPLogo from '../../assets/img/2SHARES-WFTM.png';
+import TwoombLPLogo from '../../assets/img/2OMB-WETH.png';
+import TwosharesLPLogo from '../../assets/img/2SHARES-WETH.png';
 import TwoombTwosharesLPLogo from '../../assets/img/2OMB-2SHARES.png';
 
 import UsdcLogo from '../../assets/img/USDC.png';
 
-import ThreeombLPLogo from '../../assets/img/ARBTOMB-WFTM.png';
-import ThreesharesLPLogo from '../../assets/img/ARBSHARES-WFTM.png';
+import ThreeombLPLogo from '../../assets/img/ARBTOMB-WETH.png';
+import ThreesharesLPLogo from '../../assets/img/ARBSHARES-WETH.png';
 
 const logosBySymbol: { [title: string]: string } = {
   //Real tokens
@@ -37,7 +37,7 @@ const logosBySymbol: { [title: string]: string } = {
   TSHAREPNG: tShareLogoPNG,
   TSHARE: tShareLogo,
   TBOND: tBondLogo,
-  WFTM: wftmLogo,
+  WETH: wftmLogo,
   BOO: booLogo,
   SHIBA: shibaLogo,
   ZOO: zooLogo,
@@ -46,12 +46,12 @@ const logosBySymbol: { [title: string]: string } = {
   MIM: mimLogo,
   USDC: UsdcLogo,
   BLOOM: bloomLogo,
-  '2OMB-WFTM LP': TwoombLPLogo,
-  '2SHARES-WFTM LP': TwosharesLPLogo,
+  '2OMB-WETH LP': TwoombLPLogo,
+  '2SHARES-WETH LP': TwosharesLPLogo,
   '2OMB-2SHARES LP': TwoombTwosharesLPLogo,
 
-  'ARBTOMB-WFTM LP': ThreeombLPLogo,
-  'ARBSHARES-WFTM LP': ThreesharesLPLogo,
+  'ARBTOMB-WETH LP': ThreeombLPLogo,
+  'ARBSHARES-WETH LP': ThreesharesLPLogo,
 
 
   'wFTM': wftmLogo,

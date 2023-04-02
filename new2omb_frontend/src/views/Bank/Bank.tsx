@@ -106,10 +106,10 @@ const LPTokenHelpText: React.FC<{ bank: BankEntity }> = ({ bank }) => {
   let pairName: string;
   let uniswapUrl: string;
   if (bank.depositTokenName.includes('ARBTOMB')) {
-    pairName = 'ARBTOMB-WFTM pair';
+    pairName = 'ARBTOMB-WETH pair';
     uniswapUrl = 'https://spookyswap.finance/add/ETH/' + tombAddr;
   } else {
-    pairName = 'ARBSHARE-WFTM pair';
+    pairName = 'ARBSHARE-WETH pair';
     uniswapUrl = 'https://spookyswap.finance/add/ETH/' + tshareAddr;
   }
   return (

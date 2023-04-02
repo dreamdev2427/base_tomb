@@ -4696,7 +4696,7 @@
       },
       {
         "inputs": [],
-        "name": "WFTM",
+        "name": "WETH",
         "outputs": [
           {
             "internalType": "address",
@@ -16549,6 +16549,4 @@
       }
     ]
   }
-};
-
-// RRBOBM-WFTM Traderjoe pool address 0x1dE807C94D1637be2267A937fd5aB07a16c30579
+}
