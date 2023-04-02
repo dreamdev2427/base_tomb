@@ -4696,7 +4696,7 @@
       },
       {
         "inputs": [],
-        "name": "WFTM",
+        "name": "WETH",
         "outputs": [
           {
             "internalType": "address",

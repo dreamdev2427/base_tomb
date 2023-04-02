@@ -49,7 +49,7 @@ export class TombFinance {
     this.TOMB = new ERC20(deployments.tomb.address, provider, 'ARBTOMB');
     this.TSHARE = new ERC20(deployments.tShare.address, provider, 'ARBSHARE');
     this.TBOND = new ERC20(deployments.tBond.address, provider, 'ARBBOND');
-    this.ETH = this.externalTokens['WFTM'];
+    this.ETH = this.externalTokens['WETH'];
 
     // Uniswap V2 Pair
     this.TOMBWFTM_LP = new Contract(externalTokens['TOMB-ETH-LP'][0], IUniswapV2PairABI, provider);
@@ -281,11 +281,11 @@ export class TombFinance {
           return rewardPerSecond.mul(500).div(25000).div(24).mul(20);
         } else if (depositTokenName === 'BIFI') {
           return rewardPerSecond.mul(500).div(25000).div(24).mul(20);
-        } else if (depositTokenName === 'WFTM') {
+        } else if (depositTokenName === 'WETH') {
           return rewardPerSecond.mul(500).div(25000).div(24).mul(20);
-        } else if (depositTokenName === '2OMB-WFTM LP') {
+        } else if (depositTokenName === '2OMB-WETH LP') {
           return rewardPerSecond.mul(6000).div(25000).div(24).mul(20);
-        } else if (depositTokenName === '2SHARES-WFTM LP') {
+        } else if (depositTokenName === '2SHARES-WETH LP') {
           return rewardPerSecond.mul(6000).div(25000).div(24).mul(20);
         } else if (depositTokenName === 'BLOOM') {
           return rewardPerSecond.mul(500).div(25000).div(24).mul(20);
@@ -327,18 +327,18 @@ export class TombFinance {
       tokenPrice = priceOfOneFtmInDollars;
     } else {
       console.log('token name:', tokenName);
-      if (tokenName === 'ARBTOMB-WFTM LP') {
+      if (tokenName === 'ARBTOMB-WETH LP') {
         tokenPrice = await this.getLPTokenPrice(token, this.TOMB, true, false);
-      } else if (tokenName === 'ARBSHARES-WFTM LP') {
+      } else if (tokenName === 'ARBSHARES-WETH LP') {
         tokenPrice = await this.getLPTokenPrice(token, this.TSHARE, false, false);
-      } else if (tokenName === '2SHARES-WFTM LP') {
+      } else if (tokenName === '2SHARES-WETH LP') {
         tokenPrice = await this.getLPTokenPrice(
           token,
           new ERC20('0xc54a1684fd1bef1f077a336e6be4bd9a3096a6ca', this.provider, '2SHARES'),
           false,
           true,
         );
-      } else if (tokenName === '2OMB-WFTM LP') {
+      } else if (tokenName === '2OMB-WETH LP') {
         console.log('getting the LP token price here');
         tokenPrice = await this.getLPTokenPrice(
           token,
@@ -434,8 +434,8 @@ export class TombFinance {
           ? await this.get2ombStatFake()
           : await this.get2ShareStatFake()
         : isTomb === true
-        ? await this.getTombStat()
-        : await this.getShareStat();
+          ? await this.getTombStat()
+          : await this.getShareStat();
     const priceOfToken = stat.priceInDollars;
     const tokenInLP = Number(tokenSupply) / Number(totalSupply);
     const tokenPrice = (Number(priceOfToken) * tokenInLP * 2) //We multiply by 2 since half the price of the lp token is the price of each piece of the pair. So twice gives the total
@@ -589,9 +589,9 @@ async getShareStatFake() {
     const ready = await this.provider.ready;
     if (!ready) return;
     const { chainId } = this.config;
-    const { WFTM } = this.config.externalTokens;
+    const { WETH } = this.config.externalTokens;
 
-    const wftm = new Token(chainId, WFTM[0], WFTM[1]);
+    const wftm = new Token(chainId, WETH[0], WETH[1]);
     const token = new Token(chainId, tokenContract.address, tokenContract.decimal, tokenContract.symbol);
     try {
       const wftmToToken = await Fetcher.fetchPairData(wftm, token, this.provider);
@@ -608,15 +608,15 @@ async getShareStatFake() {
     if (!ready) return;
     const { chainId } = this.config;
 
-    const { WFTM } = this.externalTokens;
+    const { WETH } = this.externalTokens;
 
-    const wftm = new TokenSpirit(chainId, WFTM.address, WFTM.decimal);
+    const wftm = new TokenSpirit(chainId, WETH.address, WETH.decimal);
     const token = new TokenSpirit(chainId, tokenContract.address, tokenContract.decimal, tokenContract.symbol);
     try {
       const wftmToToken = await FetcherSpirit.fetchPairData(wftm, token, this.provider);
       const liquidityToken = wftmToToken.liquidityToken;
-      let ftmBalanceInLP = await WFTM.balanceOf(liquidityToken.address);
-      let ftmAmount = Number(getFullDisplayBalance(ftmBalanceInLP, WFTM.decimal));
+      let ftmBalanceInLP = await WETH.balanceOf(liquidityToken.address);
+      let ftmAmount = Number(getFullDisplayBalance(ftmBalanceInLP, WETH.decimal));
       let shibaBalanceInLP = await tokenContract.balanceOf(liquidityToken.address);
       let shibaAmount = Number(getFullDisplayBalance(shibaBalanceInLP, tokenContract.decimal));
       const priceOfOneFtmInDollars = await this.getWFTMPriceFromPancakeswap();
@@ -630,16 +630,16 @@ async getShareStatFake() {
   async getWFTMPriceFromPancakeswap(): Promise<string> {
     const ready = await this.provider.ready;
     if (!ready) return;
-    const { WFTM, USDC } = this.externalTokens;
+    const { WETH, USDC } = this.externalTokens;
     try {
       const fusdt_wftm_lp_pair = this.externalTokens['USDT-ETH-LP'];
-      let ftm_amount_BN = await WFTM.balanceOf(fusdt_wftm_lp_pair.address);
-      let ftm_amount = Number(getFullDisplayBalance(ftm_amount_BN, WFTM.decimal));
+      let ftm_amount_BN = await WETH.balanceOf(fusdt_wftm_lp_pair.address);
+      let ftm_amount = Number(getFullDisplayBalance(ftm_amount_BN, WETH.decimal));
       let USDC_amount_BN = await USDC.balanceOf(fusdt_wftm_lp_pair.address);
       let USDC_amount = Number(getFullDisplayBalance(USDC_amount_BN, USDC.decimal));
       return (USDC_amount / ftm_amount).toString();
     } catch (err) {
-      console.error(`Failed to fetch token price of WFTM: ${err}`);
+      console.error(`Failed to fetch token price of WETH: ${err}`);
     }
   }
 
