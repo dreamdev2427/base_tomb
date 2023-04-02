@@ -1,14 +1,13 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.6.12;
+pragma solidity 0.8.0;
 
-import "@openzeppelin/contracts/math/SafeMath.sol";
-
+import "./lib/SafeMath.sol";
 import "./lib/Babylonian.sol";
 import "./lib/FixedPoint.sol";
 import "./lib/UniswapV2OracleLibrary.sol";
 import "./utils/Epoch.sol";
-import "./interfaces/IUniswapV2Pair.sol";
+import "./interfaces/ICamelotPair.sol";
 
 // fixed window oracle that recomputes the average price for the entire period once every period
 // note that the price average is only guaranteed to be over at least 1 period, but may be over a longer period
@@ -21,7 +20,7 @@ contract Oracle is Epoch {
     // uniswap
     address public token0;
     address public token1;
-    IUniswapV2Pair public pair;
+    ICamelotPair public pair;
 
     // oracle
     uint32 public blockTimestampLast;
@@ -33,18 +32,18 @@ contract Oracle is Epoch {
     /* ========== CONSTRUCTOR ========== */
 
     constructor(
-        IUniswapV2Pair _pair,
+        ICamelotPair _pair,
         uint256 _period,
         uint256 _startTime
-    ) public Epoch(_period, _startTime, 0) {
+    )  Epoch(_period, _startTime, 0) {
         pair = _pair;
         token0 = pair.token0();
         token1 = pair.token1();
-        price0CumulativeLast = pair.price0CumulativeLast(); // fetch the current accumulated price value (1 / 0)
-        price1CumulativeLast = pair.price1CumulativeLast(); // fetch the current accumulated price value (0 / 1)
+        price0CumulativeLast = pair.precisionMultiplier0(); // fetch the current accumulated price value (1 / 0)
+        price1CumulativeLast = pair.precisionMultiplier1(); // fetch the current accumulated price value (0 / 1)
         uint112 reserve0;
         uint112 reserve1;
-        (reserve0, reserve1, blockTimestampLast) = pair.getReserves();
+        (reserve0, reserve1, , ) = pair.getReserves();
         require(reserve0 != 0 && reserve1 != 0, "Oracle: NO_RESERVES"); // ensure that there's liquidity in the pair
     }
 
