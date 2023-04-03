@@ -15,7 +15,7 @@ import useTokenBalance from '../../../hooks/useTokenBalance';
 import useTombFinance from '../../../hooks/useTombFinance';
 import { useWallet } from 'use-wallet';
 import useApproveZapper, { ApprovalState } from '../../../hooks/useApproveZapper';
-import { TOMB_TICKER, TSHARE_TICKER, FTM_TICKER } from '../../../utils/constants';
+import { TOMB_TICKER, TSHARE_TICKER, ETH_TICKER } from '../../../utils/constants';
 import { Alert } from '@material-ui/lab';
 
 interface ZapProps extends ModalProps {
@@ -27,19 +27,19 @@ interface ZapProps extends ModalProps {
 const ZapModal: React.FC<ZapProps> = ({ onConfirm, onDismiss, tokenName = '', decimals = 18 }) => {
   const tombFinance = useTombFinance();
   const { balance } = useWallet();
-  const ftmBalance = (Number(balance) / 1e18).toFixed(4).toString();
+  const ethBalance = (Number(balance) / 1e18).toFixed(4).toString();
   const tombBalance = useTokenBalance(tombFinance.TOMB);
   const tshareBalance = useTokenBalance(tombFinance.TSHARE);
   const [val, setVal] = useState('');
-  const [zappingToken, setZappingToken] = useState(FTM_TICKER);
-  const [zappingTokenBalance, setZappingTokenBalance] = useState(ftmBalance);
+  const [zappingToken, setZappingToken] = useState(ETH_TICKER);
+  const [zappingTokenBalance, setZappingTokenBalance] = useState(ethBalance);
   const [estimate, setEstimate] = useState({ token0: '0', token1: '0' }); // token0 will always be ETH in this case
   const [approveZapperStatus, approveZapper] = useApproveZapper(zappingToken);
-  const tombFtmLpStats = useLpStats('RRBOMB-ETH-LP');
-  const tShareFtmLpStats = useLpStats('RRBSHARE-ETH-LP');
-  const tombLPStats = useMemo(() => (tombFtmLpStats ? tombFtmLpStats : null), [tombFtmLpStats]);
-  const tshareLPStats = useMemo(() => (tShareFtmLpStats ? tShareFtmLpStats : null), [tShareFtmLpStats]);
-  const ftmAmountPerLP = tokenName.startsWith(TOMB_TICKER) ? tombLPStats?.ftmAmount : tshareLPStats?.ftmAmount;
+  const tombEthLpStats = useLpStats('RRBOMB-ETH-LP');
+  const tShareEthLpStats = useLpStats('RRBSHARE-ETH-LP');
+  const tombLPStats = useMemo(() => (tombEthLpStats ? tombEthLpStats : null), [tombEthLpStats]);
+  const tshareLPStats = useMemo(() => (tShareEthLpStats ? tShareEthLpStats : null), [tShareEthLpStats]);
+  const ethAmountPerLP = tokenName.startsWith(TOMB_TICKER) ? tombLPStats?.ethAmount : tshareLPStats?.ethAmount;
   /**
    * Checks if a value is a valid number or not
    * @param n is the value to be evaluated for a number
@@ -51,7 +51,7 @@ const ZapModal: React.FC<ZapProps> = ({ onConfirm, onDismiss, tokenName = '', de
   const handleChangeAsset = (event: any) => {
     const value = event.target.value;
     setZappingToken(value);
-    setZappingTokenBalance(ftmBalance);
+    setZappingTokenBalance(ethBalance);
     if (event.target.value === TSHARE_TICKER) {
       setZappingTokenBalance(getDisplayBalance(tshareBalance, decimals));
     }
@@ -98,7 +98,7 @@ const ZapModal: React.FC<ZapProps> = ({ onConfirm, onDismiss, tokenName = '', de
         id="select"
         value={zappingToken}
       >
-        <StyledMenuItem value={FTM_TICKER}>ETH</StyledMenuItem>
+        <StyledMenuItem value={ETH_TICKER}>ETH</StyledMenuItem>
         <StyledMenuItem value={TSHARE_TICKER}>TSHARE</StyledMenuItem>
         {/* Tomb as an input for zapping will be disabled due to issues occuring with the Gatekeeper system */}
         {/* <StyledMenuItem value={TOMB_TICKER}>TOMB</StyledMenuItem> */}
@@ -113,11 +113,11 @@ const ZapModal: React.FC<ZapProps> = ({ onConfirm, onDismiss, tokenName = '', de
       <Label text="Zap Estimations" />
       <StyledDescriptionText>
         {' '}
-        {tokenName}: {Number(estimate.token0) / Number(ftmAmountPerLP)}
+        {tokenName}: {Number(estimate.token0) / Number(ethAmountPerLP)}
       </StyledDescriptionText>
       <StyledDescriptionText>
         {' '}
-        ({Number(estimate.token0)} {FTM_TICKER} / {Number(estimate.token1)}{' '}
+        ({Number(estimate.token0)} {ETH_TICKER} / {Number(estimate.token1)}{' '}
         {tokenName.startsWith(TOMB_TICKER) ? TOMB_TICKER : TSHARE_TICKER}){' '}
       </StyledDescriptionText>
       <ModalActions>

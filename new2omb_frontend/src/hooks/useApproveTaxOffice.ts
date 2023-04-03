@@ -20,7 +20,7 @@ export enum ApprovalState {
 function useApproveTaxOffice(): [ApprovalState, () => Promise<void>] {
   const tombFinance = useTombFinance();
   let token: ERC20 = tombFinance.TOMB;
-  // if (zappingToken === FTM_TICKER) token = tombFinance.ETH;
+  // if (zappingToken === ETH_TICKER) token = tombFinance.ETH;
   // else if (zappingToken === TOMB_TICKER) token = tombFinance.TOMB;
   // else if (zappingToken === TSHARE_TICKER) token = tombFinance.TSHARE;
   const pendingApproval = useHasPendingApproval(token.address, TAX_OFFICE_ADDR);

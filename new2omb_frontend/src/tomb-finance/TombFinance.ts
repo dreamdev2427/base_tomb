@@ -13,7 +13,7 @@ import IUniswapV2PairABI from './IUniswapV2Pair.abi.json';
 import config, { ETHER_UNITS, bankDefinitions } from '../config';
 import moment from 'moment';
 import { parseUnits } from 'ethers/lib/utils';
-import { FTM_TICKER, SPOOKY_ROUTER_ADDR, TOMB_TICKER } from '../utils/constants';
+import { ETH_TICKER, SPOOKY_ROUTER_ADDR, TOMB_TICKER } from '../utils/constants';
 import Web3 from 'web3';
 import { web3ProviderFrom } from './ether-utils';
 /**
@@ -30,7 +30,7 @@ export class TombFinance {
   externalTokens: { [name: string]: ERC20 };
   masonryVersionOfUser?: string;
 
-  TOMBWFTM_LP: Contract;
+  TOMBWETH_LP: Contract;
   TOMB: ERC20;
   TSHARE: ERC20;
   TBOND: ERC20;
@@ -55,7 +55,7 @@ export class TombFinance {
     this.ETH = this.externalTokens['WETH'];
 
     // Uniswap V2 Pair
-    this.TOMBWFTM_LP = new Contract(externalTokens['ARBOMB-ETH-LP'][0], IUniswapV2PairABI, provider);
+    this.TOMBWETH_LP = new Contract(externalTokens['ARBOMB-ETH-LP'][0], IUniswapV2PairABI, provider);
 
     this.config = cfg;
     this.provider = provider;
@@ -78,7 +78,7 @@ export class TombFinance {
     for (const token of tokens) {
       token.connect(this.signer);
     }
-    this.TOMBWFTM_LP = this.TOMBWFTM_LP.connect(this.signer);
+    this.TOMBWETH_LP = this.TOMBWETH_LP.connect(this.signer);
     console.log(`🔓 Wallet is unlocked. Welcome, ${account}!`);
     this.fetchMasonryVersionOfUser()
       .then((version) => (this.masonryVersionOfUser = version))
@@ -99,24 +99,24 @@ export class TombFinance {
   //===================================================================
 
   async getTombStat(): Promise<TokenStat> {
-    const { TombFtmRewardPool, TombFtmLpTombRewardPool, TombFtmLpTombRewardPoolOld } = this.contracts;
+    const { TombEthRewardPool, TombEthLpTombRewardPool, TombEthLpTombRewardPoolOld } = this.contracts;
     const supply = await this.TOMB.totalSupply();
-    const tombRewardPoolSupply = await this.TOMB.balanceOf(TombFtmRewardPool.address);
-    const tombRewardPoolSupply2 = await this.TOMB.balanceOf(TombFtmLpTombRewardPool.address);
-    const tombRewardPoolSupplyOld = await this.TOMB.balanceOf(TombFtmLpTombRewardPoolOld.address);
+    const tombRewardPoolSupply = await this.TOMB.balanceOf(TombEthRewardPool.address);
+    const tombRewardPoolSupply2 = await this.TOMB.balanceOf(TombEthLpTombRewardPool.address);
+    const tombRewardPoolSupplyOld = await this.TOMB.balanceOf(TombEthLpTombRewardPoolOld.address);
     const tombCirculatingSupply = supply
       .sub(tombRewardPoolSupply)
       .sub(tombRewardPoolSupply2)
       .sub(tombRewardPoolSupplyOld);
-    const priceInFTM = await this.getTokenPriceFromPancakeswap(this.TOMB);
-    console.log('tomb price in eth:', priceInFTM);
-    const priceOfOneFTM = await this.getWFTMPriceFromPancakeswap();
-    console.log('price of WETH in usd:', priceOfOneFTM);
-    const priceOfTombInDollars = (Number(priceInFTM) * Number(priceOfOneFTM)).toFixed(2);
+    const priceInETH = await this.getTokenPriceFromPancakeswap(this.TOMB);
+    console.log('tomb price in eth:', priceInETH);
+    const priceOfOneETH = await this.getWETHPriceFromPancakeswap();
+    console.log('price of WETH in usd:', priceOfOneETH);
+    const priceOfTombInDollars = (Number(priceInETH) * Number(priceOfOneETH)).toFixed(2);
     console.log('price in usd:', priceOfTombInDollars);
 
     return {
-      tokenInFtm: priceInFTM,
+      tokenInEth: priceInETH,
       priceInDollars: priceOfTombInDollars,
       totalSupply: getDisplayBalance(supply, this.TOMB.decimal, 0),
       circulatingSupply: getDisplayBalance(tombCirculatingSupply, this.TOMB.decimal, 0),
@@ -137,16 +137,16 @@ export class TombFinance {
     const tokenAmountBN = await token0.balanceOf(lpToken.address);
     const tokenAmount = getDisplayBalance(tokenAmountBN, 18);
 
-    const ftmAmountBN = await this.ETH.balanceOf(lpToken.address);
-    const ftmAmount = getDisplayBalance(ftmAmountBN, 18);
+    const ethAmountBN = await this.ETH.balanceOf(lpToken.address);
+    const ethAmount = getDisplayBalance(ethAmountBN, 18);
     const tokenAmountInOneLP = Number(tokenAmount) / Number(lpTokenSupply);
-    const ftmAmountInOneLP = Number(ftmAmount) / Number(lpTokenSupply);
+    const ethAmountInOneLP = Number(ethAmount) / Number(lpTokenSupply);
     const lpTokenPrice = await this.getLPTokenPrice(lpToken, token0, isTomb, false);
     const lpTokenPriceFixed = Number(lpTokenPrice).toFixed(2).toString();
     const liquidity = (Number(lpTokenSupply) * Number(lpTokenPrice)).toFixed(2).toString();
     return {
       tokenAmount: tokenAmountInOneLP.toFixed(2).toString(),
-      ftmAmount: ftmAmountInOneLP.toFixed(2).toString(),
+      ethAmount: ethAmountInOneLP.toFixed(2).toString(),
       priceOfOne: lpTokenPriceFixed,
       totalLiquidity: liquidity,
       totalSupply: Number(lpTokenSupply).toFixed(2).toString(),
@@ -156,7 +156,7 @@ export class TombFinance {
   /**
    * Use this method to get price for Tomb
    * @returns TokenStat for TBOND
-   * priceInFTM
+   * priceInETH
    * priceInDollars
    * TotalSupply
    * CirculatingSupply (always equal to total supply for bonds)
@@ -166,11 +166,11 @@ export class TombFinance {
     const tombStat = await this.getTombStat();
     const bondTombRatioBN = await Treasury.getBondPremiumRate();
     const modifier = bondTombRatioBN / 1e18 > 1 ? bondTombRatioBN / 1e18 : 1;
-    const bondPriceInFTM = (Number(tombStat.tokenInFtm) * modifier).toFixed(2);
+    const bondPriceInETH = (Number(tombStat.tokenInEth) * modifier).toFixed(2);
     const priceOfTBondInDollars = (Number(tombStat.priceInDollars) * modifier).toFixed(2);
     const supply = await this.TBOND.displayedTotalSupply();
     return {
-      tokenInFtm: bondPriceInFTM,
+      tokenInEth: bondPriceInETH,
       priceInDollars: priceOfTBondInDollars,
       totalSupply: supply,
       circulatingSupply: supply,
@@ -179,24 +179,24 @@ export class TombFinance {
 
   /**
    * @returns TokenStat for TSHARE
-   * priceInFTM
+   * priceInETH
    * priceInDollars
    * TotalSupply
    * CirculatingSupply (always equal to total supply for bonds)
    */
   async getShareStat(): Promise<TokenStat> {
-    const { TombFtmLPTShareRewardPool } = this.contracts;
+    const { TombEthLPTShareRewardPool } = this.contracts;
 
     const supply = await this.TSHARE.totalSupply();
 
-    const priceInFTM = await this.getTokenPriceFromPancakeswap(this.TSHARE);
-    const tombRewardPoolSupply = await this.TSHARE.balanceOf(TombFtmLPTShareRewardPool.address);
+    const priceInETH = await this.getTokenPriceFromPancakeswap(this.TSHARE);
+    const tombRewardPoolSupply = await this.TSHARE.balanceOf(TombEthLPTShareRewardPool.address);
     const tShareCirculatingSupply = supply.sub(tombRewardPoolSupply);
-    const priceOfOneFTM = await this.getWFTMPriceFromPancakeswap();
-    const priceOfSharesInDollars = (Number(priceInFTM) * Number(priceOfOneFTM)).toFixed(2);
+    const priceOfOneETH = await this.getWETHPriceFromPancakeswap();
+    const priceOfSharesInDollars = (Number(priceInETH) * Number(priceOfOneETH)).toFixed(2);
 
     return {
-      tokenInFtm: priceInFTM,
+      tokenInEth: priceInETH,
       priceInDollars: priceOfSharesInDollars,
       totalSupply: getDisplayBalance(supply, this.TSHARE.decimal, 0),
       circulatingSupply: getDisplayBalance(tShareCirculatingSupply, this.TSHARE.decimal, 0),
@@ -204,14 +204,14 @@ export class TombFinance {
   }
 
   async getTombStatInEstimatedTWAP(): Promise<TokenStat> {
-    const { SeigniorageOracle, TombFtmRewardPool } = this.contracts;
+    const { SeigniorageOracle, TombEthRewardPool } = this.contracts;
     const expectedPrice = await SeigniorageOracle.twap(this.TOMB.address, ethers.utils.parseEther('1'));
 
     const supply = await this.TOMB.totalSupply();
-    const tombRewardPoolSupply = await this.TOMB.balanceOf(TombFtmRewardPool.address);
+    const tombRewardPoolSupply = await this.TOMB.balanceOf(TombEthRewardPool.address);
     const tombCirculatingSupply = supply.sub(tombRewardPoolSupply);
     return {
-      tokenInFtm: getDisplayBalance(expectedPrice),
+      tokenInEth: getDisplayBalance(expectedPrice),
       priceInDollars: getDisplayBalance(expectedPrice),
       totalSupply: getDisplayBalance(supply, this.TOMB.decimal, 0),
       circulatingSupply: getDisplayBalance(tombCirculatingSupply, this.TOMB.decimal, 0),
@@ -329,9 +329,9 @@ export class TombFinance {
    */
   async getDepositTokenPriceInDollars(tokenName: string, token: ERC20) {
     let tokenPrice;
-    const priceOfOneFtmInDollars = await this.getWFTMPriceFromPancakeswap();
-    if (tokenName === 'wFTM') {
-      tokenPrice = priceOfOneFtmInDollars;
+    const priceOfOneEthInDollars = await this.getWETHPriceFromPancakeswap();
+    if (tokenName === 'wETH') {
+      tokenPrice = priceOfOneEthInDollars;
     } else {
       console.log('token name:', tokenName);
       if (tokenName === 'ARBOMB-WETH LP') {
@@ -340,7 +340,7 @@ export class TombFinance {
         tokenPrice = await this.getLPTokenPrice(token, this.TSHARE, false, false);
       } else {
         tokenPrice = await this.getTokenPriceFromPancakeswap(token);
-        tokenPrice = (Number(tokenPrice) * Number(priceOfOneFtmInDollars)).toString();
+        tokenPrice = (Number(tokenPrice) * Number(priceOfOneEthInDollars)).toString();
       }
     }
     return tokenPrice;
@@ -443,22 +443,22 @@ async getShareStatFake() {
 }
 */
   async get2ombStatFake(): Promise<TokenStat> {
-    const { TwoOmbFtmRewardPool, TwoOmbFtmLpTombRewardPool, TwoOmbFtmLpTombRewardPoolOld } = this.contracts;
+    const { TwoOmbEthRewardPool, TwoOmbEthLpTombRewardPool, TwoOmbEthLpTombRewardPoolOld } = this.contracts;
     const TOMB = new ERC20('0x7a6e4e3cc2ac9924605dca4ba31d1831c84b44ae', this.provider, '2OMB');
     const supply = await TOMB.totalSupply();
-    const tombRewardPoolSupply = await TOMB.balanceOf(TwoOmbFtmRewardPool.address);
-    const tombRewardPoolSupply2 = await TOMB.balanceOf(TwoOmbFtmLpTombRewardPool.address);
-    const tombRewardPoolSupplyOld = await TOMB.balanceOf(TwoOmbFtmLpTombRewardPoolOld.address);
+    const tombRewardPoolSupply = await TOMB.balanceOf(TwoOmbEthRewardPool.address);
+    const tombRewardPoolSupply2 = await TOMB.balanceOf(TwoOmbEthLpTombRewardPool.address);
+    const tombRewardPoolSupplyOld = await TOMB.balanceOf(TwoOmbEthLpTombRewardPoolOld.address);
     const tombCirculatingSupply = supply
       .sub(tombRewardPoolSupply)
       .sub(tombRewardPoolSupply2)
       .sub(tombRewardPoolSupplyOld);
-    const priceInFTM = await this.getTokenPriceFromPancakeswap(TOMB);
-    const priceOfOneFTM = await this.getWFTMPriceFromPancakeswap();
-    const priceOfTombInDollars = (Number(priceInFTM) * Number(priceOfOneFTM)).toFixed(2);
+    const priceInETH = await this.getTokenPriceFromPancakeswap(TOMB);
+    const priceOfOneETH = await this.getWETHPriceFromPancakeswap();
+    const priceOfTombInDollars = (Number(priceInETH) * Number(priceOfOneETH)).toFixed(2);
 
     return {
-      tokenInFtm: priceInFTM,
+      tokenInEth: priceInETH,
       priceInDollars: priceOfTombInDollars,
       totalSupply: getDisplayBalance(supply, TOMB.decimal, 0),
       circulatingSupply: getDisplayBalance(tombCirculatingSupply, TOMB.decimal, 0),
@@ -466,26 +466,26 @@ async getShareStatFake() {
   }
 
   async get2ShareStatFake(): Promise<TokenStat> {
-    const { TwoOmbFtmRewardPool, TwoOmbFtmLpTombRewardPool, TwoOmbFtmLpTombRewardPoolOld } = this.contracts;
+    const { TwoOmbEthRewardPool, TwoOmbEthLpTombRewardPool, TwoOmbEthLpTombRewardPoolOld } = this.contracts;
     const TSHARE = new ERC20('0xc54a1684fd1bef1f077a336e6be4bd9a3096a6ca', this.provider, '2SHARES');
     const supply = await TSHARE.totalSupply();
-    const tombRewardPoolSupply = await TSHARE.balanceOf(TwoOmbFtmRewardPool.address);
-    const tombRewardPoolSupply2 = await TSHARE.balanceOf(TwoOmbFtmLpTombRewardPool.address);
-    const tombRewardPoolSupplyOld = await TSHARE.balanceOf(TwoOmbFtmLpTombRewardPoolOld.address);
+    const tombRewardPoolSupply = await TSHARE.balanceOf(TwoOmbEthRewardPool.address);
+    const tombRewardPoolSupply2 = await TSHARE.balanceOf(TwoOmbEthLpTombRewardPool.address);
+    const tombRewardPoolSupplyOld = await TSHARE.balanceOf(TwoOmbEthLpTombRewardPoolOld.address);
     const tombCirculatingSupply = supply
       .sub(tombRewardPoolSupply)
       .sub(tombRewardPoolSupply2)
       .sub(tombRewardPoolSupplyOld);
-    const priceInFTM = await this.getTokenPriceFromPancakeswap(TSHARE);
-    console.log('share price in WETH ===> ', priceInFTM);
-    const priceOfOneFTM = await this.getWFTMPriceFromPancakeswap();
-    console.log('priceOfOneWETH ===> ', priceOfOneFTM);
-    const priceOfTombInDollars = (Number(priceInFTM) * Number(priceOfOneFTM)).toFixed(2);
+    const priceInETH = await this.getTokenPriceFromPancakeswap(TSHARE);
+    console.log('share price in WETH ===> ', priceInETH);
+    const priceOfOneETH = await this.getWETHPriceFromPancakeswap();
+    console.log('priceOfOneWETH ===> ', priceOfOneETH);
+    const priceOfTombInDollars = (Number(priceInETH) * Number(priceOfOneETH)).toFixed(2);
 
     console.log('priceOfTombInDollars ===> ', priceOfTombInDollars);
 
     return {
-      tokenInFtm: priceInFTM,
+      tokenInEth: priceInETH,
       priceInDollars: priceOfTombInDollars,
       totalSupply: getDisplayBalance(supply, TSHARE.decimal, 0),
       circulatingSupply: getDisplayBalance(tombCirculatingSupply, TSHARE.decimal, 0),
@@ -604,39 +604,39 @@ async getShareStatFake() {
 
     const { WETH } = this.externalTokens;
 
-    const wftm = new TokenSpirit(chainId, WETH.address, WETH.decimal);
+    const weth = new TokenSpirit(chainId, WETH.address, WETH.decimal);
     const token = new TokenSpirit(chainId, tokenContract.address, tokenContract.decimal, tokenContract.symbol);
     try {
-      const wftmToToken = await FetcherSpirit.fetchPairData(wftm, token, this.provider);
-      const liquidityToken = wftmToToken.liquidityToken;
-      let ftmBalanceInLP = await WETH.balanceOf(liquidityToken.address);
-      let ftmAmount = Number(getFullDisplayBalance(ftmBalanceInLP, WETH.decimal));
+      const wethToToken = await FetcherSpirit.fetchPairData(weth, token, this.provider);
+      const liquidityToken = wethToToken.liquidityToken;
+      let ethBalanceInLP = await WETH.balanceOf(liquidityToken.address);
+      let ethAmount = Number(getFullDisplayBalance(ethBalanceInLP, WETH.decimal));
       let shibaBalanceInLP = await tokenContract.balanceOf(liquidityToken.address);
       let shibaAmount = Number(getFullDisplayBalance(shibaBalanceInLP, tokenContract.decimal));
-      const priceOfOneFtmInDollars = await this.getWFTMPriceFromPancakeswap();
-      let priceOfShiba = (ftmAmount / shibaAmount) * Number(priceOfOneFtmInDollars);
+      const priceOfOneEthInDollars = await this.getWETHPriceFromPancakeswap();
+      let priceOfShiba = (ethAmount / shibaAmount) * Number(priceOfOneEthInDollars);
       return priceOfShiba.toString();
     } catch (err) {
       console.error(`Failed to fetch token price of ${tokenContract.symbol}: ${err}`);
     }
   }
 
-  async getWFTMPriceFromPancakeswap(): Promise<string> {
+  async getWETHPriceFromPancakeswap(): Promise<string> {
     const ready = await this.provider.ready;
     if (!ready) return;
     const { WETH, USDC } = this.externalTokens;
     try {
-      const fusdt_wftm_lp_pair = this.externalTokens['USDC-ETH-LP'];
-      console.log('fusdt_wftm_lp_pair ===> ', fusdt_wftm_lp_pair);
-      let ftm_amount_BN = await WETH.balanceOf(fusdt_wftm_lp_pair.address);
-      let ftm_amount = Number(getFullDisplayBalance(ftm_amount_BN, WETH.decimal));
-      console.log('weth_amount ==> ', ftm_amount);
+      const fusdt_weth_lp_pair = this.externalTokens['USDC-ETH-LP'];
+      console.log('fusdt_weth_lp_pair ===> ', fusdt_weth_lp_pair);
+      let eth_amount_BN = await WETH.balanceOf(fusdt_weth_lp_pair.address);
+      let eth_amount = Number(getFullDisplayBalance(eth_amount_BN, WETH.decimal));
+      console.log('weth_amount ==> ', eth_amount);
 
-      let USDC_amount_BN = await USDC.balanceOf(fusdt_wftm_lp_pair.address);
+      let USDC_amount_BN = await USDC.balanceOf(fusdt_weth_lp_pair.address);
       let USDC_amount = Number(getFullDisplayBalance(USDC_amount_BN, USDC.decimal));
       console.log(' USDC_amount ===> ', USDC_amount);
 
-      return (USDC_amount / ftm_amount).toString();
+      return (USDC_amount / eth_amount).toString();
     } catch (err) {
       console.error(`Failed to fetch token price of WETH: ${err}`);
     }
@@ -847,22 +847,22 @@ async getShareStatFake() {
     return true;
   }
 
-  async provideTombFtmLP(ftmAmount: string, tombAmount: BigNumber): Promise<TransactionResponse> {
+  async provideTombEthLP(ethAmount: string, tombAmount: BigNumber): Promise<TransactionResponse> {
     const { TaxOffice } = this.contracts;
     let overrides = {
-      value: parseUnits(ftmAmount, 18),
+      value: parseUnits(ethAmount, 18),
     };
     return await TaxOffice.addLiquidityETHTaxFree(
       tombAmount,
       tombAmount.mul(992).div(1000),
-      parseUnits(ftmAmount, 18).mul(992).div(1000),
+      parseUnits(ethAmount, 18).mul(992).div(1000),
       overrides,
     );
   }
 
   async quoteFromSpooky(tokenAmount: string, tokenName: string): Promise<string> {
     const { CamelotRouter } = this.contracts;
-    const { _reserve0, _reserve1 } = await this.TOMBWFTM_LP.getReserves();
+    const { _reserve0, _reserve1 } = await this.TOMBWETH_LP.getReserves();
     let quote;
     if (tokenName === 'ARBOMB') {
       quote = await CamelotRouter.quote(parseUnits(tokenAmount), _reserve1, _reserve0);
@@ -949,7 +949,7 @@ async getShareStatFake() {
     const { zapper } = this.contracts;
     const lpToken = this.externalTokens[lpName];
     let estimate;
-    if (tokenName === FTM_TICKER) {
+    if (tokenName === ETH_TICKER) {
       estimate = await zapper.estimateZapIn(lpToken.address, SPOOKY_ROUTER_ADDR, parseUnits(amount, 18));
     } else {
       const token = tokenName === TOMB_TICKER ? this.TOMB : this.TSHARE;
@@ -965,7 +965,7 @@ async getShareStatFake() {
   async zapIn(tokenName: string, lpName: string, amount: string): Promise<TransactionResponse> {
     const { zapper } = this.contracts;
     const lpToken = this.externalTokens[lpName];
-    if (tokenName === FTM_TICKER) {
+    if (tokenName === ETH_TICKER) {
       let overrides = {
         value: parseUnits(amount, 18),
       };

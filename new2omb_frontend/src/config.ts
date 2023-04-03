@@ -11,7 +11,7 @@ const configurations: { [env: string]: Configuration } = {
     externalTokens: {
       WETH: ['0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 18],
       USDC: ['0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8', 6],
-      wFTM: ['0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 18],
+      wETH: ['0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 18],
       'ARBOMB-WETH LP': ['0x1dE807C94D1637be2267A937fd5aB07a16c30579', 18],
       'ARBSHARE-WETH LP': ['0x082a88164A4c06076a844AB120716EB3925908F2', 18],
       ARBSHARES: ['0x9664E90eb98Be3671E940e42aFdEd1B56c364185', 18],
@@ -41,12 +41,12 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   finished: will disable the pool on the UI if set to true
   sort: the order of the pool
   */
-  TombWrappedFtmRewardPool: {
+  TombWrappedEthRewardPool: {
     name: 'Earn ARBOMB by staking WETH',
     poolId: 6,
     sectionInUI: 0,
-    contract: 'TombWrappedFtmRewardPool',
-    depositTokenName: 'wFTM',
+    contract: 'TombWrappedEthRewardPool',
+    depositTokenName: 'wETH',
     earnTokenName: 'ARBOMB',
     finished: false,
     multiplier: '500x',
@@ -55,11 +55,11 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     sort: 7,
     closedForStaking: true,
   },
-  TombFtmLPTombRewardPool: {
+  TombEthLPTombRewardPool: {
     name: 'Earn TOMB by TOMB-ETH LP',
     poolId: 0,
     sectionInUI: 1,
-    contract: 'TombFtmLpTombRewardPool',
+    contract: 'TombEthLpTombRewardPool',
     depositTokenName: 'ARBOMB-ETH-LP',
     earnTokenName: 'TOMB',
     finished: false,
@@ -69,11 +69,11 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     sort: 7,
     closedForStaking: true,
   },
-  TombFtmLPTShareRewardPool: {
+  TombEthLPTShareRewardPool: {
     name: 'Earn ARBSHARES by ARBOMB | ETH',
     poolId: 0,
     sectionInUI: 2,
-    contract: 'TombFtmLPTShareRewardPool',
+    contract: 'TombEthLPTShareRewardPool',
     depositTokenName: 'ARBOMB-WETH LP',
     earnTokenName: 'ARBSHARES',
     finished: false,
@@ -83,11 +83,11 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     sort: 8,
     closedForStaking: false,
   },
-  TshareFtmLPTShareRewardPool: {
+  TshareEthLPTShareRewardPool: {
     name: 'Earn ARBSHARES by ARBSHARE-WETH LP',
     poolId: 1,
     sectionInUI: 2,
-    contract: 'TshareFtmLPTShareRewardPool',
+    contract: 'TshareEthLPTShareRewardPool',
     depositTokenName: 'ARBSHARE-WETH LP',
     earnTokenName: 'ARBSHARES',
     finished: false,
@@ -97,11 +97,11 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     sort: 9,
     closedForStaking: false,
   },
-  WFTMRebates: {
+  WETHRebates: {
     name: 'Bond WETH, earn ARBOMB',
     poolId: 1,
     sectionInUI: 3,
-    contract: 'TombFtmRewardPool',
+    contract: 'TombEthRewardPool',
     depositTokenName: 'WETH',
     earnTokenName: 'ARBOMB',
     finished: false,
@@ -115,7 +115,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   //    name: 'Bond USDC, earn ARBOMB',
   //    poolId: 1,
   //    sectionInUI: 3,
-  //    contract: 'TombFtmRewardPool',
+  //    contract: 'TombEthRewardPool',
   //    depositTokenName: 'USDC',
   //    earnTokenName: 'ARBOMB',
   //    finished: false,
@@ -125,11 +125,11 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   //    sort: 6,
   //    closedForStaking: false,
   // },
-  // Tomb3OMBFTMRebates: {
+  // Tomb3OMBETHRebates: {
   //   name: 'Bond ARBOMB-WETH LP, earn ARBOMB',
   //   poolId: 3,
   //   sectionInUI: 3,
-  //   contract: 'TombFtmRewardPool',
+  //   contract: 'TombEthRewardPool',
   //   depositTokenName: 'ARBOMB-WETH LP',
   //   earnTokenName: 'ARBOMB',
   //   finished: false,
@@ -143,7 +143,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     name: 'Bond ARBSHARES, earn ARBOMB',
     poolId: 4,
     sectionInUI: 3,
-    contract: 'TombFtmRewardPool',
+    contract: 'TombEthRewardPool',
     depositTokenName: 'ARBSHARES',
     earnTokenName: 'ARBOMB',
     finished: false,
@@ -153,11 +153,11 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     sort: 3,
     closedForStaking: false,
   },
-  //Tomb3SHARESFTMRebates: {
+  //Tomb3SHARESETHRebates: {
   // name: 'Bond ARBSHARE-WETH LP, earn ARBOMB',
   // poolId: 5,
   // sectionInUI: 3,
-  //  contract: 'TombFtmRewardPool',
+  //  contract: 'TombEthRewardPool',
   //  depositTokenName: 'ARBSHARE-WETH LP',
   //  earnTokenName: 'ARBOMB',
   //  finished: false,

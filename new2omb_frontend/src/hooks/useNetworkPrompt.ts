@@ -20,7 +20,7 @@ const usePromptNetwork = () => {
           chainName: config.networkName,
           nativeCurrency: {
             name: 'ETH',
-            symbol: 'ftm',
+            symbol: 'eth',
             decimals: 18,
           },
           rpcUrls: [config.defaultProvider],

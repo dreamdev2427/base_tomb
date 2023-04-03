@@ -5261,7 +5261,7 @@
       }
     ]
   },
-  "TombFtmRewardPool": {
+  "TombEthRewardPool": {
     "address": "0x3946a6D1D1C4c5a1eD6eDDaE18165f13DC39f1d8",
     "abi": [
       {
@@ -5747,7 +5747,7 @@
       }
     ]
   },
-  "TombWrappedFtmRewardPool": {
+  "TombWrappedEthRewardPool": {
     "address": "0x3946a6D1D1C4c5a1eD6eDDaE18165f13DC39f1d8",
     "abi": [
       {
@@ -6233,7 +6233,7 @@
       }
     ]
   },
-  "TombFtmLpTombRewardPoolOld": {
+  "TombEthLpTombRewardPoolOld": {
     "address": "0xA7B16703470055881e7EE093e9b0bF537f29CD4d",
     "abi": [
       {
@@ -6724,7 +6724,7 @@
       }
     ]
   },
-  "TombFtmLpTombRewardPool": {
+  "TombEthLpTombRewardPool": {
     "address": "0xa7b9123f4b15fE0fF01F469ff5Eab2b41296dC0E",
     "abi": [
       {
@@ -7215,7 +7215,7 @@
       }
     ]
   },
-  "TombFtmLPTShareRewardPool": {
+  "TombEthLPTShareRewardPool": {
     "address": "0x9DEdE30Dc302026b3eC95e1D6Bed92602A432b29",
     "abi": [
       {
@@ -7701,7 +7701,7 @@
       }
     ]
   },
-  "TshareFtmLPTShareRewardPool": {
+  "TshareEthLPTShareRewardPool": {
     "address": "0x9DEdE30Dc302026b3eC95e1D6Bed92602A432b29",
     "abi": [
       {
@@ -8204,7 +8204,7 @@
           },
           {
             "internalType": "uint256",
-            "name": "amtFtmMin",
+            "name": "amtEthMin",
             "type": "uint256"
           }
         ],
@@ -9398,7 +9398,7 @@
           },
           {
             "internalType": "address",
-            "name": "_wftmAddress",
+            "name": "_wethAddress",
             "type": "address"
           },
           {
@@ -9738,7 +9738,7 @@
       },
       {
         "inputs": [],
-        "name": "wftmAddress",
+        "name": "wethAddress",
         "outputs": [
           {
             "internalType": "address",

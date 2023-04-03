@@ -4,21 +4,21 @@ import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 import { parseUnits } from 'ethers/lib/utils';
 import { TAX_OFFICE_ADDR } from './../utils/constants'
 
-const useProvideTombFtmLP = () => {
+const useProvideTombEthLP = () => {
   const tombFinance = useTombFinance();
   const handleTransactionReceipt = useHandleTransactionReceipt();
 
-  const handleProvideTombFtmLP = useCallback(
-    (ftmAmount: string, tombAmount: string) => {
+  const handleProvideTombEthLP = useCallback(
+    (ethAmount: string, tombAmount: string) => {
       const tombAmountBn = parseUnits(tombAmount);
       handleTransactionReceipt(
-        tombFinance.provideTombFtmLP(ftmAmount, tombAmountBn),
-        `Provide Tomb-ETH LP ${tombAmount} ${ftmAmount} using ${TAX_OFFICE_ADDR}`,
+        tombFinance.provideTombEthLP(ethAmount, tombAmountBn),
+        `Provide Tomb-ETH LP ${tombAmount} ${ethAmount} using ${TAX_OFFICE_ADDR}`,
       );
     },
     [tombFinance, handleTransactionReceipt],
   );
-  return { onProvideTombFtmLP: handleProvideTombFtmLP };
+  return { onProvideTombEthLP: handleProvideTombEthLP };
 };
 
-export default useProvideTombFtmLP;
+export default useProvideTombEthLP;
