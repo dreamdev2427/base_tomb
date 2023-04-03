@@ -49,13 +49,13 @@ export class TombFinance {
     for (const [symbol, [address, decimal]] of Object.entries(externalTokens)) {
       this.externalTokens[symbol] = new ERC20(address, provider, symbol, decimal);
     }
-    this.TOMB = new ERC20(deployments.tomb.address, provider, 'RRBOMB');
-    this.TSHARE = new ERC20(deployments.tShare.address, provider, 'RRBSHARE');
+    this.TOMB = new ERC20(deployments.tomb.address, provider, 'ARBOMB');
+    this.TSHARE = new ERC20(deployments.tShare.address, provider, 'ARBSHARE');
     this.TBOND = new ERC20(deployments.tBond.address, provider, 'RRBBOND');
     this.ETH = this.externalTokens['WETH'];
 
     // Uniswap V2 Pair
-    this.TOMBWFTM_LP = new Contract(externalTokens['RRBOMB-ETH-LP'][0], IUniswapV2PairABI, provider);
+    this.TOMBWFTM_LP = new Contract(externalTokens['ARBOMB-ETH-LP'][0], IUniswapV2PairABI, provider);
 
     this.config = cfg;
     this.provider = provider;
@@ -132,8 +132,8 @@ export class TombFinance {
     const lpToken = this.externalTokens[name];
     const lpTokenSupplyBN = await lpToken.totalSupply();
     const lpTokenSupply = getDisplayBalance(lpTokenSupplyBN, 18);
-    const token0 = name.startsWith('RRBOMB') ? this.TOMB : this.TSHARE;
-    const isTomb = name.startsWith('RRBOMB');
+    const token0 = name.startsWith('ARBOMB') ? this.TOMB : this.TSHARE;
+    const isTomb = name.startsWith('ARBOMB');
     const tokenAmountBN = await token0.balanceOf(lpToken.address);
     const tokenAmount = getDisplayBalance(tokenAmountBN, 18);
 
@@ -241,7 +241,7 @@ export class TombFinance {
     console.log('deposit token price:', depositTokenPrice);
     const stakeInPool = await depositToken.balanceOf(bank.address);
     const TVL = Number(depositTokenPrice) * Number(getDisplayBalance(stakeInPool, depositToken.decimal));
-    const stat = bank.earnTokenName === 'RRBOMB' ? await this.getTombStat() : await this.getShareStat();
+    const stat = bank.earnTokenName === 'ARBOMB' ? await this.getTombStat() : await this.getShareStat();
     const tokenPerSecond = await this.getTokenPerSecond(
       bank.earnTokenName,
       bank.contract,
@@ -277,7 +277,7 @@ export class TombFinance {
     poolContract: Contract,
     depositTokenName: string,
   ) {
-    if (earnTokenName === 'RRBOMB') {
+    if (earnTokenName === 'ARBOMB') {
       if (!contractName.endsWith('TombRewardPool')) {
         const rewardPerSecond = await poolContract.tombPerSecond();
         if (depositTokenName === '2SHARES') {
@@ -308,7 +308,7 @@ export class TombFinance {
       return await poolContract.epochTombPerSecond(0);
     }
     const rewardPerSecond = await poolContract.tSharePerSecond();
-    if (depositTokenName.startsWith('RRBOMB')) {
+    if (depositTokenName.startsWith('ARBOMB')) {
       return rewardPerSecond.mul(35500).div(89500);
     } else if (depositTokenName.startsWith('2OMB')) {
       return rewardPerSecond.mul(15000).div(89500);
@@ -334,9 +334,9 @@ export class TombFinance {
       tokenPrice = priceOfOneFtmInDollars;
     } else {
       console.log('token name:', tokenName);
-      if (tokenName === 'RRBOMB-WETH LP') {
+      if (tokenName === 'ARBOMB-WETH LP') {
         tokenPrice = await this.getLPTokenPrice(token, this.TOMB, true, false);
-      } else if (tokenName === 'RRBSHARE-WETH LP') {
+      } else if (tokenName === 'ARBSHARE-WETH LP') {
         tokenPrice = await this.getLPTokenPrice(token, this.TSHARE, false, false);
       } else {
         tokenPrice = await this.getTokenPriceFromPancakeswap(token);
@@ -500,7 +500,7 @@ async getShareStatFake() {
   ): Promise<BigNumber> {
     const pool = this.contracts[poolName];
     try {
-      if (earnTokenName === 'RRBOMB') {
+      if (earnTokenName === 'ARBOMB') {
         return await pool.pendingTOMB(poolId, account);
       } else {
         return await pool.pendingShare(poolId, account);
@@ -864,7 +864,7 @@ async getShareStatFake() {
     const { CamelotRouter } = this.contracts;
     const { _reserve0, _reserve1 } = await this.TOMBWFTM_LP.getReserves();
     let quote;
-    if (tokenName === 'RRBOMB') {
+    if (tokenName === 'ARBOMB') {
       quote = await CamelotRouter.quote(parseUnits(tokenAmount), _reserve1, _reserve0);
     } else {
       quote = await CamelotRouter.quote(parseUnits(tokenAmount), _reserve0, _reserve1);

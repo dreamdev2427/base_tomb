@@ -50,8 +50,8 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   const TVL = useTotalValueLocked();
-  const tombFtmLpStats = useLpStats('RRBOMB-ETH-LP');
-  const tShareFtmLpStats = useLpStats('RRBSHARE-ETH-LP');
+  const tombFtmLpStats = useLpStats('ARBOMB-ETH-LP');
+  const tShareFtmLpStats = useLpStats('ARBSHARE-ETH-LP');
   const tombStats = useTombStats();
   const tShareStats = usetShareStats();
   const tBondStats = useBondStats();
@@ -108,8 +108,8 @@ const Home = () => {
   );
   const tBondTotalSupply = useMemo(() => (tBondStats ? String(tBondStats.totalSupply) : null), [tBondStats]);
 
-  const tombLpZap = useZap({ depositTokenName: 'RRBOMB-ETH-LP' });
-  const tshareLpZap = useZap({ depositTokenName: 'RRBSHARE-ETH-LP' });
+  const tombLpZap = useZap({ depositTokenName: 'ARBOMB-ETH-LP' });
+  const tshareLpZap = useZap({ depositTokenName: 'ARBSHARE-ETH-LP' });
 
   const StyledLink = styled.a`
     font-weight: 700;
@@ -125,7 +125,7 @@ const Home = () => {
         tombLpZap.onZap(zappingToken, tokenName, amount);
         onDissmissTombZap();
       }}
-      tokenName={'RRBOMB-ETH-LP'}
+      tokenName={'ARBOMB-ETH-LP'}
     />,
   );
 
@@ -137,7 +137,7 @@ const Home = () => {
         tshareLpZap.onZap(zappingToken, tokenName, amount);
         onDissmissTshareZap();
       }}
-      tokenName={'RRBSHARE-ETH-LP'}
+      tokenName={'ARBSHARE-ETH-LP'}
     />,
   );
 
@@ -154,13 +154,13 @@ const Home = () => {
         <Grid item xs={12} sm={6}>
           <Paper style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <Box p={4}>
-              <h2>Welcome to RRBOMB Finance!</h2>
+              <h2>Welcome to ARBOMB Finance!</h2>
               <p>An algorithmic stablecoin on the Arbitrum blockchain, pegged to the price of 1 ETH</p>
-              {/* <p>RRBOMB utilizes multiple bonding mechanisms at the <StyledLink href="/">3DAO</StyledLink> as well as seigniorage.</p>
+              {/* <p>ARBOMB utilizes multiple bonding mechanisms at the <StyledLink href="/">3DAO</StyledLink> as well as seigniorage.</p>
               <p>Built on top of <StyledLink target="_blank" href="https://2omb.finance">2omb.finance</StyledLink>.</p> */}
               <p>
-                Stake your RRBOMB-WETH LP in the <StyledLink href="/farms">Farms</StyledLink> to earn RRBSHARES rewards.
-                Then stake your earned RRBSHARES in the <StyledLink href="/">Room</StyledLink> to maximize profits!
+                Stake your ARBOMB-WETH LP in the <StyledLink href="/farms">Farms</StyledLink> to earn ARBSHARES rewards.
+                Then stake your earned ARBSHARES in the <StyledLink href="/">Room</StyledLink> to maximize profits!
               </p>
             </Box>
           </Paper>
@@ -168,7 +168,7 @@ const Home = () => {
         {/* <Grid container justify="center">
           <Box mt={3} style={{ width: '1000px' }}>
             <Alert variant="filled" severity="warning">
-              Do your own research before investing. Investing is risky and may result in monetary loss. RRBOMB is beta software and may contain bugs. By using RRBOMB, you agree that the 2omb and RRBOMB team is not responsible for any financial losses from investing in 2omb or RRBOMB.
+              Do your own research before investing. Investing is risky and may result in monetary loss. ARBOMB is beta software and may contain bugs. By using ARBOMB, you agree that the 2omb and ARBOMB team is not responsible for any financial losses from investing in 2omb or ARBOMB.
             </Alert>
           </Box>
         </Grid> */}
@@ -236,7 +236,7 @@ const Home = () => {
                 style={{ marginRight: '10px' }}
                 className={classes.button}
               >
-                Buy RRBSHARES
+                Buy ARBSHARES
               </Button>
               <Button
                 variant="contained"
@@ -245,7 +245,7 @@ const Home = () => {
                 style={{ marginRight: '10px' }}
                 className={classes.button}
               >
-                RRBOMB Chart
+                ARBOMB Chart
               </Button>
               <Button
                 variant="contained"
@@ -253,7 +253,7 @@ const Home = () => {
                 href="https://dexscreener.com/fantom/0xd352dac95a91afefb112dbbb3463ccfa5ec15b65"
                 className={classes.button}
               >
-                RRBSHARES Chart
+                ARBSHARES Chart
               </Button>
             </CardContent>
           </Card>
@@ -287,7 +287,7 @@ const Home = () => {
         <Grid item xs={12} sm={3}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center" style={{ position: 'relative' }}>
-              <h2>RRBOMB</h2>
+              <h2>ARBOMB</h2>
               {/* <Button
                 onClick={() => {
                   tombFinance.watchAssetInMetamask('TOMB');
@@ -326,7 +326,7 @@ const Home = () => {
         <Grid item xs={12} sm={3}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center" style={{ position: 'relative' }}>
-              <h2>RRBSHARES</h2>
+              <h2>ARBSHARES</h2>
               {/* <Button
                 onClick={() => {
                   tombFinance.watchAssetInMetamask('TSHARE');
@@ -399,10 +399,10 @@ const Home = () => {
         <Grid item xs={12} sm={6}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center">
-              <h2>RRBOMB-WETH Camelot LP</h2>
+              <h2>ARBOMB-WETH Camelot LP</h2>
               <Box mt={2}>
                 <CardIcon>
-                  <TokenSymbol symbol="RRBOMB-ETH-LP" />
+                  <TokenSymbol symbol="ARBOMB-ETH-LP" />
                 </CardIcon>
               </Box>
               {/*
@@ -413,7 +413,7 @@ const Home = () => {
               </Box>*/}
               <Box mt={2}>
                 <span style={{ fontSize: '26px' }}>
-                  {tombLPStats?.tokenAmount ? tombLPStats?.tokenAmount : '-.--'} RRBOMB /{' '}
+                  {tombLPStats?.tokenAmount ? tombLPStats?.tokenAmount : '-.--'} ARBOMB /{' '}
                   {tombLPStats?.ftmAmount ? tombLPStats?.ftmAmount : '-.--'} ETH
                 </span>
               </Box>
@@ -428,10 +428,10 @@ const Home = () => {
         <Grid item xs={12} sm={6}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center">
-              <h2>RRBSHARES-WETH Camelot LP</h2>
+              <h2>ARBSHARES-WETH Camelot LP</h2>
               <Box mt={2}>
                 <CardIcon>
-                  <TokenSymbol symbol="RRBSHARE-ETH-LP" />
+                  <TokenSymbol symbol="ARBSHARE-ETH-LP" />
                 </CardIcon>
               </Box>
               {/*<Box mt={2}>

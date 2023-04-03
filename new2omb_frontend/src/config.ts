@@ -4,7 +4,7 @@ import { BankInfo } from './tomb-finance';
 const configurations: { [env: string]: Configuration } = {
   production: {
     chainId: 42161,
-    networkName: 'Fantom Opera Mainnet',
+    networkName: 'Arbitrum One mainnet',
     etherscanUrl: 'https://arbiscan.com',
     defaultProvider: 'https://arb1.arbitrum.io/rpc',
     deployments: require('./tomb-finance/deployments/deployments.mainnet.json'),
@@ -12,12 +12,12 @@ const configurations: { [env: string]: Configuration } = {
       WETH: ['0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 18],
       USDC: ['0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8', 6],
       wFTM: ['0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 18],
-      'RRBOMB-WETH LP': ['0x1dE807C94D1637be2267A937fd5aB07a16c30579', 18],
-      'RRBSHARE-WETH LP': ['0x082a88164A4c06076a844AB120716EB3925908F2', 18],
+      'ARBOMB-WETH LP': ['0x1dE807C94D1637be2267A937fd5aB07a16c30579', 18],
+      'ARBSHARE-WETH LP': ['0x082a88164A4c06076a844AB120716EB3925908F2', 18],
       ARBSHARES: ['0x9664E90eb98Be3671E940e42aFdEd1B56c364185', 18],
       'USDC-ETH-LP': ['0x84652bb2539513BAf36e225c930Fdd8eaa63CE27', 18],
-      'RRBOMB-ETH-LP': ['0x1dE807C94D1637be2267A937fd5aB07a16c30579', 18],
-      'RRBSHARE-ETH-LP': ['0x082a88164A4c06076a844AB120716EB3925908F2', 18],
+      'ARBOMB-ETH-LP': ['0x1dE807C94D1637be2267A937fd5aB07a16c30579', 18],
+      'ARBSHARE-ETH-LP': ['0x082a88164A4c06076a844AB120716EB3925908F2', 18],
     },
     baseLaunchDate: new Date('2021-06-02 13:00:00Z'),
     bondLaunchesAt: new Date('2020-12-03T15:00:00Z'),
@@ -33,8 +33,8 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   poolId: the poolId assigned in the contract
   sectionInUI: way to distinguish in which of the 3 pool groups it should be listed
         - 0 = Single asset stake pools
-        - 1 = LP asset staking rewarding RRBOMB
-        - 2 = LP asset staking rewarding RRBSHARE
+        - 1 = LP asset staking rewarding ARBOMB
+        - 2 = LP asset staking rewarding ARBSHARE
   contract: the contract name which will be loaded from the deployment.environmnet.json
   depositTokenName : the name of the token to be deposited
   earnTokenName: the rewarded token
@@ -42,12 +42,12 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   sort: the order of the pool
   */
   TombWrappedFtmRewardPool: {
-    name: 'Earn RRBOMB by staking WETH',
+    name: 'Earn ARBOMB by staking WETH',
     poolId: 6,
     sectionInUI: 0,
     contract: 'TombWrappedFtmRewardPool',
     depositTokenName: 'wFTM',
-    earnTokenName: 'RRBOMB',
+    earnTokenName: 'ARBOMB',
     finished: false,
     multiplier: '500x',
     site: 'https://fantom.foundation',
@@ -60,7 +60,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     poolId: 0,
     sectionInUI: 1,
     contract: 'TombFtmLpTombRewardPool',
-    depositTokenName: 'RRBOMB-ETH-LP',
+    depositTokenName: 'ARBOMB-ETH-LP',
     earnTokenName: 'TOMB',
     finished: false,
     multiplier: '0',
@@ -70,11 +70,11 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     closedForStaking: true,
   },
   TombFtmLPTShareRewardPool: {
-    name: 'Earn ARBSHARES by RRBOMB | ETH',
+    name: 'Earn ARBSHARES by ARBOMB | ETH',
     poolId: 0,
     sectionInUI: 2,
     contract: 'TombFtmLPTShareRewardPool',
-    depositTokenName: 'RRBOMB-WETH LP',
+    depositTokenName: 'ARBOMB-WETH LP',
     earnTokenName: 'ARBSHARES',
     finished: false,
     multiplier: '35500x',
@@ -84,11 +84,11 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     closedForStaking: false,
   },
   TshareFtmLPTShareRewardPool: {
-    name: 'Earn ARBSHARES by RRBSHARE-WETH LP',
+    name: 'Earn ARBSHARES by ARBSHARE-WETH LP',
     poolId: 1,
     sectionInUI: 2,
     contract: 'TshareFtmLPTShareRewardPool',
-    depositTokenName: 'RRBSHARE-WETH LP',
+    depositTokenName: 'ARBSHARE-WETH LP',
     earnTokenName: 'ARBSHARES',
     finished: false,
     multiplier: '24000x',
@@ -98,12 +98,12 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     closedForStaking: false,
   },
   WFTMRebates: {
-    name: 'Bond WETH, earn RRBOMB',
+    name: 'Bond WETH, earn ARBOMB',
     poolId: 1,
     sectionInUI: 3,
     contract: 'TombFtmRewardPool',
     depositTokenName: 'WETH',
-    earnTokenName: 'RRBOMB',
+    earnTokenName: 'ARBOMB',
     finished: false,
     multiplier: '15000x',
     buyLink: '',
@@ -112,12 +112,12 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     closedForStaking: false,
   },
   // USDCRebates: {
-  //    name: 'Bond USDC, earn RRBOMB',
+  //    name: 'Bond USDC, earn ARBOMB',
   //    poolId: 1,
   //    sectionInUI: 3,
   //    contract: 'TombFtmRewardPool',
   //    depositTokenName: 'USDC',
-  //    earnTokenName: 'RRBOMB',
+  //    earnTokenName: 'ARBOMB',
   //    finished: false,
   //    multiplier: '15000x',
   //    buyLink: '',
@@ -126,12 +126,12 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   //    closedForStaking: false,
   // },
   // Tomb3OMBFTMRebates: {
-  //   name: 'Bond RRBOMB-WETH LP, earn RRBOMB',
+  //   name: 'Bond ARBOMB-WETH LP, earn ARBOMB',
   //   poolId: 3,
   //   sectionInUI: 3,
   //   contract: 'TombFtmRewardPool',
-  //   depositTokenName: 'RRBOMB-WETH LP',
-  //   earnTokenName: 'RRBOMB',
+  //   depositTokenName: 'ARBOMB-WETH LP',
+  //   earnTokenName: 'ARBOMB',
   //   finished: false,
   //   multiplier: '6000x',
   //   buyLink: '',
@@ -140,12 +140,12 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   //   closedForStaking: false,
   // },
   Tomb3SHARESRebates: {
-    name: 'Bond ARBSHARES, earn RRBOMB',
+    name: 'Bond ARBSHARES, earn ARBOMB',
     poolId: 4,
     sectionInUI: 3,
     contract: 'TombFtmRewardPool',
     depositTokenName: 'ARBSHARES',
-    earnTokenName: 'RRBOMB',
+    earnTokenName: 'ARBOMB',
     finished: false,
     multiplier: '5000x',
     buyLink: '',
@@ -154,12 +154,12 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     closedForStaking: false,
   },
   //Tomb3SHARESFTMRebates: {
-  // name: 'Bond RRBSHARE-WETH LP, earn RRBOMB',
+  // name: 'Bond ARBSHARE-WETH LP, earn ARBOMB',
   // poolId: 5,
   // sectionInUI: 3,
   //  contract: 'TombFtmRewardPool',
-  //  depositTokenName: 'RRBSHARE-WETH LP',
-  //  earnTokenName: 'RRBOMB',
+  //  depositTokenName: 'ARBSHARE-WETH LP',
+  //  earnTokenName: 'ARBOMB',
   //  finished: false,
   //  multiplier: '6000x',
   //  buyLink: '',
