@@ -156,14 +156,13 @@ const Home = () => {
         <Grid item xs={12} sm={6}>
           <Paper style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <Box p={4}>
-              <h2>Welcome to ArbTomb Finance!</h2>
+              <h2>Welcome to RRBOMB Finance!</h2>
               <p>An algorithmic stablecoin on the Arbitrum blockchain, pegged to the price of 1 ETH</p>
-              {/* <p>ArbTomb utilizes multiple bonding mechanisms at the <StyledLink href="/">3DAO</StyledLink> as well as seigniorage.</p>
+              {/* <p>RRBOMB utilizes multiple bonding mechanisms at the <StyledLink href="/">3DAO</StyledLink> as well as seigniorage.</p>
               <p>Built on top of <StyledLink target="_blank" href="https://2omb.finance">2omb.finance</StyledLink>.</p> */}
               <p>
-                Stake your ARBTOMB-WETH LP in the <StyledLink href="/farms">Farms</StyledLink> to earn ARBSHARES
-                rewards. Then stake your earned ARBSHARES in the <StyledLink href="/">Room</StyledLink> to maximize
-                profits!
+                Stake your RRBOMB-WETH LP in the <StyledLink href="/farms">Farms</StyledLink> to earn RRBSHARES rewards.
+                Then stake your earned RRBSHARES in the <StyledLink href="/">Room</StyledLink> to maximize profits!
               </p>
             </Box>
           </Paper>
@@ -171,7 +170,7 @@ const Home = () => {
         {/* <Grid container justify="center">
           <Box mt={3} style={{ width: '1000px' }}>
             <Alert variant="filled" severity="warning">
-              Do your own research before investing. Investing is risky and may result in monetary loss. ArbTomb is beta software and may contain bugs. By using ArbTomb, you agree that the 2omb and ArbTomb team is not responsible for any financial losses from investing in 2omb or ArbTomb.
+              Do your own research before investing. Investing is risky and may result in monetary loss. RRBOMB is beta software and may contain bugs. By using RRBOMB, you agree that the 2omb and RRBOMB team is not responsible for any financial losses from investing in 2omb or RRBOMB.
             </Alert>
           </Box>
         </Grid> */}
@@ -230,7 +229,7 @@ const Home = () => {
                 style={{ marginRight: '10px' }}
                 className={classes.button}
               >
-                Buy ARBTOMB
+                Buy RRBTOMB
               </Button>
               <Button
                 variant="contained"
@@ -239,7 +238,7 @@ const Home = () => {
                 style={{ marginRight: '10px' }}
                 className={classes.button}
               >
-                Buy ARBSHARES
+                Buy RRBSHARES
               </Button>
               <Button
                 variant="contained"
@@ -248,7 +247,7 @@ const Home = () => {
                 style={{ marginRight: '10px' }}
                 className={classes.button}
               >
-                ARBTOMB Chart
+                RRBOMB Chart
               </Button>
               <Button
                 variant="contained"
@@ -256,7 +255,7 @@ const Home = () => {
                 href="https://dexscreener.com/fantom/0xd352dac95a91afefb112dbbb3463ccfa5ec15b65"
                 className={classes.button}
               >
-                ARBSHARES Chart
+                RRBSHARES Chart
               </Button>
             </CardContent>
           </Card>
@@ -290,7 +289,7 @@ const Home = () => {
         <Grid item xs={12} sm={3}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center" style={{ position: 'relative' }}>
-              <h2>ARBTOMB</h2>
+              <h2>RRBOMB</h2>
               {/* <Button
                 onClick={() => {
                   tombFinance.watchAssetInMetamask('TOMB');
@@ -329,7 +328,7 @@ const Home = () => {
         <Grid item xs={12} sm={3}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center" style={{ position: 'relative' }}>
-              <h2>ARBSHARES</h2>
+              <h2>RRBSHARES</h2>
               {/* <Button
                 onClick={() => {
                   tombFinance.watchAssetInMetamask('TSHARE');
@@ -362,11 +361,12 @@ const Home = () => {
           </Card>
         </Grid>
 
-        {/* TBOND */}
+        {/* TBOND https://openapi.debank.com/v1/user/chain_balance?id=0x8f555E00ea0FAc871b3Aa70C015915dB094E7f88&chain_id=ftm */}
+        {/* https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=fantom  */}
         <Grid item xs={12} sm={3}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center" style={{ position: 'relative' }}>
-              <h2>ARBBOND</h2>
+              <h2>RRBBOND</h2>
               {/* <Button
                 onClick={() => {
                   tombFinance.watchAssetInMetamask('TBOND');
@@ -401,7 +401,7 @@ const Home = () => {
         <Grid item xs={12} sm={6}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center">
-              <h2>ARBTOMB-WETH Spooky LP</h2>
+              <h2>RRBOMB-WETH Spooky LP</h2>
               <Box mt={2}>
                 <CardIcon>
                   <TokenSymbol symbol="TOMB-ETH-LP" />
@@ -415,7 +415,7 @@ const Home = () => {
               </Box>*/}
               <Box mt={2}>
                 <span style={{ fontSize: '26px' }}>
-                  {tombLPStats?.tokenAmount ? tombLPStats?.tokenAmount : '-.--'} ARBTOMB /{' '}
+                  {tombLPStats?.tokenAmount ? tombLPStats?.tokenAmount : '-.--'} RRBOMB /{' '}
                   {tombLPStats?.ftmAmount ? tombLPStats?.ftmAmount : '-.--'} ETH
                 </span>
               </Box>
@@ -430,7 +430,7 @@ const Home = () => {
         <Grid item xs={12} sm={6}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center">
-              <h2>ARBSHARES-WETH Spooky LP</h2>
+              <h2>RRBSHARES-WETH Spooky LP</h2>
               <Box mt={2}>
                 <CardIcon>
                   <TokenSymbol symbol="TSHARE-ETH-LP" />
