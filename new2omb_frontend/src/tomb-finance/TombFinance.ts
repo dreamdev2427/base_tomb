@@ -338,29 +338,6 @@ export class TombFinance {
         tokenPrice = await this.getLPTokenPrice(token, this.TOMB, true, false);
       } else if (tokenName === 'RRBSHARE-WETH LP') {
         tokenPrice = await this.getLPTokenPrice(token, this.TSHARE, false, false);
-      } else if (tokenName === '2SHARES-WETH LP') {
-        tokenPrice = await this.getLPTokenPrice(
-          token,
-          new ERC20('0xc54a1684fd1bef1f077a336e6be4bd9a3096a6ca', this.provider, '2SHARES'),
-          false,
-          false,
-        );
-      } else if (tokenName === '2OMB-WETH LP') {
-        console.log('getting the LP token price here');
-        tokenPrice = await this.getLPTokenPrice(
-          token,
-          new ERC20('0x7a6e4e3cc2ac9924605dca4ba31d1831c84b44ae', this.provider, '2OMB'),
-          true,
-          false,
-        );
-        console.log('my token price:', tokenPrice);
-      } else if (tokenName === 'BLOOM') {
-        tokenPrice = await this.getTokenPriceFromSpiritswap(token);
-      } else if (tokenName === 'BELUGA') {
-        const data = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=beluga-fi&vs_currencies=usd').then(
-          (res) => res.json(),
-        );
-        tokenPrice = data['beluga-fi'].usd;
       } else {
         tokenPrice = await this.getTokenPriceFromPancakeswap(token);
         tokenPrice = (Number(tokenPrice) * Number(priceOfOneFtmInDollars)).toString();
@@ -599,23 +576,16 @@ async getShareStatFake() {
   async getTokenPriceFromPancakeswap(tokenContract: ERC20): Promise<string> {
     const ready = await this.provider.ready;
     if (!ready) return;
-    const { chainId } = this.config;
     const { WETH } = this.config.externalTokens;
 
-    const wftm = new Token(chainId, WETH[0], WETH[1], 'WETH');
-    console.log('wftm ===> ', wftm);
-    const token = new Token(chainId, tokenContract.address, tokenContract.decimal, tokenContract.symbol);
-    console.log('token ===> ', token);
     try {
       const camelot = this.config.deployments['CamelotRouter'];
       let camlotRouter = new this.defaultWeb3.eth.Contract(camelot.abi, camelot.address);
       const ethunitname = Object.keys(ETHER_UNITS).find(
         (key) => Math.pow(10, tokenContract.decimal).toString() === (ETHER_UNITS as any)[key],
       );
-      console.log(`ethunitname of ${tokenContract.symbol} `, ethunitname);
       let onTokentoWei = this.defaultWeb3.utils.toWei('1', ethunitname.toString());
       let amountsOut = await camlotRouter.methods.getAmountsOut(onTokentoWei, [tokenContract.address, WETH[0]]).call();
-      console.log(`amountsOut ===> `, amountsOut);
 
       return this.defaultWeb3.utils.fromWei(amountsOut[1].toString(), 'ether').toString();
     } catch (err) {
