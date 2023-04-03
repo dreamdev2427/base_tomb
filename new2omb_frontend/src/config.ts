@@ -5,7 +5,7 @@ const configurations: { [env: string]: Configuration } = {
   production: {
     chainId: 42161,
     networkName: 'Arbitrum One mainnet',
-    etherscanUrl: 'https://arbiscan.com',
+    etherscanUrl: 'https://arbiscan.io',
     defaultProvider: 'https://arb1.arbitrum.io/rpc',
     deployments: require('./tomb-finance/deployments/deployments.mainnet.json'),
     externalTokens: {
@@ -51,7 +51,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     finished: false,
     multiplier: '500x',
     site: 'https://fantom.foundation',
-    buyLink: 'https://ecoswap.exchange',
+    buyLink: 'https://app.camelot.exchange',
     sort: 7,
     closedForStaking: true,
   },
@@ -64,7 +64,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     earnTokenName: 'TOMB',
     finished: false,
     multiplier: '0',
-    buyLink: '',
+    buyLink: 'https://app.camelot.exchange',
     site: '',
     sort: 7,
     closedForStaking: true,

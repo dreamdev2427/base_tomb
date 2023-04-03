@@ -222,7 +222,7 @@ const Home = () => {
               </Button> */}
               <Button
                 target="_blank"
-                href="https://spookyswap.finance/swap?outputCurrency=0x14def7584a6c52f470ca4f4b9671056b22f4ffde"
+                href="https://app.camelot.exchange/swap?outputCurrency=0x14def7584a6c52f470ca4f4b9671056b22f4ffde"
                 variant="contained"
                 style={{ marginRight: '10px' }}
                 className={classes.button}
@@ -232,7 +232,7 @@ const Home = () => {
               <Button
                 variant="contained"
                 target="_blank"
-                href="https://spookyswap.finance/swap?outputCurrency=0x6437adac543583c4b31bf0323a0870430f5cc2e7"
+                href="https://app.camelot.exchange/swap?outputCurrency=0x6437adac543583c4b31bf0323a0870430f5cc2e7"
                 style={{ marginRight: '10px' }}
                 className={classes.button}
               >
@@ -241,7 +241,7 @@ const Home = () => {
               <Button
                 variant="contained"
                 target="_blank"
-                href="https://dexscreener.com/fantom/0x83a52eff2e9d112e9b022399a9fd22a9db7d33ae"
+                href="https://dexscreener.com/arbitrum/0x83a52eff2e9d112e9b022399a9fd22a9db7d33ae"
                 style={{ marginRight: '10px' }}
                 className={classes.button}
               >
@@ -250,7 +250,7 @@ const Home = () => {
               <Button
                 variant="contained"
                 target="_blank"
-                href="https://dexscreener.com/fantom/0xd352dac95a91afefb112dbbb3463ccfa5ec15b65"
+                href="https://dexscreener.com/arbitrum/0xd352dac95a91afefb112dbbb3463ccfa5ec15b65"
                 className={classes.button}
               >
                 ARBSHARES Chart
