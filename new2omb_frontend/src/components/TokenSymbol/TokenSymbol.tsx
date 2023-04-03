@@ -7,10 +7,10 @@ import tombLogoPNG from '../../assets/img/ARBTOMB.png';
 import tShareLogoPNG from '../../assets/img/ARBSHARES.png';
 import tBondLogo from '../../assets/img/ARBBOND-01.png';
 
-import tombFtmLpLogo from '../../assets/img/tomb_ftm_lp.png';
-import tshareFtmLpLogo from '../../assets/img/tshare_ftm_lp.png';
+import tombFtmLpLogo from '../../assets/img/tomb_weth_lp.png';
+import tshareFtmLpLogo from '../../assets/img/tshare_weth_lp.png';
 
-import wftmLogo from '../../assets/img/fantom-ftm-logo.png';
+import wftmLogo from '../../assets/img/weth-logo.png';
 import booLogo from '../../assets/img/spooky.png';
 import belugaLogo from '../../assets/img/BELUGA.png';
 import twoshareLogo from '../../assets/img/t_2SHARE-01.png';
