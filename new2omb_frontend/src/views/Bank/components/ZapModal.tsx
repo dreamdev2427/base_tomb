@@ -35,8 +35,8 @@ const ZapModal: React.FC<ZapProps> = ({ onConfirm, onDismiss, tokenName = '', de
   const [zappingTokenBalance, setZappingTokenBalance] = useState(ftmBalance);
   const [estimate, setEstimate] = useState({ token0: '0', token1: '0' }); // token0 will always be ETH in this case
   const [approveZapperStatus, approveZapper] = useApproveZapper(zappingToken);
-  const tombFtmLpStats = useLpStats('TOMB-ETH-LP');
-  const tShareFtmLpStats = useLpStats('TSHARE-ETH-LP');
+  const tombFtmLpStats = useLpStats('RRBOMB-ETH-LP');
+  const tShareFtmLpStats = useLpStats('RRBSHARE-ETH-LP');
   const tombLPStats = useMemo(() => (tombFtmLpStats ? tombFtmLpStats : null), [tombFtmLpStats]);
   const tshareLPStats = useMemo(() => (tShareFtmLpStats ? tShareFtmLpStats : null), [tShareFtmLpStats]);
   const ftmAmountPerLP = tokenName.startsWith(TOMB_TICKER) ? tombLPStats?.ftmAmount : tshareLPStats?.ftmAmount;

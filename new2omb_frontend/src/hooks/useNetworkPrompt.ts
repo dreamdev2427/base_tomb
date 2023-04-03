@@ -24,7 +24,7 @@ const usePromptNetwork = () => {
             decimals: 18,
           },
           rpcUrls: [config.defaultProvider],
-          blockExplorerUrls: [config.ftmscanUrl],
+          blockExplorerUrls: [config.etherscanUrl],
         },
       ],
     });

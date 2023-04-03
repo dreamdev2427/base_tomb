@@ -49,7 +49,12 @@ const Transaction: React.FC<TransactionProps> = ({ tx }) => {
 
   return (
     <TransactionWrapper>
-      <TransactionState href={`${config.ftmscanUrl}/tx/${tx.hash}`} target="_blank" pending={pending} success={success}>
+      <TransactionState
+        href={`${config.etherscanUrl}/tx/${tx.hash}`}
+        target="_blank"
+        pending={pending}
+        success={success}
+      >
         <RowFixed>
           <TransactionStatusText>{summary ?? tx.hash} ↗</TransactionStatusText>
         </RowFixed>

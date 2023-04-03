@@ -51,14 +51,13 @@ const logosBySymbol: { [title: string]: string } = {
   '2OMB-2SHARES LP': TwoombTwosharesLPLogo,
 
   'ARBTOMB-WETH LP': ThreeombLPLogo,
-  'ARBSHARES-WETH LP': ThreesharesLPLogo,
+  'RRBSHARE-WETH LP': ThreesharesLPLogo,
 
-
-  'wFTM': wftmLogo,
+  wFTM: wftmLogo,
   '2OMB': twoombLogo,
   '2SHARES': twoshareLogo,
-  'TOMB-ETH-LP': tombFtmLpLogo,
-  'TSHARE-ETH-LP': tshareFtmLpLogo,
+  'RRBOMB-ETH-LP': tombFtmLpLogo,
+  'RRBSHARE-ETH-LP': tshareFtmLpLogo,
 };
 
 type LogoProps = {
@@ -68,7 +67,7 @@ type LogoProps = {
 
 const TokenSymbol: React.FC<LogoProps> = ({ symbol, size = 64 }) => {
   if (!logosBySymbol[symbol]) {
-    return <img src={logosBySymbol['TOMB']} alt={`${symbol} Logo`} width={size} height={size} />
+    return <img src={logosBySymbol['TOMB']} alt={`${symbol} Logo`} width={size} height={size} />;
     // throw new Error(`Invalid Token Logo symbol: ${symbol}`);
   }
   return <img src={logosBySymbol[symbol]} alt={`${symbol} Logo`} width={size} height={size} />;

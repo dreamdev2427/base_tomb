@@ -50,8 +50,8 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   const TVL = useTotalValueLocked();
-  const tombFtmLpStats = useLpStats('TOMB-ETH-LP');
-  const tShareFtmLpStats = useLpStats('TSHARE-ETH-LP');
+  const tombFtmLpStats = useLpStats('RRBOMB-ETH-LP');
+  const tShareFtmLpStats = useLpStats('RRBSHARE-ETH-LP');
   const tombStats = useTombStats();
   const tShareStats = usetShareStats();
   const tBondStats = useBondStats();
@@ -69,8 +69,6 @@ const Home = () => {
   tomb = tombProd;
   tShare = tShareProd;
   // }
-
-  console.log('tomb ===> ', tomb, ' tShare ===> ', tShare);
 
   const buyTombAddress = 'https://app.camelot.exchange/';
   const buyTShareAddress = 'https://app.camelot.exchange/';
@@ -110,8 +108,8 @@ const Home = () => {
   );
   const tBondTotalSupply = useMemo(() => (tBondStats ? String(tBondStats.totalSupply) : null), [tBondStats]);
 
-  const tombLpZap = useZap({ depositTokenName: 'TOMB-ETH-LP' });
-  const tshareLpZap = useZap({ depositTokenName: 'TSHARE-ETH-LP' });
+  const tombLpZap = useZap({ depositTokenName: 'RRBOMB-ETH-LP' });
+  const tshareLpZap = useZap({ depositTokenName: 'RRBSHARE-ETH-LP' });
 
   const StyledLink = styled.a`
     font-weight: 700;
@@ -127,7 +125,7 @@ const Home = () => {
         tombLpZap.onZap(zappingToken, tokenName, amount);
         onDissmissTombZap();
       }}
-      tokenName={'TOMB-ETH-LP'}
+      tokenName={'RRBOMB-ETH-LP'}
     />,
   );
 
@@ -139,7 +137,7 @@ const Home = () => {
         tshareLpZap.onZap(zappingToken, tokenName, amount);
         onDissmissTshareZap();
       }}
-      tokenName={'TSHARE-ETH-LP'}
+      tokenName={'RRBSHARE-ETH-LP'}
     />,
   );
 
@@ -401,10 +399,10 @@ const Home = () => {
         <Grid item xs={12} sm={6}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center">
-              <h2>RRBOMB-WETH Spooky LP</h2>
+              <h2>RRBOMB-WETH Camelot LP</h2>
               <Box mt={2}>
                 <CardIcon>
-                  <TokenSymbol symbol="TOMB-ETH-LP" />
+                  <TokenSymbol symbol="RRBOMB-ETH-LP" />
                 </CardIcon>
               </Box>
               {/*
@@ -430,10 +428,10 @@ const Home = () => {
         <Grid item xs={12} sm={6}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center">
-              <h2>RRBSHARES-WETH Spooky LP</h2>
+              <h2>RRBSHARES-WETH Camelot LP</h2>
               <Box mt={2}>
                 <CardIcon>
-                  <TokenSymbol symbol="TSHARE-ETH-LP" />
+                  <TokenSymbol symbol="RRBSHARE-ETH-LP" />
                 </CardIcon>
               </Box>
               {/*<Box mt={2}>
