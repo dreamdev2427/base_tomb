@@ -12,7 +12,7 @@ yarn
 yarn start
 ```
 
-// RRBOBM-WFTM Traderjoe pool address  0x1dE807C94D1637be2267A937fd5aB07a16c30579
+// RRBOBM-WETH Traderjoe pool address 0x1dE807C94D1637be2267A937fd5aB07a16c30579
 
 Make sure you've configured your IDE with `prettier`.
 

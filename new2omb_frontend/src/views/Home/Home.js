@@ -50,13 +50,13 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   const TVL = useTotalValueLocked();
-  const tombFtmLpStats = useLpStats('RRBOMB-ETH-LP');
-  const tShareFtmLpStats = useLpStats('RRBSHARE-ETH-LP');
+  const tombEthLpStats = useLpStats('RRBOMB-ETH-LP');
+  const tShareEthLpStats = useLpStats('RRBSHARE-ETH-LP');
   const tombStats = useTombStats();
   const tShareStats = usetShareStats();
   const tBondStats = useBondStats();
   const tombFinance = useTombFinance();
-  const { price: ftmPrice, marketCap: ftmMarketCap, priceChange: ftmPriceChange } = useFantomPrice();
+  const { price: ethPrice, marketCap: ethMarketCap, priceChange: ethPriceChange } = useFantomPrice();
   const { balance: rebatesTVL } = useTotalTreasuryBalance();
   const totalTVL = TVL + rebatesTVL;
 
@@ -73,13 +73,13 @@ const Home = () => {
   const buyTombAddress = 'https://app.camelot.exchange/';
   const buyTShareAddress = 'https://app.camelot.exchange/';
 
-  const tombLPStats = useMemo(() => (tombFtmLpStats ? tombFtmLpStats : null), [tombFtmLpStats]);
-  const tshareLPStats = useMemo(() => (tShareFtmLpStats ? tShareFtmLpStats : null), [tShareFtmLpStats]);
+  const tombLPStats = useMemo(() => (tombEthLpStats ? tombEthLpStats : null), [tombEthLpStats]);
+  const tshareLPStats = useMemo(() => (tShareEthLpStats ? tShareEthLpStats : null), [tShareEthLpStats]);
   const tombPriceInDollars = useMemo(
     () => (tombStats ? Number(tombStats.priceInDollars).toFixed(2) : null),
     [tombStats],
   );
-  const tombPriceInFTM = useMemo(() => (tombStats ? Number(tombStats.tokenInFtm).toFixed(4) : null), [tombStats]);
+  const tombPriceInETH = useMemo(() => (tombStats ? Number(tombStats.tokenInEth).toFixed(4) : null), [tombStats]);
   const tombCirculatingSupply = useMemo(() => (tombStats ? String(tombStats.circulatingSupply) : null), [tombStats]);
   const tombTotalSupply = useMemo(() => (tombStats ? String(tombStats.totalSupply) : null), [tombStats]);
 
@@ -87,8 +87,8 @@ const Home = () => {
     () => (tShareStats ? Number(tShareStats.priceInDollars).toFixed(2) : null),
     [tShareStats],
   );
-  const tSharePriceInFTM = useMemo(
-    () => (tShareStats ? Number(tShareStats.tokenInFtm).toFixed(4) : null),
+  const tSharePriceInETH = useMemo(
+    () => (tShareStats ? Number(tShareStats.tokenInEth).toFixed(4) : null),
     [tShareStats],
   );
   const tShareCirculatingSupply = useMemo(
@@ -101,7 +101,7 @@ const Home = () => {
     () => (tBondStats ? Number(tBondStats.priceInDollars).toFixed(2) : null),
     [tBondStats],
   );
-  const tBondPriceInFTM = useMemo(() => (tBondStats ? Number(tBondStats.tokenInFtm).toFixed(4) : null), [tBondStats]);
+  const tBondPriceInETH = useMemo(() => (tBondStats ? Number(tBondStats.tokenInEth).toFixed(4) : null), [tBondStats]);
   const tBondCirculatingSupply = useMemo(
     () => (tBondStats ? String(tBondStats.circulatingSupply) : null),
     [tBondStats],
@@ -266,16 +266,16 @@ const Home = () => {
               <h2>ETH</h2>
               <Box mt={2} style={{ backgroundColor: 'transparent !important' }}>
                 <CardIcon style={{ backgroundColor: 'transparent !important' }}>
-                  <TokenSymbol symbol="wFTM" style={{ backgroundColor: 'transparent !important' }} />
+                  <TokenSymbol symbol="wETH" style={{ backgroundColor: 'transparent !important' }} />
                 </CardIcon>
               </Box>
               Current Price
               <Box>
-                <span style={{ fontSize: '30px' }}>${ftmPrice ? ftmPrice : '-.----'} USD</span>
+                <span style={{ fontSize: '30px' }}>${ethPrice ? ethPrice : '-.----'} USD</span>
               </Box>
               <span style={{ fontSize: '14px' }}>
-                Market Cap: ${ftmMarketCap} <br />
-                Price Change 24h: {ftmPriceChange.toFixed(2)}% <br />
+                Market Cap: ${ethMarketCap} <br />
+                Price Change 24h: {ethPriceChange.toFixed(2)}% <br />
                 <br />
                 <br />
               </span>
@@ -306,7 +306,7 @@ const Home = () => {
               </Box>
               Current Price
               <Box>
-                <span style={{ fontSize: '30px' }}>{tombPriceInFTM ? tombPriceInFTM : '-.----'} ETH</span>
+                <span style={{ fontSize: '30px' }}>{tombPriceInETH ? tombPriceInETH : '-.----'} ETH</span>
               </Box>
               <Box>
                 <span style={{ fontSize: '18px', alignContent: 'flex-start' }}>
@@ -345,7 +345,7 @@ const Home = () => {
               </Box>
               Current Price
               <Box>
-                <span style={{ fontSize: '30px' }}>{tSharePriceInFTM ? tSharePriceInFTM : '-.----'} ETH</span>
+                <span style={{ fontSize: '30px' }}>{tSharePriceInETH ? tSharePriceInETH : '-.----'} ETH</span>
               </Box>
               <Box>
                 <span style={{ fontSize: '18px' }}>${tSharePriceInDollars ? tSharePriceInDollars : '-.--'}</span>
@@ -359,7 +359,7 @@ const Home = () => {
           </Card>
         </Grid>
 
-        {/* TBOND https://openapi.debank.com/v1/user/chain_balance?id=0x8f555E00ea0FAc871b3Aa70C015915dB094E7f88&chain_id=ftm */}
+        {/* TBOND https://openapi.debank.com/v1/user/chain_balance?id=0x8f555E00ea0FAc871b3Aa70C015915dB094E7f88&chain_id=eth */}
         {/* https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=fantom  */}
         <Grid item xs={12} sm={3}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
@@ -383,7 +383,7 @@ const Home = () => {
               </Box>
               Current Price
               <Box>
-                <span style={{ fontSize: '30px' }}>{tBondPriceInFTM ? tBondPriceInFTM : '-.----'} ETH</span>
+                <span style={{ fontSize: '30px' }}>{tBondPriceInETH ? tBondPriceInETH : '-.----'} ETH</span>
               </Box>
               <Box>
                 <span style={{ fontSize: '18px' }}>${tBondPriceInDollars ? tBondPriceInDollars : '-.--'}</span>
@@ -414,7 +414,7 @@ const Home = () => {
               <Box mt={2}>
                 <span style={{ fontSize: '26px' }}>
                   {tombLPStats?.tokenAmount ? tombLPStats?.tokenAmount : '-.--'} RRBOMB /{' '}
-                  {tombLPStats?.ftmAmount ? tombLPStats?.ftmAmount : '-.--'} ETH
+                  {tombLPStats?.ethAmount ? tombLPStats?.ethAmount : '-.--'} ETH
                 </span>
               </Box>
               <Box style={{ fontSize: '18px' }}>${tombLPStats?.priceOfOne ? tombLPStats.priceOfOne : '-.--'}</Box>
@@ -442,7 +442,7 @@ const Home = () => {
               <Box mt={2}>
                 <span style={{ fontSize: '26px' }}>
                   {tshareLPStats?.tokenAmount ? tshareLPStats?.tokenAmount : '-.--'} ARBSHARE /{' '}
-                  {tshareLPStats?.ftmAmount ? tshareLPStats?.ftmAmount : '-.--'} ETH
+                  {tshareLPStats?.ethAmount ? tshareLPStats?.ethAmount : '-.--'} ETH
                 </span>
               </Box>
               <Box style={{ fontSize: '18px' }}>${tshareLPStats?.priceOfOne ? tshareLPStats.priceOfOne : '-.--'}</Box>

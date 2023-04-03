@@ -70,9 +70,9 @@ const Cemetery = () => {
   const activeBanks = banks.filter((bank) => !bank.finished);
   const {
     balance,
-    balance_2shares_wftm,
-    balance_3omb_wftm,
-    balance_3shares_wftm,
+    balance_2shares_weth,
+    balance_3omb_weth,
+    balance_3shares_weth,
     balance_3omb,
     balance_3shares,
     balance_2shares,
@@ -133,15 +133,15 @@ const Cemetery = () => {
                     <Card style={{ height: 'auto' }}>
                       <CardContent align="center">
                         <Typography variant="h5">ARBTOMB-WETH LP:</Typography>
-                        <CountUp style={{ fontSize: '25px' }} end={balance_3omb_wftm} separator="," prefix="$" />
+                        <CountUp style={{ fontSize: '25px' }} end={balance_3omb_weth} separator="," prefix="$" />
                       </CardContent>
                       <CardContent align="center">
                         <Typography variant="h5">RRBSHARE-WETH LP:</Typography>
-                        <CountUp style={{ fontSize: '25px' }} end={balance_3shares_wftm} separator="," prefix="$" />
+                        <CountUp style={{ fontSize: '25px' }} end={balance_3shares_weth} separator="," prefix="$" />
                       </CardContent>
                       <CardContent align="center">
                         <Typography variant="h5">2SHARES-WETH LP:</Typography>
-                        <CountUp style={{ fontSize: '25px' }} end={balance_2shares_wftm} separator="," prefix="$" />
+                        <CountUp style={{ fontSize: '25px' }} end={balance_2shares_weth} separator="," prefix="$" />
                       </CardContent>
                     </Card>
                   </Grid>

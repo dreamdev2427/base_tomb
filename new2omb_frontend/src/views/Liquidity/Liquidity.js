@@ -12,7 +12,7 @@ import useTokenBalance from '../../hooks/useTokenBalance';
 import { getDisplayBalance } from '../../utils/formatBalance';
 import useApproveTaxOffice from '../../hooks/useApproveTaxOffice';
 import { ApprovalState } from '../../hooks/useApprove';
-import useProvideTombFtmLP from '../../hooks/useProvideTombFtmLP';
+import useProvideTombEthLP from '../../hooks/useProvideTombEthLP';
 import { Alert } from '@material-ui/lab';
 
 const BackgroundImage = createGlobalStyle`
@@ -27,20 +27,20 @@ function isNumeric(n) {
 
 const ProvideLiquidity = () => {
   const [tombAmount, setTombAmount] = useState(0);
-  const [ftmAmount, setFtmAmount] = useState(0);
+  const [ethAmount, setEthAmount] = useState(0);
   const [lpTokensAmount, setLpTokensAmount] = useState(0);
   const { balance } = useWallet();
   const tombStats = useTombStats();
   const tombFinance = useTombFinance();
   const [approveTaxOfficeStatus, approveTaxOffice] = useApproveTaxOffice();
   const tombBalance = useTokenBalance(tombFinance.TOMB);
-  const ftmBalance = (balance / 1e18).toFixed(4);
-  const { onProvideTombFtmLP } = useProvideTombFtmLP();
-  const tombFtmLpStats = useLpStats('RRBOMB-ETH-LP');
+  const ethBalance = (balance / 1e18).toFixed(4);
+  const { onProvideTombEthLP } = useProvideTombEthLP();
+  const tombEthLpStats = useLpStats('RRBOMB-ETH-LP');
 
-  const tombLPStats = useMemo(() => (tombFtmLpStats ? tombFtmLpStats : null), [tombFtmLpStats]);
-  const tombPriceInFTM = useMemo(() => (tombStats ? Number(tombStats.tokenInFtm).toFixed(2) : null), [tombStats]);
-  const ftmPriceInTOMB = useMemo(() => (tombStats ? Number(1 / tombStats.tokenInFtm).toFixed(2) : null), [tombStats]);
+  const tombLPStats = useMemo(() => (tombEthLpStats ? tombEthLpStats : null), [tombEthLpStats]);
+  const tombPriceInETH = useMemo(() => (tombStats ? Number(tombStats.tokenInEth).toFixed(2) : null), [tombStats]);
+  const ethPriceInTOMB = useMemo(() => (tombStats ? Number(1 / tombStats.tokenInEth).toFixed(2) : null), [tombStats]);
   // const classes = useStyles();
 
   const handleTombChange = async (e) => {
@@ -50,16 +50,16 @@ const ProvideLiquidity = () => {
     if (!isNumeric(e.currentTarget.value)) return;
     setTombAmount(e.currentTarget.value);
     const quoteFromSpooky = await tombFinance.quoteFromSpooky(e.currentTarget.value, 'TOMB');
-    setFtmAmount(quoteFromSpooky);
-    setLpTokensAmount(quoteFromSpooky / tombLPStats.ftmAmount);
+    setEthAmount(quoteFromSpooky);
+    setLpTokensAmount(quoteFromSpooky / tombLPStats.ethAmount);
   };
 
-  const handleFtmChange = async (e) => {
+  const handleEthChange = async (e) => {
     if (e.currentTarget.value === '' || e.currentTarget.value === 0) {
-      setFtmAmount(e.currentTarget.value);
+      setEthAmount(e.currentTarget.value);
     }
     if (!isNumeric(e.currentTarget.value)) return;
-    setFtmAmount(e.currentTarget.value);
+    setEthAmount(e.currentTarget.value);
     const quoteFromSpooky = await tombFinance.quoteFromSpooky(e.currentTarget.value, 'ETH');
     setTombAmount(quoteFromSpooky);
 
@@ -68,14 +68,14 @@ const ProvideLiquidity = () => {
   const handleTombSelectMax = async () => {
     const quoteFromSpooky = await tombFinance.quoteFromSpooky(getDisplayBalance(tombBalance), 'TOMB');
     setTombAmount(getDisplayBalance(tombBalance));
-    setFtmAmount(quoteFromSpooky);
-    setLpTokensAmount(quoteFromSpooky / tombLPStats.ftmAmount);
+    setEthAmount(quoteFromSpooky);
+    setLpTokensAmount(quoteFromSpooky / tombLPStats.ethAmount);
   };
-  const handleFtmSelectMax = async () => {
-    const quoteFromSpooky = await tombFinance.quoteFromSpooky(ftmBalance, 'ETH');
-    setFtmAmount(ftmBalance);
+  const handleEthSelectMax = async () => {
+    const quoteFromSpooky = await tombFinance.quoteFromSpooky(ethBalance, 'ETH');
+    setEthAmount(ethBalance);
     setTombAmount(quoteFromSpooky);
-    setLpTokensAmount(ftmBalance / tombLPStats.ftmAmount);
+    setLpTokensAmount(ethBalance / tombLPStats.ethAmount);
   };
   return (
     <Page>
@@ -112,23 +112,23 @@ const ProvideLiquidity = () => {
                       </Grid>
                       <Grid item xs={12}>
                         <TokenInput
-                          onSelectMax={handleFtmSelectMax}
-                          onChange={handleFtmChange}
-                          value={ftmAmount}
-                          max={ftmBalance}
+                          onSelectMax={handleEthSelectMax}
+                          onChange={handleEthChange}
+                          value={ethAmount}
+                          max={ethBalance}
                           symbol={'ETH'}
                         ></TokenInput>
                       </Grid>
                       <Grid item xs={12}>
-                        <p>1 TOMB = {tombPriceInFTM} ETH</p>
-                        <p>1 ETH = {ftmPriceInTOMB} TOMB</p>
+                        <p>1 TOMB = {tombPriceInETH} ETH</p>
+                        <p>1 ETH = {ethPriceInTOMB} TOMB</p>
                         <p>LP tokens ≈ {lpTokensAmount.toFixed(2)}</p>
                       </Grid>
                       <Grid xs={12} justifyContent="center" style={{ textAlign: 'center' }}>
                         {approveTaxOfficeStatus === ApprovalState.APPROVED ? (
                           <Button
                             variant="contained"
-                            onClick={() => onProvideTombFtmLP(ftmAmount.toString(), tombAmount.toString())}
+                            onClick={() => onProvideTombEthLP(ethAmount.toString(), tombAmount.toString())}
                             color="primary"
                             style={{ margin: '0 10px', color: '#fff' }}
                           >
