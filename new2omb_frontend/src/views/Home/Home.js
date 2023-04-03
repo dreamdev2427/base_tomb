@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import Page from '../../components/Page';
 import HomeImage from '../../assets/img/home.png';
-import CashImage from '../../assets/img/ARBTOMB.svg';
+import CashHomeImage from '../../assets/img/ARBTOMB.svg';
+import CashImage from '../../assets/img/title.png';
+import CashImage2 from '../../assets/img/title2.png';
 import Image from 'material-ui-image';
 import styled from 'styled-components';
 import { Alert } from '@material-ui/lab';
@@ -146,25 +148,32 @@ const Home = () => {
       <BackgroundImage />
       <Grid container spacing={3}>
         {/* Logo */}
-        <Grid container item xs={12} sm={3} justify="center">
-          {/* <Paper>xs=6 sm=3</Paper> */}
-          <Image className="ombImg-home" color="none" style={{ width: '300px', paddingTop: '0px' }} src={CashImage} />
+        <div className="home-header">
+          <img className="ombImg-home-header" src={CashHomeImage} alt="" />
+          <img className="ombImg-header" src={CashImage} alt="" />
+          <img className="ombImg-header2" src={CashImage2} alt="" />
+        </div>
+        {/* <Grid container item xs={12} sm={6} justify="center">
+          <Image className="ombImg-home" color="none" style={{ width: '100%', height: '140px', paddingTop: '0px' }} src={CashHomeImage} />
         </Grid>
+        <Grid container item xs={12} sm={6} justify="center">
+          <Image className="ombImg-home" color="none" style={{ width: '100%', height: '140px', paddingTop: '0px' }} src={CashImage} />
+        </Grid> */}
         {/* Explanation text */}
-        <Grid item xs={12} sm={6}>
+        {/*<Grid item xs={12} sm={6}>
           <Paper style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <Box p={4}>
               <h2>Welcome to ARBOMB Finance!</h2>
               <p>An algorithmic stablecoin on the Arbitrum blockchain, pegged to the price of 1 ETH</p>
-              {/* <p>ARBOMB utilizes multiple bonding mechanisms at the <StyledLink href="/">3DAO</StyledLink> as well as seigniorage.</p>
-              <p>Built on top of <StyledLink target="_blank" href="https://2omb.finance">2omb.finance</StyledLink>.</p> */}
+               <p>ARBOMB utilizes multiple bonding mechanisms at the <StyledLink href="/">3DAO</StyledLink> as well as seigniorage.</p>
+              <p>Built on top of <StyledLink target="_blank" href="https://2omb.finance">2omb.finance</StyledLink>.</p> 
               <p>
                 Stake your ARBOMB-WETH LP in the <StyledLink href="/farms">Farms</StyledLink> to earn ARBSHARES rewards.
                 Then stake your earned ARBSHARES in the <StyledLink href="/">Room</StyledLink> to maximize profits!
               </p>
-            </Box>
+            </Box> 
           </Paper>
-        </Grid>
+        </Grid> */}
         {/* <Grid container justify="center">
           <Box mt={3} style={{ width: '1000px' }}>
             <Alert variant="filled" severity="warning">
