@@ -227,7 +227,7 @@ const Home = () => {
                 style={{ marginRight: '10px' }}
                 className={classes.button}
               >
-                Buy RRBTOMB
+                Buy ARBOMB
               </Button>
               <Button
                 variant="contained"
