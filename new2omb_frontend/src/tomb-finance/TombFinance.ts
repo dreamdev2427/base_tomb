@@ -388,6 +388,7 @@ export class TombFinance {
       const token = this.externalTokens[bankInfo.depositTokenName];
       const tokenPrice = await this.getDepositTokenPriceInDollars(bankInfo.depositTokenName, token);
       const tokenAmountInPool = await token.balanceOf(pool.address);
+      console.log('token amount in the pool ===> ', tokenAmountInPool.toString());
       const value = Number(getDisplayBalance(tokenAmountInPool, token.decimal)) * Number(tokenPrice);
       const poolValue = Number.isNaN(value) ? 0 : value;
       totalValue += poolValue;
@@ -424,6 +425,9 @@ export class TombFinance {
     const tokenInLP = Number(tokenSupply) / Number(totalSupply);
     const tokenPrice = (Number(priceOfToken) * tokenInLP * 2) //We multiply by 2 since half the price of the lp token is the price of each piece of the pair. So twice gives the total
       .toString();
+
+    console.log('lp token price ===> ', tokenPrice);
+
     return tokenPrice;
   }
 

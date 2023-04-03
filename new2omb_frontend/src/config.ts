@@ -70,7 +70,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     closedForStaking: true,
   },
   TombFtmLPTShareRewardPool: {
-    name: 'Earn ARBSHARES by 3 | ETH',
+    name: 'Earn ARBSHARES by RRBOMB | ETH',
     poolId: 0,
     sectionInUI: 2,
     contract: 'TombFtmLPTShareRewardPool',
