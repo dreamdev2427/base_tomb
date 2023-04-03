@@ -364,7 +364,7 @@ const Home = () => {
         <Grid item xs={12} sm={3}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center" style={{ position: 'relative' }}>
-              <h2>RRBBOND</h2>
+              <h2>ARBBOND</h2>
               {/* <Button
                 onClick={() => {
                   tombFinance.watchAssetInMetamask('TBOND');
@@ -413,8 +413,8 @@ const Home = () => {
               </Box>*/}
               <Box mt={2}>
                 <span style={{ fontSize: '26px' }}>
-                  {tombLPStats?.tokenAmount ? tombLPStats?.tokenAmount : '-.--'} RRBOMB /{' '}
-                  {tombLPStats?.ftmAmount ? tombLPStats?.ftmAmount : '-.--'} ETH
+                  {tombLPStats?.tokenAmount ? tombLPStats?.tokenAmount : '-.--'} ARBOMB /{' '}
+                  {tombLPStats?.ethAmount ? tombLPStats?.ethAmount : '-.--'} ETH
                 </span>
               </Box>
               <Box style={{ fontSize: '18px' }}>${tombLPStats?.priceOfOne ? tombLPStats.priceOfOne : '-.--'}</Box>
