@@ -801,15 +801,15 @@ async getShareStatFake() {
     if (ethereum && ethereum.networkVersion === config.chainId.toString()) {
       let asset;
       let assetUrl;
-      if (assetName === 'TOMB') {
+      if (assetName === 'ARBOMB') {
         asset = this.TOMB;
-        assetUrl = 'https://tomb.finance/presskit/tomb_icon_noBG.png';
-      } else if (assetName === 'TSHARE') {
+        assetUrl = 'https://arbtomb-fork.web.app/img/ARBOMB.png';
+      } else if (assetName === 'ARBSHARE') {
         asset = this.TSHARE;
-        assetUrl = 'https://tomb.finance/presskit/tshare_icon_noBG.png';
-      } else if (assetName === 'TBOND') {
+        assetUrl = 'https://arbtomb-fork.web.app/img/ARBSHARE.png';
+      } else if (assetName === 'ARBOND') {
         asset = this.TBOND;
-        assetUrl = 'https://tomb.finance/presskit/tbond_icon_noBG.png';
+        assetUrl = 'https://arbtomb-fork.web.app/img/ARBOND.png';
       }
       await ethereum.request({
         method: 'wallet_watchAsset',

@@ -9,6 +9,10 @@ import tBondLogo from '../../assets/img/ARBOND-01.png';
 
 import tombEthLpLogo from '../../assets/img/tomb_weth_lp.png';
 import tshareEthLpLogo from '../../assets/img/tshare_weth_lp.png';
+import tombArbLpLogo from '../../assets/img/tomb_arb_lp.png';
+import tshareArbLpLogo from '../../assets/img/tshare_arb_lp.png';
+import tombUsdcLpLogo from '../../assets/img/tomb_usdc_lp.png';
+import tshareUsdcLpLogo from '../../assets/img/tshare_usdc_lp.png';
 
 import wethLogo from '../../assets/img/weth-logo.png';
 import booLogo from '../../assets/img/spooky.png';
@@ -54,6 +58,10 @@ const logosBySymbol: { [title: string]: string } = {
   wETH: wethLogo,
   'ARBOMB-ETH-LP': tombEthLpLogo,
   'ARBSHARE-ETH-LP': tshareEthLpLogo,
+  'ARBOMB-ARB-LP': tombArbLpLogo,
+  'ARBSHARE-ARB-LP': tshareArbLpLogo,
+  'ARBOMB-USDC-LP': tombUsdcLpLogo,
+  'ARBSHARE-USDC-LP': tshareUsdcLpLogo,
 };
 
 type LogoProps = {
