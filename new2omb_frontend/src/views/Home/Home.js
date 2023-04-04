@@ -1,25 +1,20 @@
 import React, { useMemo } from 'react';
 import Page from '../../components/Page';
-import HomeImage from '../../assets/img/home.png';
 import CashHomeImage from '../../assets/img/ARBOMB.svg';
 import CashImage from '../../assets/img/title.png';
 import CashImage2 from '../../assets/img/title2.png';
-import Image from 'material-ui-image';
 import styled from 'styled-components';
-import { Alert } from '@material-ui/lab';
 import { createGlobalStyle } from 'styled-components';
 import CountUp from 'react-countup';
 import CardIcon from '../../components/CardIcon';
 import TokenSymbol from '../../components/TokenSymbol';
 import useTombStats from '../../hooks/useTombStats';
-import useLpStats from '../../hooks/useLpStats';
 import useModal from '../../hooks/useModal';
 import useZap from '../../hooks/useZap';
 import useBondStats from '../../hooks/useBondStats';
 import usetShareStats from '../../hooks/usetShareStats';
 import useTotalValueLocked from '../../hooks/useTotalValueLocked';
 import useFantomPrice from '../../hooks/useFantomPrice';
-import { tomb as tombTesting, tShare as tShareTesting } from '../../tomb-finance/deployments/deployments.testing.json';
 import { tomb as tombProd, tShare as tShareProd } from '../../tomb-finance/deployments/deployments.mainnet.json';
 
 import useTotalTreasuryBalance from '../../hooks/useTotalTreasuryBalance.js';
@@ -29,6 +24,7 @@ import ZapModal from '../Bank/components/ZapModal';
 
 import { makeStyles } from '@material-ui/core/styles';
 import useTombFinance from '../../hooks/useTombFinance';
+import LpBox from './LpBox';
 
 const BackgroundImage = createGlobalStyle`
   body {
@@ -49,8 +45,7 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   const TVL = useTotalValueLocked();
-  const tombEthLpStats = useLpStats('ARBOMB-ETH-LP');
-  const tShareEthLpStats = useLpStats('ARBSHARE-ETH-LP');
+
   const tombStats = useTombStats();
   const tShareStats = usetShareStats();
   const tBondStats = useBondStats();
@@ -72,8 +67,6 @@ const Home = () => {
   const buyTombAddress = 'https://app.camelot.exchange/';
   const buyTShareAddress = 'https://app.camelot.exchange/';
 
-  const tombLPStats = useMemo(() => (tombEthLpStats ? tombEthLpStats : null), [tombEthLpStats]);
-  const tshareLPStats = useMemo(() => (tShareEthLpStats ? tShareEthLpStats : null), [tShareEthLpStats]);
   const tombPriceInDollars = useMemo(
     () => (tombStats ? Number(tombStats.priceInDollars).toFixed(2) : null),
     [tombStats],
@@ -402,64 +395,9 @@ const Home = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
-            <CardContent align="center">
-              <h2>ARBOMB-WETH Camelot LP</h2>
-              <Box mt={2}>
-                <CardIcon>
-                  <TokenSymbol symbol="ARBOMB-ETH-LP" />
-                </CardIcon>
-              </Box>
-              {/*
-              <Box mt={2}>
-                <Button color="primary" disabled={true} onClick={onPresentTombZap} variant="contained">
-                  Zap In
-                </Button>
-              </Box>*/}
-              <Box mt={2}>
-                <span style={{ fontSize: '26px' }}>
-                  {tombLPStats?.tokenAmount ? tombLPStats?.tokenAmount : '-.--'} ARBOMB /{' '}
-                  {tombLPStats?.ethAmount ? tombLPStats?.ethAmount : '-.--'} ETH
-                </span>
-              </Box>
-              <Box style={{ fontSize: '18px' }}>${tombLPStats?.priceOfOne ? tombLPStats.priceOfOne : '-.--'}</Box>
-              <span style={{ fontSize: '14px' }}>
-                Liquidity: ${tombLPStats?.totalLiquidity ? tombLPStats.totalLiquidity : '-.--'} <br />
-                Total supply: {tombLPStats?.totalSupply ? tombLPStats.totalSupply : '-.--'}
-              </span>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
-            <CardContent align="center">
-              <h2>ARBSHARE-WETH Camelot LP</h2>
-              <Box mt={2}>
-                <CardIcon>
-                  <TokenSymbol symbol="ARBSHARE-ETH-LP" />
-                </CardIcon>
-              </Box>
-              {/*<Box mt={2}>
-                <Button color="primary" onClick={onPresentTshareZap} variant="contained">
-                  Zap In
-                </Button>
-            </Box>*/}
-              <Box mt={2}>
-                <span style={{ fontSize: '26px' }}>
-                  {tshareLPStats?.tokenAmount ? tshareLPStats?.tokenAmount : '-.--'} ARBSHARE /{' '}
-                  {tshareLPStats?.ethAmount ? tshareLPStats?.ethAmount : '-.--'} ETH
-                </span>
-              </Box>
-              <Box style={{ fontSize: '18px' }}>${tshareLPStats?.priceOfOne ? tshareLPStats.priceOfOne : '-.--'}</Box>
-              <span style={{ fontSize: '14px' }}>
-                Liquidity: ${tshareLPStats?.totalLiquidity ? tshareLPStats.totalLiquidity : '-.--'}
-                <br />
-                Total supply: {tshareLPStats?.totalSupply ? tshareLPStats.totalSupply : '-.--'}
-              </span>
-            </CardContent>
-          </Card>
-        </Grid>
+        <LpBox tombLp="ARBOMB-ETH-LP" tShareLp="ARBSHARE-ETH-LP" pairSymbol="ETH" />
+        <LpBox tombLp="ARBOMB-ARB-LP" tShareLp="ARBSHARE-ARB-LP" pairSymbol="ARB" />
+        <LpBox tombLp="ARBOMB-USDC-LP" tShareLp="ARBSHARE-USDC-LP" pairSymbol="USDC" />
       </Grid>
     </Page>
   );

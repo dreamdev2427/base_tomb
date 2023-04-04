@@ -803,13 +803,13 @@ async getShareStatFake() {
       let assetUrl;
       if (assetName === 'ARBOMB') {
         asset = this.TOMB;
-        assetUrl = 'https://arbtomb-fork.web.app/tomb_icon_noBG.png';
+        assetUrl = 'https://arbtomb-fork.web.app/img/ARBOMB.png';
       } else if (assetName === 'ARBSHARE') {
         asset = this.TSHARE;
-        assetUrl = 'https://arbtomb-fork.web.app/tshare_icon_noBG.png';
+        assetUrl = 'https://arbtomb-fork.web.app/img/ARBSHARE.png';
       } else if (assetName === 'ARBOND') {
         asset = this.TBOND;
-        assetUrl = 'https://arbtomb-fork.web.app/tbond_icon_noBG.png';
+        assetUrl = 'https://arbtomb-fork.web.app/img/ARBOND.png';
       }
       await ethereum.request({
         method: 'wallet_watchAsset',
