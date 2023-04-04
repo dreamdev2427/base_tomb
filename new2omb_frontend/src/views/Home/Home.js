@@ -277,10 +277,10 @@ const Home = () => {
               </Box>
               Current Price
               <Box>
-                <span style={{ fontSize: '30px' }}>${ethPrice ? ethPrice : '-.----'} USD</span>
+                <span style={{ fontSize: '30px' }}>${ethPrice ? Number(ethPrice).toLocaleString() : '-.----'} USD</span>
               </Box>
               <span style={{ fontSize: '14px' }}>
-                Market Cap: ${ethMarketCap} <br />
+                Market Cap: ${Number(ethMarketCap).toLocaleString()} <br />
                 Price Change 24h: {ethPriceChange.toFixed(2)}% <br />
                 <br />
                 <br />
