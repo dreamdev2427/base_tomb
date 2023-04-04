@@ -7,6 +7,14 @@ const configurations: { [env: string]: Configuration } = {
     networkName: 'Arbitrum One mainnet',
     etherscanUrl: 'https://arbiscan.io',
     defaultProvider: 'https://arb-mainnet.g.alchemy.com/v2/PVemhEwhoJenACY4cVfLy8rc7twHlny-',
+    candidateProviders: [
+      'https://arb-mainnet.g.alchemy.com/v2/dEvj-GKnP93cM28ajuaKthqnvx8QrA3E',
+      'https://arb-mainnet.g.alchemy.com/v2/PVemhEwhoJenACY4cVfLy8rc7twHlny-',
+      'https://arb-mainnet.g.alchemy.com/v2/ym6jjqA8g3pqX5FTFW6Wov6D1Weol-oL',
+      'https://arb-mainnet.g.alchemy.com/v2/kEHU5aRAYmaaGFyD30lhUm22L56nkyBZ',
+      'https://arb-mainnet.g.alchemy.com/v2/NRagCmnEM9HZ-7cW8MZ5LCxeU5kPQyQu',
+      'https://arb-mainnet.g.alchemy.com/v2/G91KcBrPLrmANVtu5fwPhDnTvj7y5pEi',
+    ],
     deployments: require('./tomb-finance/deployments/deployments.mainnet.json'),
     externalTokens: {
       WETH: ['0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 18],
