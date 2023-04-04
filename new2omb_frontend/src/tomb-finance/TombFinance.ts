@@ -252,11 +252,15 @@ export class TombFinance {
     const tokenPerHour = tokenPerSecond.mul(60).mul(60);
     const totalRewardPricePerYear =
       Number(stat.priceInDollars) * Number(getDisplayBalance(tokenPerHour.mul(24).mul(365)));
+    console.log('totalRewardPricePerYear ===> ', totalRewardPricePerYear);
     const totalRewardPricePerDay = Number(stat.priceInDollars) * Number(getDisplayBalance(tokenPerHour.mul(24)));
     const totalStakingTokenInPool =
       Number(depositTokenPrice) * Number(getDisplayBalance(stakeInPool, depositToken.decimal));
+    console.log('totalStakingTokenInPool ===> ', totalStakingTokenInPool);
     const dailyAPR = (totalRewardPricePerDay / totalStakingTokenInPool) * 100;
+    console.log('dailyAPR ===> ', dailyAPR);
     const yearlyAPR = (totalRewardPricePerYear / totalStakingTokenInPool) * 100;
+    console.log('yearlyAPR ===> ', yearlyAPR);
     return {
       dailyAPR: dailyAPR.toFixed(2).toString(),
       yearlyAPR: yearlyAPR.toFixed(2).toString(),

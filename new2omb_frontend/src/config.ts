@@ -71,7 +71,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   },
   TombEthLPTShareRewardPool: {
     name: 'Earn ARBSHARE by ARBOMB | ETH',
-    poolId: 0,
+    poolId: 1,
     sectionInUI: 2,
     contract: 'TombEthLPTShareRewardPool',
     depositTokenName: 'ARBOMB-WETH LP',
