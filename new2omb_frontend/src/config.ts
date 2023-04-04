@@ -6,7 +6,7 @@ const configurations: { [env: string]: Configuration } = {
     chainId: 42161,
     networkName: 'Arbitrum One mainnet',
     etherscanUrl: 'https://arbiscan.io',
-    defaultProvider: 'https://arbitrum-one.public.blastapi.io',
+    defaultProvider: 'https://arb-mainnet.g.alchemy.com/v2/PVemhEwhoJenACY4cVfLy8rc7twHlny-',
     deployments: require('./tomb-finance/deployments/deployments.mainnet.json'),
     externalTokens: {
       WETH: ['0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 18],
@@ -18,8 +18,10 @@ const configurations: { [env: string]: Configuration } = {
       'USDC-ETH-LP': ['0x84652bb2539513BAf36e225c930Fdd8eaa63CE27', 18],
       'ARBOMB-ETH-LP': ['0x1dE807C94D1637be2267A937fd5aB07a16c30579', 18],
       'ARBSHARE-ETH-LP': ['0x082a88164A4c06076a844AB120716EB3925908F2', 18],
-      'ARBOMB-ARB-LP': ['0x1dE807C94D1637be2267A937fd5aB07a16c30579', 18],
+
+      'ARBOMB-ARB-LP': ['0xa6c5C7D189fA4eB5Af8ba34E63dCDD3a635D433f', 18],
       'ARBSHARE-ARB-LP': ['0x082a88164A4c06076a844AB120716EB3925908F2', 18],
+
       'ARBOMB-USDC-LP': ['0x1dE807C94D1637be2267A937fd5aB07a16c30579', 18],
       'ARBSHARE-USDC-LP': ['0x082a88164A4c06076a844AB120716EB3925908F2', 18],
     },
@@ -60,7 +62,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     closedForStaking: true,
   },
   TombEthLPTombRewardPool: {
-    name: 'Earn TOMB by TOMB-ETH LP',
+    name: 'Earn ARBOMB by ARBOMB-ETH LP',
     poolId: 0,
     sectionInUI: 1,
     contract: 'TombEthLpTombRewardPool',

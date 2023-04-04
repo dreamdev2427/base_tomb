@@ -378,7 +378,7 @@ const ERC20ABI = [
   },
 ];
 
-const web3 = new Web3('https://arbitrum-one.public.blastapi.io');
+const web3 = new Web3('https://arb-mainnet.g.alchemy.com/v2/PVemhEwhoJenACY4cVfLy8rc7twHlny-');
 const RebateTreasury = new web3.eth.Contract(RebateTreasuryABI, '0x8f555E00ea0FAc871b3Aa70C015915dB094E7f88');
 const Threeomb = new web3.eth.Contract(ERC20ABI, '0x14DEf7584A6c52f470Ca4F4b9671056b22f4FfDE');
 
