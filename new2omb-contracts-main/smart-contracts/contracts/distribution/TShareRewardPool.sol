@@ -2,15 +2,13 @@
 
 pragma solidity 0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
+import "../interfaces/IERC20.sol";
+import "../lib/SafeMath.sol";
 
 // Note that this pool has no minter key of tSHARE (rewards).
 // Instead, the governance will call tSHARE distributeReward method and send reward to this pool at the beginning.
 contract TShareRewardPool {
     using SafeMath for uint256;
-    using SafeERC20 for IERC20;
 
     // governance
     address public operator;
@@ -47,7 +45,7 @@ contract TShareRewardPool {
     // The time when tSHARE mining ends.
     uint256 public poolEndTime;
 
-    uint256 public tSharePerSecond = 0.00187687 ether; // 60000 rrbshare / (370 days * 24h * 60min * 60s)
+    uint256 public tSharePerSecond = 0.00187687 ether; // 60000 arbshare / (370 days * 24h * 60min * 60s)
     uint256 public runningTime = 370 days; // 370 days
     uint256 public constant TOTAL_REWARDS = 60000 ether;
 
@@ -59,7 +57,7 @@ contract TShareRewardPool {
     constructor(
         address _tshare,
         uint256 _poolStartTime
-    ) public {
+    ) {
         require(block.timestamp < _poolStartTime, "late");
         if (_tshare != address(0)) tshare = IERC20(_tshare);
         poolStartTime = _poolStartTime;
@@ -205,7 +203,7 @@ contract TShareRewardPool {
             }
         }
         if (_amount > 0) {
-            pool.token.safeTransferFrom(_sender, address(this), _amount);
+            pool.token.transferFrom(_sender, address(this), _amount);
             user.amount = user.amount.add(_amount);
         }
         user.rewardDebt = user.amount.mul(pool.accTSharePerShare).div(1e18);
@@ -226,7 +224,7 @@ contract TShareRewardPool {
         }
         if (_amount > 0) {
             user.amount = user.amount.sub(_amount);
-            pool.token.safeTransfer(_sender, _amount);
+            pool.token.transfer(_sender, _amount);
         }
         user.rewardDebt = user.amount.mul(pool.accTSharePerShare).div(1e18);
         emit Withdraw(_sender, _pid, _amount);
@@ -239,7 +237,7 @@ contract TShareRewardPool {
         uint256 _amount = user.amount;
         user.amount = 0;
         user.rewardDebt = 0;
-        pool.token.safeTransfer(msg.sender, _amount);
+        pool.token.transfer(msg.sender, _amount);
         emit EmergencyWithdraw(msg.sender, _pid, _amount);
     }
 
@@ -248,9 +246,9 @@ contract TShareRewardPool {
         uint256 _tshareBal = tshare.balanceOf(address(this));
         if (_tshareBal > 0) {
             if (_amount > _tshareBal) {
-                tshare.safeTransfer(_to, _tshareBal);
+                tshare.transfer(_to, _tshareBal);
             } else {
-                tshare.safeTransfer(_to, _amount);
+                tshare.transfer(_to, _amount);
             }
         }
     }
@@ -269,6 +267,6 @@ contract TShareRewardPool {
                 require(_token != pool.token, "pool.token");
             }
         }
-        _token.safeTransfer(to, amount);
+        _token.transfer(to, amount);
     }
 }

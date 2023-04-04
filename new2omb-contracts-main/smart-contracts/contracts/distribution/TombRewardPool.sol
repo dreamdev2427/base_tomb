@@ -2,15 +2,13 @@
 
 pragma solidity 0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
+import "../interfaces/IERC20.sol";
+import "../lib/SafeMath.sol";
 
 // Note that this pool has no minter key of TOMB (rewards).
 // Instead, the governance will call TOMB distributeReward method and send reward to this pool at the beginning.
 contract TombRewardPool {
     using SafeMath for uint256;
-    using SafeERC20 for IERC20;
 
     // governance
     address public operator;
@@ -57,7 +55,7 @@ contract TombRewardPool {
     event EmergencyWithdraw(address indexed user, uint256 indexed pid, uint256 amount);
     event RewardPaid(address indexed user, uint256 amount);
 
-    constructor(address _tomb, uint256 _poolStartTime) public {
+    constructor(address _tomb, uint256 _poolStartTime) {
         require(block.timestamp < _poolStartTime, "late");
         if (_tomb != address(0)) tomb = IERC20(_tomb);
 
@@ -211,7 +209,7 @@ contract TombRewardPool {
             }
         }
         if (_amount > 0) {
-            pool.token.safeTransferFrom(_sender, address(this), _amount);
+            pool.token.transferFrom(_sender, address(this), _amount);
             user.amount = user.amount.add(_amount);
         }
         user.rewardDebt = user.amount.mul(pool.accTombPerShare).div(1e18);
@@ -232,7 +230,7 @@ contract TombRewardPool {
         }
         if (_amount > 0) {
             user.amount = user.amount.sub(_amount);
-            pool.token.safeTransfer(_sender, _amount);
+            pool.token.transfer(_sender, _amount);
         }
         user.rewardDebt = user.amount.mul(pool.accTombPerShare).div(1e18);
         emit Withdraw(_sender, _pid, _amount);
@@ -245,7 +243,7 @@ contract TombRewardPool {
         uint256 _amount = user.amount;
         user.amount = 0;
         user.rewardDebt = 0;
-        pool.token.safeTransfer(msg.sender, _amount);
+        pool.token.transfer(msg.sender, _amount);
         emit EmergencyWithdraw(msg.sender, _pid, _amount);
     }
 
@@ -254,9 +252,9 @@ contract TombRewardPool {
         uint256 _tombBal = tomb.balanceOf(address(this));
         if (_tombBal > 0) {
             if (_amount > _tombBal) {
-                tomb.safeTransfer(_to, _tombBal);
+                tomb.transfer(_to, _tombBal);
             } else {
-                tomb.safeTransfer(_to, _amount);
+                tomb.transfer(_to, _amount);
             }
         }
     }
@@ -279,6 +277,6 @@ contract TombRewardPool {
                 require(_token != pool.token, "!pool.token");
             }
         }
-        _token.safeTransfer(to, amount);
+        _token.transfer(to, amount);
     }
 }

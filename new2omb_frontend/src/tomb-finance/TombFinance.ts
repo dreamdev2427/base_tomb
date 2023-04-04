@@ -408,8 +408,8 @@ export class TombFinance {
           ? await this.get2ombStatFake()
           : await this.get2ShareStatFake()
         : isTomb === true
-          ? await this.getTombStat()
-          : await this.getShareStat();
+        ? await this.getTombStat()
+        : await this.getShareStat();
     const priceOfToken = stat.priceInDollars;
     const tokenInLP = Number(tokenSupply) / Number(totalSupply);
     const tokenPrice = (Number(priceOfToken) * tokenInLP * 2) //We multiply by 2 since half the price of the lp token is the price of each piece of the pair. So twice gives the total
@@ -801,15 +801,15 @@ async getShareStatFake() {
     if (ethereum && ethereum.networkVersion === config.chainId.toString()) {
       let asset;
       let assetUrl;
-      if (assetName === 'TOMB') {
+      if (assetName === 'ARBOMB') {
         asset = this.TOMB;
-        assetUrl = 'https://tomb.finance/presskit/tomb_icon_noBG.png';
-      } else if (assetName === 'TSHARE') {
+        assetUrl = 'https://arbtomb-fork.web.app/tomb_icon_noBG.png';
+      } else if (assetName === 'ARBSHARE') {
         asset = this.TSHARE;
-        assetUrl = 'https://tomb.finance/presskit/tshare_icon_noBG.png';
-      } else if (assetName === 'TBOND') {
+        assetUrl = 'https://arbtomb-fork.web.app/tshare_icon_noBG.png';
+      } else if (assetName === 'ARBOND') {
         asset = this.TBOND;
-        assetUrl = 'https://tomb.finance/presskit/tbond_icon_noBG.png';
+        assetUrl = 'https://arbtomb-fork.web.app/tbond_icon_noBG.png';
       }
       await ethereum.request({
         method: 'wallet_watchAsset',

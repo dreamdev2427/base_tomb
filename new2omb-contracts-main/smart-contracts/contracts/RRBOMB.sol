@@ -161,7 +161,7 @@ contract Rrbomb is ERC20, Operator {
     /**
      * @notice Constructs the TOMB ERC-20 contract.
      */
-    constructor(uint256 _taxRate, address _taxCollectorAddress) ERC20("RRBOMB", "RRBOMB Token") {
+    constructor(uint256 _taxRate, address _taxCollectorAddress) ERC20("RRBOMB", "RRBOMB") {
         // Mints 1 TOMB to contract creator for initial pool setup
         require(_taxRate < 10000, "tax equal or bigger to 100%");
         //require(_taxCollectorAddress != address(0), "tax collector address must be non-zero address");

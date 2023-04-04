@@ -2,8 +2,7 @@
 
 pragma solidity 0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-
+import "./interfaces/IERC20.sol";
 import "./lib/SafeMath.sol";
 import "./utils/ContractGuard.sol";
 import "./interfaces/IBasisAsset.sol";
@@ -62,8 +61,6 @@ contract Masonry is ShareWrapper, ContractGuard {
     // governance
     address public operator;
 
-    // flags
-    bool public initialized = false;
 
     IERC20 public arbtomb;
     ITreasury public treasury;
@@ -76,7 +73,6 @@ contract Masonry is ShareWrapper, ContractGuard {
 
     /* ========== EVENTS ========== */
 
-    event Initialized(address indexed executor, uint256 at);
     event Staked(address indexed user, uint256 amount);
     event Withdrawn(address indexed user, uint256 amount);
     event RewardPaid(address indexed user, uint256 reward);
@@ -104,10 +100,6 @@ contract Masonry is ShareWrapper, ContractGuard {
         _;
     }
 
-    modifier notInitialized {
-        require(!initialized, "Masonry: already initialized");
-        _;
-    }
 
     /* ========== GOVERNANCE ========== */
 
@@ -115,7 +107,7 @@ contract Masonry is ShareWrapper, ContractGuard {
         IERC20 _arbtomb,
         IERC20 _share,
         ITreasury _treasury
-    ) public notInitialized {
+    ) public  {
         arbtomb = _arbtomb;
         share = _share;
         treasury = _treasury;
@@ -126,9 +118,7 @@ contract Masonry is ShareWrapper, ContractGuard {
         withdrawLockupEpochs = 3; // Lock for 6 epochs (36h) before release withdraw
         rewardLockupEpochs = 1; // Lock for 3 epochs (18h) before release claimReward
 
-        initialized = true;
         operator = msg.sender;
-        emit Initialized(msg.sender, block.number);
     }
 
     function setOperator(address _operator) external onlyOperator {

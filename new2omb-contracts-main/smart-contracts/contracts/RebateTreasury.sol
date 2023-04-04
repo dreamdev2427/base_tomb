@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.7;
+pragma solidity >=0.8.0;
 
-import "@openzeppelin/contracts-0.8/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts-0.8/access/Ownable.sol";
+import "./interfaces/IERC20.sol";
+import "./lib/Context.sol";
+import "./lib/Ownable.sol";
 
 interface IOracle {
     function update() external;
@@ -101,7 +102,7 @@ contract RebateTreasury is Ownable {
     uint256 public lastBuyback;
     uint256 public buybackAmount = 10 * 1e4;
 
-    address public constant WFTM = 0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83;
+    address public constant WFTM = 0x82aF49447D8a07e3bd95BD0d56f35241523fBab1;
     uint256 public constant DENOMINATOR = 1e6;
 
     /*

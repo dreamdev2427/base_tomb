@@ -110,7 +110,7 @@ contract Operator is Context, Ownable {
 }
 
 
-contract RrbBond is ERC20, Operator {
+contract RRBBond is ERC20, Operator {
     /**
      * @notice Constructs the TOMB Bond ERC-20 contract.
      */

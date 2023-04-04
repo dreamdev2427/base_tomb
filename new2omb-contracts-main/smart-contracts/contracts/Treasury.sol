@@ -2,9 +2,8 @@
 
 pragma solidity 0.8.0;
 
-import "@openzeppelin/contracts/math/Math.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-
+import "./lib/Math.sol";
+import "./interfaces/IERC20.sol";
 import "./lib/SafeMath.sol";
 import "./lib/Babylonian.sol";
 import "./owner/Operator.sol";
@@ -130,12 +129,6 @@ contract Treasury is ContractGuard {
         _;
     }
 
-    modifier notInitialized {
-        require(!initialized, "Treasury: already initialized");
-
-        _;
-    }
-
     /* ========== VIEW FUNCTIONS ========== */
 
     function isInitialized() public view returns (bool) {
@@ -240,7 +233,7 @@ contract Treasury is ContractGuard {
         address _genesisPool,
         address _bondTreasury,
         uint256 _startTime
-    ) public notInitialized {
+    ) public  {
         tomb = _tomb;
         tbond = _tbond;
         tshare = _tshare;
