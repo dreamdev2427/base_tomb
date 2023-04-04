@@ -4766,7 +4766,7 @@
         "inputs": [
           {
             "internalType": "contract IERC20",
-            "name": "_arbtomb",
+            "name": "_arbomb",
             "type": "address"
           },
           {
@@ -4939,7 +4939,7 @@
       },
       {
         "inputs": [],
-        "name": "arbtomb",
+        "name": "arbomb",
         "outputs": [
           {
             "internalType": "contract IERC20",

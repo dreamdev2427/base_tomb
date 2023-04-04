@@ -71,7 +71,7 @@ function useTotalTreasuryBalance() {
         const data2sharesAnd3omb = await axios('https://openapi.debank.com/v1/user/chain_balance?id=0x8f555E00ea0FAc871b3Aa70C015915dB094E7f88&chain_id=eth')
 
         console.log(`3Shares USD: $${value3shares}`)
-        console.log(`2Shares + ArbTomb: $${data2sharesAnd3omb.data.usd_value}`)
+        console.log(`2Shares + ARBOMB: $${data2sharesAnd3omb.data.usd_value}`)
         const LP_2shares_weth = await getLPPrice('0x6398ACBBAB2561553a9e458Ab67dCFbD58944e52', '0xc54a1684fd1bef1f077a336e6be4bd9a3096a6ca')
         const LP_3omb_weth = await getLPPrice('0x83A52eff2E9D112E9B022399A9fD22a9DB7d33Ae', '0x14def7584a6c52f470ca4f4b9671056b22f4ffde')
         const LP_3shares_weth = await getLPPrice('0xd352daC95a91AfeFb112DBBB3463ccfA5EC15b65', '0x6437adac543583c4b31bf0323a0870430f5cc2e7')

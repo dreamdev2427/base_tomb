@@ -25,10 +25,10 @@ const assetList = [
     depositTokenName: '2SHARES-WETH LP',
   },
   {
-    depositTokenName: 'ARBTOMB-WETH LP',
+    depositTokenName: 'ARBOMB-WETH LP',
   },
   {
-    depositTokenName: 'ARBSHARES',
+    depositTokenName: 'ARBSHARE',
   },
   {
     depositTokenName: 'RRBSHARE-WETH LP',
@@ -132,7 +132,7 @@ const Cemetery = () => {
                   <Grid item xs={12} md={4} lg={4} className={classes.gridItem}>
                     <Card style={{ height: 'auto' }}>
                       <CardContent align="center">
-                        <Typography variant="h5">ARBTOMB-WETH LP:</Typography>
+                        <Typography variant="h5">ARBOMB-WETH LP:</Typography>
                         <CountUp style={{ fontSize: '25px' }} end={balance_3omb_weth} separator="," prefix="$" />
                       </CardContent>
                       <CardContent align="center">
@@ -148,11 +148,11 @@ const Cemetery = () => {
                   <Grid item xs={12} md={4} lg={4} className={classes.gridItem}>
                     <Card style={{ height: 'auto' }}>
                       <CardContent align="center">
-                        <Typography variant="h5">ARBTOMB:</Typography>
+                        <Typography variant="h5">ARBOMB:</Typography>
                         <CountUp style={{ fontSize: '25px' }} end={balance_3omb} separator="," prefix="$" />
                       </CardContent>
                       <CardContent align="center">
-                        <Typography variant="h5">ARBSHARES:</Typography>
+                        <Typography variant="h5">ARBSHARE:</Typography>
                         <CountUp style={{ fontSize: '25px' }} end={balance_3shares} separator="," prefix="$" />
                       </CardContent>
                       <CardContent align="center">

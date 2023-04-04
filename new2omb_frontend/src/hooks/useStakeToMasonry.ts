@@ -8,7 +8,7 @@ const useStakeToMasonry = () => {
 
   const handleStake = useCallback(
     (amount: string) => {
-      handleTransactionReceipt(tombFinance.stakeShareToMasonry(amount), `Stake ${amount} ARBSHARES to the Room `);
+      handleTransactionReceipt(tombFinance.stakeShareToMasonry(amount), `Stake ${amount} ARBSHARE to the Room `);
     },
     [tombFinance, handleTransactionReceipt],
   );

@@ -105,8 +105,8 @@ const LPTokenHelpText: React.FC<{ bank: BankEntity }> = ({ bank }) => {
 
   let pairName: string;
   let uniswapUrl: string;
-  if (bank.depositTokenName.includes('ARBTOMB')) {
-    pairName = 'ARBTOMB-WETH pair';
+  if (bank.depositTokenName.includes('ARBOMB')) {
+    pairName = 'ARBOMB-WETH pair';
     uniswapUrl = 'https://app.camelot.exchange/add/ETH/' + tombAddr;
   } else {
     pairName = 'ARBSHARE-WETH pair';
