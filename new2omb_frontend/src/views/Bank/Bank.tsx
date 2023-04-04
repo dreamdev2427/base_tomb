@@ -31,7 +31,7 @@ const Bank: React.FC = () => {
   const classes = useStyles();
   const { bankId } = useParams();
   const bank = useBank(bankId);
-
+  console.log('bank ===> ', bank);
   const { account } = useWallet();
   const { onRedeem } = useRedeem(bank);
   const statsOnPool = useStatsForPool(bank);
