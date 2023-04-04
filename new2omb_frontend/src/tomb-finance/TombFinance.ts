@@ -497,8 +497,11 @@ async getShareStatFake() {
     try {
       console.log('earnTokenName ==> ', earnTokenName);
       if (earnTokenName === 'ARBOMB') {
+        console.log('ARBOMB ');
         return await pool.pendingTOMB(poolId, account);
       } else {
+        console.log(earnTokenName, poolId, account);
+
         return await pool.pendingShare(poolId, account);
       }
     } catch (err) {
