@@ -8,6 +8,10 @@ const LpBox = ({ tombLp, tShareLp, pairSymbol }) => {
   const tombEthLpStats = useLpStats(tombLp);
   const tShareEthLpStats = useLpStats(tShareLp);
 
+  console.log(tombLp, tShareLp, pairSymbol);
+  console.log('tombEthLpStats ===> ', tombEthLpStats);
+  console.log('tShareEthLpStats ===> ', tShareEthLpStats);
+
   const tombLPStats = useMemo(() => (tombEthLpStats ? tombEthLpStats : null), [tombEthLpStats]);
   const tshareLPStats = useMemo(() => (tShareEthLpStats ? tShareEthLpStats : null), [tShareEthLpStats]);
 
@@ -72,7 +76,7 @@ const LpBox = ({ tombLp, tShareLp, pairSymbol }) => {
         </Card>
       </Grid>
     </>
-  )
-}
+  );
+};
 
 export default LpBox;
