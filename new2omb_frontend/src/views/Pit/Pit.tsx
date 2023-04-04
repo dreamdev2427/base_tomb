@@ -84,11 +84,11 @@ const Pit: React.FC = () => {
                   fromToken={tombFinance.TOMB}
                   fromTokenName="ARBOMB"
                   toToken={tombFinance.TBOND}
-                  toTokenName="ARBBOND"
+                  toTokenName="ARBOND"
                   priceDesc={
                     !isBondPurchasable
                       ? 'ARBOMB is over peg'
-                      : getDisplayBalance(bondsPurchasable, 18, 4) + ' ARBBOND available for purchase'
+                      : getDisplayBalance(bondsPurchasable, 18, 4) + ' ARBOND available for purchase'
                   }
                   onExchange={handleBuyBonds}
                   disabled={!bondStat || isBondRedeemable}
@@ -102,7 +102,7 @@ const Pit: React.FC = () => {
                 />
                 <Spacer size="md" />
                 <ExchangeStat
-                  tokenName="ARBBOND"
+                  tokenName="ARBOND"
                   description="Current Price: (ARBOMB)^2"
                   price={Number(bondStat?.tokenInEth).toFixed(2) || '-'}
                 />
@@ -111,10 +111,10 @@ const Pit: React.FC = () => {
                 <ExchangeCard
                   action="Redeem"
                   fromToken={tombFinance.TBOND}
-                  fromTokenName="ARBBOND"
+                  fromTokenName="ARBOND"
                   toToken={tombFinance.TOMB}
                   toTokenName="ARBOMB"
-                  priceDesc={`${getDisplayBalance(bondBalance)} ARBBOND Available in wallet`}
+                  priceDesc={`${getDisplayBalance(bondBalance)} ARBOND Available in wallet`}
                   onExchange={handleRedeemBonds}
                   disabled={!bondStat || bondBalance.eq(0) || !isBondRedeemable}
                   disabledDescription={!isBondRedeemable ? `Enabled when ARBOMB > ${BOND_REDEEM_PRICE}ETH` : null}

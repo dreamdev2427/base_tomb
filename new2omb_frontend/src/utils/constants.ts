@@ -1,6 +1,6 @@
 export const TOMB_TICKER = 'ARBOMB';
 export const TSHARE_TICKER = 'ARBSHARE';
-export const TBOND_TICKER = 'ARBBOND';
+export const TBOND_TICKER = 'ARBOND';
 export const ETH_TICKER = 'ETH';
 export const WETH_TICKER = 'WETH';
 export const SPOOKY_ROUTER_ADDR = '0xc873fEcbd354f5A56E00E710B90EF4201db2448d';

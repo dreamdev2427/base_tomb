@@ -5,7 +5,7 @@ import tombLogo from '../../assets/img/ARBOMB.png';
 import tShareLogo from '../../assets/img/ARBSHARE.png';
 import tombLogoPNG from '../../assets/img/ARBOMB.png';
 import tShareLogoPNG from '../../assets/img/ARBSHARE.png';
-import tBondLogo from '../../assets/img/ARBBOND-01.png';
+import tBondLogo from '../../assets/img/ARBOND-01.png';
 
 import tombEthLpLogo from '../../assets/img/tomb_weth_lp.png';
 import tshareEthLpLogo from '../../assets/img/tshare_weth_lp.png';

@@ -114,11 +114,13 @@ code {
   justify-content: flex-start !important;
   text-transform: none !important;
   padding: 15px 8px !important;
+  border-radius: 10px !important;
 }
 
 .wallet-button:hover {
-  background-color: black !important;
+  background-color: #bd9d98 !important;
   color: #757ce8 !important;
+  border-radius: 10px !important;
 }
 
 .account {
