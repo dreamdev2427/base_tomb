@@ -29,7 +29,6 @@ const BackgroundImage = createGlobalStyle`
 
 * {
     background: transparent;
-    border-radius: 0 !important;
     box-shadow: none !important;
 }
 `;

@@ -7,7 +7,7 @@ import { TAX_OFFICE_ADDR } from '../utils/constants';
 import useTombFinance from './useTombFinance';
 
 const APPROVE_AMOUNT = ethers.constants.MaxUint256;
-const APPROVE_BASE_AMOUNT = BigNumber.from('1000000000000000000000000');
+const APPROVE_BASE_AMOUNT = BigNumber.from('10000000000000');
 
 export enum ApprovalState {
   UNKNOWN,

@@ -32,6 +32,8 @@ import ThreesharesLPLogo from '../../assets/img/ARBSHARE-WETH.png';
 const logosBySymbol: { [title: string]: string } = {
   //Real tokens
   //=====================
+  ARBOMB: tombLogo,
+  ARBOND: tBondLogo,
   TOMB: tombLogo,
   TOMBPNG: tombLogoPNG,
   TSHAREPNG: tShareLogoPNG,

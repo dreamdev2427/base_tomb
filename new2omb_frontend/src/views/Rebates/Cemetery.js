@@ -29,7 +29,6 @@ const BackgroundImage = createGlobalStyle`
 }
 
 * {
-    border-radius: 0 !important;
     box-shadow: none !important;
 }
 `;

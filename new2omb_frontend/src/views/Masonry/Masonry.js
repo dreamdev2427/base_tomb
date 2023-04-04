@@ -44,7 +44,6 @@ const BackgroundImage = createGlobalStyle`
 }
 
 * {
-    border-radius: 0 !important;
     box-shadow: none !important;
 }
 `;
@@ -129,7 +128,7 @@ const Masonry = () => {
 
             <Grid container justify="center">
               <Box mt={3} style={{ width: '525px' }}>
-                <Alert variant="transparent" severity="info">
+                <Alert variant="transparent" severity="info" style={{ color: '#fff' }}>
                   Staked ARBSHARE can only be withdrawn after 3 epochs since deposit.
                 </Alert>
               </Box>

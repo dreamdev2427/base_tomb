@@ -57,10 +57,10 @@ body {
 }
 
 .MuiAlert-message {
-  color: black;
+  color: white;
 }
 .MuiAlert-icon {
-  color: black;
+  color: white;
 }
 .MuiTypography-body1 {
   font-size: 1.1rem;
