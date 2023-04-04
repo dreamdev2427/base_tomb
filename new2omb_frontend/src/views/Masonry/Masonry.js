@@ -6,7 +6,7 @@ import Spacer from '../../components/Spacer';
 import Harvest from './components/Harvest';
 import Stake from './components/Stake';
 import { makeStyles } from '@material-ui/core/styles';
-import useRebateTreasury from "../../hooks/useRebateTreasury"
+import useRebateTreasury from '../../hooks/useRebateTreasury';
 
 import { Box, Card, CardContent, Button, Typography, Grid } from '@material-ui/core';
 
@@ -70,7 +70,13 @@ const Masonry = () => {
   const canWithdraw = useWithdrawCheck();
   const scalingFactor = useMemo(() => (cashStat ? Number(cashStat.priceInDollars).toFixed(4) : null), [cashStat]);
   const { to } = useTreasuryAllocationTimes();
-  const rebateStats = useRebateTreasury()
+  const rebateStats = useRebateTreasury();
+
+  console.log('to ===> ', to);
+  console.log('currentEpoch ===> ', currentEpoch);
+  console.log('rebateStats.tombPrice ===> ', rebateStats.tombPrice);
+  console.log('masonryAPR ===> ', masonryAPR);
+  console.log('totalStaked ===> ', totalStaked.toString());
 
   return (
     <Page>
@@ -112,7 +118,9 @@ const Masonry = () => {
                 <Card className={classes.gridItem}>
                   <CardContent align="center">
                     <Typography>APR | Daily | Epoch</Typography>
-                    <Typography>{masonryAPR.toFixed(2)}% | {(masonryAPR / 365).toFixed(2)}% | {(masonryAPR / 365 / 4).toFixed(2)}%</Typography>
+                    <Typography>
+                      {masonryAPR.toFixed(2)}% | {(masonryAPR / 365).toFixed(2)}% | {(masonryAPR / 365 / 4).toFixed(2)}%
+                    </Typography>
                   </CardContent>
                 </Card>
               </Grid>

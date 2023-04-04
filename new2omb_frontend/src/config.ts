@@ -6,7 +6,7 @@ const configurations: { [env: string]: Configuration } = {
     chainId: 42161,
     networkName: 'Arbitrum One mainnet',
     etherscanUrl: 'https://arbiscan.io',
-    defaultProvider: 'https://arb1.arbitrum.io/rpc',
+    defaultProvider: 'https://arbitrum-one.public.blastapi.io',
     deployments: require('./tomb-finance/deployments/deployments.mainnet.json'),
     externalTokens: {
       WETH: ['0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 18],
