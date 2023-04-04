@@ -79,7 +79,6 @@ export class TombFinance {
       token.connect(this.signer);
     }
     this.TOMBWETH_LP = this.TOMBWETH_LP.connect(this.signer);
-    console.log(`🔓 Wallet is unlocked. Welcome, ${account}!`);
     this.fetchMasonryVersionOfUser()
       .then((version) => (this.masonryVersionOfUser = version))
       .catch((err) => {
@@ -99,21 +98,14 @@ export class TombFinance {
   //===================================================================
 
   async getTombStat(): Promise<TokenStat> {
-    const { TombEthRewardPool, TombEthLpTombRewardPool, TombEthLpTombRewardPoolOld } = this.contracts;
+    const { TombEthRewardPool, TombEthLpTombRewardPool } = this.contracts;
     const supply = await this.TOMB.totalSupply();
     const tombRewardPoolSupply = await this.TOMB.balanceOf(TombEthRewardPool.address);
     const tombRewardPoolSupply2 = await this.TOMB.balanceOf(TombEthLpTombRewardPool.address);
-    const tombRewardPoolSupplyOld = await this.TOMB.balanceOf(TombEthLpTombRewardPoolOld.address);
-    const tombCirculatingSupply = supply
-      .sub(tombRewardPoolSupply)
-      .sub(tombRewardPoolSupply2)
-      .sub(tombRewardPoolSupplyOld);
+    const tombCirculatingSupply = supply.sub(tombRewardPoolSupply).sub(tombRewardPoolSupply2);
     const priceInETH = await this.getTokenPriceFromPancakeswap(this.TOMB);
-    console.log('tomb price in eth:', priceInETH);
     const priceOfOneETH = await this.getWETHPriceFromPancakeswap();
-    console.log('price of WETH in usd:', priceOfOneETH);
     const priceOfTombInDollars = (Number(priceInETH) * Number(priceOfOneETH)).toFixed(2);
-    console.log('price in usd:', priceOfTombInDollars);
 
     return {
       tokenInEth: priceInETH,
@@ -235,19 +227,27 @@ export class TombFinance {
    */
   async getPoolAPRs(bank: Bank): Promise<PoolStats> {
     if (this.myAccount === undefined) return;
+    console.log('getPoolAPRs 00000 ');
     const depositToken = bank.depositToken;
+    console.log('depositToken ===> ', depositToken);
     const poolContract = this.contracts[bank.contract];
+    console.log('poolContract ===> ', poolContract);
+    console.log('before call getDepositTokenPriceInDollars()  0000 bank.depositTokenName ===> ', bank.depositTokenName);
     const depositTokenPrice = await this.getDepositTokenPriceInDollars(bank.depositTokenName, depositToken);
-    console.log('deposit token price:', depositTokenPrice);
+    console.log('depositTokenPrice ===> ', depositTokenPrice);
     const stakeInPool = await depositToken.balanceOf(bank.address);
+    console.log('stakeInPool ===> ', stakeInPool);
     const TVL = Number(depositTokenPrice) * Number(getDisplayBalance(stakeInPool, depositToken.decimal));
+    console.log('TVL ===> ', TVL);
     const stat = bank.earnTokenName === 'ARBOMB' ? await this.getTombStat() : await this.getShareStat();
+    console.log('stat ===> ', stat);
     const tokenPerSecond = await this.getTokenPerSecond(
       bank.earnTokenName,
       bank.contract,
       poolContract,
       bank.depositTokenName,
     );
+    console.log('tokenPerSecond ===> ', tokenPerSecond);
 
     const tokenPerHour = tokenPerSecond.mul(60).mul(60);
     const totalRewardPricePerYear =
@@ -329,11 +329,12 @@ export class TombFinance {
    */
   async getDepositTokenPriceInDollars(tokenName: string, token: ERC20) {
     let tokenPrice;
+    console.log('priceOfOneEthInDollars() tokenName ===> ', tokenName, ' token ===> ', token);
     const priceOfOneEthInDollars = await this.getWETHPriceFromPancakeswap();
+    console.log('priceOfOneEthInDollars ===> ', priceOfOneEthInDollars);
     if (tokenName === 'wETH') {
       tokenPrice = priceOfOneEthInDollars;
     } else {
-      console.log('token name:', tokenName);
       if (tokenName === 'ARBOMB-WETH LP') {
         tokenPrice = await this.getLPTokenPrice(token, this.TOMB, true, false);
       } else if (tokenName === 'ARBSHARE-WETH LP') {
@@ -388,7 +389,6 @@ export class TombFinance {
       const token = this.externalTokens[bankInfo.depositTokenName];
       const tokenPrice = await this.getDepositTokenPriceInDollars(bankInfo.depositTokenName, token);
       const tokenAmountInPool = await token.balanceOf(pool.address);
-      console.log('token amount in the pool ===> ', tokenAmountInPool.toString());
       const value = Number(getDisplayBalance(tokenAmountInPool, token.decimal)) * Number(tokenPrice);
       const poolValue = Number.isNaN(value) ? 0 : value;
       totalValue += poolValue;
@@ -425,8 +425,6 @@ export class TombFinance {
     const tokenInLP = Number(tokenSupply) / Number(totalSupply);
     const tokenPrice = (Number(priceOfToken) * tokenInLP * 2) //We multiply by 2 since half the price of the lp token is the price of each piece of the pair. So twice gives the total
       .toString();
-
-    console.log('lp token price ===> ', tokenPrice);
 
     return tokenPrice;
   }
@@ -477,12 +475,8 @@ async getShareStatFake() {
       .sub(tombRewardPoolSupply2)
       .sub(tombRewardPoolSupplyOld);
     const priceInETH = await this.getTokenPriceFromPancakeswap(TSHARE);
-    console.log('share price in WETH ===> ', priceInETH);
     const priceOfOneETH = await this.getWETHPriceFromPancakeswap();
-    console.log('priceOfOneWETH ===> ', priceOfOneETH);
     const priceOfTombInDollars = (Number(priceInETH) * Number(priceOfOneETH)).toFixed(2);
-
-    console.log('priceOfTombInDollars ===> ', priceOfTombInDollars);
 
     return {
       tokenInEth: priceInETH,
@@ -499,7 +493,9 @@ async getShareStatFake() {
     account = this.myAccount,
   ): Promise<BigNumber> {
     const pool = this.contracts[poolName];
+    console.log('pool ==> ', pool);
     try {
+      console.log('earnTokenName ==> ', earnTokenName);
       if (earnTokenName === 'ARBOMB') {
         return await pool.pendingTOMB(poolId, account);
       } else {
@@ -627,14 +623,11 @@ async getShareStatFake() {
     const { WETH, USDC } = this.externalTokens;
     try {
       const fusdt_weth_lp_pair = this.externalTokens['USDC-ETH-LP'];
-      console.log('fusdt_weth_lp_pair ===> ', fusdt_weth_lp_pair);
       let eth_amount_BN = await WETH.balanceOf(fusdt_weth_lp_pair.address);
       let eth_amount = Number(getFullDisplayBalance(eth_amount_BN, WETH.decimal));
-      console.log('weth_amount ==> ', eth_amount);
 
       let USDC_amount_BN = await USDC.balanceOf(fusdt_weth_lp_pair.address);
       let USDC_amount = Number(getFullDisplayBalance(USDC_amount_BN, USDC.decimal));
-      console.log(' USDC_amount ===> ', USDC_amount);
 
       return (USDC_amount / eth_amount).toString();
     } catch (err) {

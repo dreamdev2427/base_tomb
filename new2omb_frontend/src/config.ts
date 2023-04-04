@@ -43,7 +43,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   */
   TombWrappedEthRewardPool: {
     name: 'Earn ARBOMB by staking WETH',
-    poolId: 6,
+    poolId: 0,
     sectionInUI: 0,
     contract: 'TombWrappedEthRewardPool',
     depositTokenName: 'wETH',
@@ -85,7 +85,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   },
   TshareEthLPTShareRewardPool: {
     name: 'Earn ARBSHARE by ARBSHARE-WETH LP',
-    poolId: 1,
+    poolId: 0,
     sectionInUI: 2,
     contract: 'TshareEthLPTShareRewardPool',
     depositTokenName: 'ARBSHARE-WETH LP',
@@ -99,7 +99,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   },
   WETHRebates: {
     name: 'Bond WETH, earn ARBOMB',
-    poolId: 1,
+    poolId: 0,
     sectionInUI: 3,
     contract: 'TombEthRewardPool',
     depositTokenName: 'WETH',
