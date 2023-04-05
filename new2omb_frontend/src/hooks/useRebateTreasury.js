@@ -2,12 +2,42 @@ import { useEffect, useState } from 'react';
 import Web3 from 'web3';
 
 const RebateTreasuryABI = [
-  { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'tomb',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'tombOracle',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'treasury',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
   {
     anonymous: false,
     inputs: [
-      { indexed: true, internalType: 'address', name: 'previousOwner', type: 'address' },
-      { indexed: true, internalType: 'address', name: 'newOwner', type: 'address' },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousOwner',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
     ],
     name: 'OwnershipTransferred',
     type: 'event',
@@ -15,55 +45,119 @@ const RebateTreasuryABI = [
   {
     inputs: [],
     name: 'DENOMINATOR',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'Tomb',
-    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
+    outputs: [
+      {
+        internalType: 'contract IERC20',
+        name: '',
+        type: 'address',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'TombOracle',
-    outputs: [{ internalType: 'contract IOracle', name: '', type: 'address' }],
+    outputs: [
+      {
+        internalType: 'contract IOracle',
+        name: '',
+        type: 'address',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'Treasury',
-    outputs: [{ internalType: 'contract ITreasury', name: '', type: 'address' }],
+    outputs: [
+      {
+        internalType: 'contract ITreasury',
+        name: '',
+        type: 'address',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
-    name: 'WETH',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'address', name: '', type: 'address' }],
-    name: 'assets',
+    name: 'WFTM',
     outputs: [
-      { internalType: 'bool', name: 'isAdded', type: 'bool' },
-      { internalType: 'uint256', name: 'multiplier', type: 'uint256' },
-      { internalType: 'address', name: 'oracle', type: 'address' },
-      { internalType: 'bool', name: 'isLP', type: 'bool' },
-      { internalType: 'address', name: 'pair', type: 'address' },
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
     ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      { internalType: 'address', name: 'token', type: 'address' },
-      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    name: 'assets',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: 'isAdded',
+        type: 'bool',
+      },
+      {
+        internalType: 'uint256',
+        name: 'multiplier',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: 'oracle',
+        type: 'address',
+      },
+      {
+        internalType: 'bool',
+        name: 'isLP',
+        type: 'bool',
+      },
+      {
+        internalType: 'address',
+        name: 'pair',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'token',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
     ],
     name: 'bond',
     outputs: [],
@@ -73,125 +167,254 @@ const RebateTreasuryABI = [
   {
     inputs: [],
     name: 'bondFactor',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'bondThreshold',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'bondVesting',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'buybackAmount',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
-      { internalType: 'address payable', name: 'to', type: 'address' },
-      { internalType: 'uint256', name: 'value', type: 'uint256' },
-      { internalType: 'bytes', name: 'data', type: 'bytes' },
-    ],
-    name: 'call',
-    outputs: [{ internalType: 'bytes', name: '', type: 'bytes' }],
-    stateMutability: 'payable',
+    inputs: [],
+    name: 'claimRewards',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
-  { inputs: [], name: 'claimRewards', outputs: [], stateMutability: 'nonpayable', type: 'function' },
   {
-    inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
+      },
+    ],
     name: 'claimableTomb',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'getBondPremium',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address', name: 'token', type: 'address' }],
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'token',
+        type: 'address',
+      },
+    ],
     name: 'getTokenPrice',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'getTombPrice',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      { internalType: 'address', name: 'token', type: 'address' },
-      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      {
+        internalType: 'address',
+        name: 'token',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
     ],
     name: 'getTombReturn',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'lastBuyback',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'owner',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address[]', name: 'tokens', type: 'address[]' }],
+    inputs: [
+      {
+        internalType: 'address[]',
+        name: 'tokens',
+        type: 'address[]',
+      },
+    ],
     name: 'redeemAssetsForBuyback',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
-  { inputs: [], name: 'renounceOwnership', outputs: [], stateMutability: 'nonpayable', type: 'function' },
+  {
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
   {
     inputs: [],
     name: 'secondaryFactor',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'secondaryThreshold',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      { internalType: 'address', name: 'token', type: 'address' },
-      { internalType: 'bool', name: 'isAdded', type: 'bool' },
-      { internalType: 'uint256', name: 'multiplier', type: 'uint256' },
-      { internalType: 'address', name: 'oracle', type: 'address' },
-      { internalType: 'bool', name: 'isLP', type: 'bool' },
-      { internalType: 'address', name: 'pair', type: 'address' },
+      {
+        internalType: 'address',
+        name: 'token',
+        type: 'address',
+      },
+      {
+        internalType: 'bool',
+        name: 'isAdded',
+        type: 'bool',
+      },
+      {
+        internalType: 'uint256',
+        name: 'multiplier',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: 'oracle',
+        type: 'address',
+      },
+      {
+        internalType: 'bool',
+        name: 'isLP',
+        type: 'bool',
+      },
+      {
+        internalType: 'address',
+        name: 'pair',
+        type: 'address',
+      },
     ],
     name: 'setAsset',
     outputs: [],
@@ -200,11 +423,31 @@ const RebateTreasuryABI = [
   },
   {
     inputs: [
-      { internalType: 'uint256', name: 'primaryThreshold', type: 'uint256' },
-      { internalType: 'uint256', name: 'primaryFactor', type: 'uint256' },
-      { internalType: 'uint256', name: 'secondThreshold', type: 'uint256' },
-      { internalType: 'uint256', name: 'secondFactor', type: 'uint256' },
-      { internalType: 'uint256', name: 'vestingPeriod', type: 'uint256' },
+      {
+        internalType: 'uint256',
+        name: 'primaryThreshold',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'primaryFactor',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'secondThreshold',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'secondFactor',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'vestingPeriod',
+        type: 'uint256',
+      },
     ],
     name: 'setBondParameters',
     outputs: [],
@@ -212,21 +455,39 @@ const RebateTreasuryABI = [
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address', name: 'tomb', type: 'address' }],
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'tomb',
+        type: 'address',
+      },
+    ],
     name: 'setTomb',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address', name: 'oracle', type: 'address' }],
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'oracle',
+        type: 'address',
+      },
+    ],
     name: 'setTombOracle',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address', name: 'treasury', type: 'address' }],
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'treasury',
+        type: 'address',
+      },
+    ],
     name: 'setTreasury',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -235,31 +496,70 @@ const RebateTreasuryABI = [
   {
     inputs: [],
     name: 'totalVested',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address', name: 'newOwner', type: 'address' }],
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
     name: 'transferOwnership',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address', name: '', type: 'address' }],
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
     name: 'vesting',
     outputs: [
-      { internalType: 'uint256', name: 'amount', type: 'uint256' },
-      { internalType: 'uint256', name: 'period', type: 'uint256' },
-      { internalType: 'uint256', name: 'end', type: 'uint256' },
-      { internalType: 'uint256', name: 'claimed', type: 'uint256' },
-      { internalType: 'uint256', name: 'lastClaimed', type: 'uint256' },
+      {
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'period',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'end',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'claimed',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'lastClaimed',
+        type: 'uint256',
+      },
     ],
     stateMutability: 'view',
     type: 'function',
   },
 ];
+
 const ERC20ABI = [
   {
     constant: true,

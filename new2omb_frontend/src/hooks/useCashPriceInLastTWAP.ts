@@ -8,11 +8,12 @@ const useCashPriceInLastTWAP = () => {
   const tombFinance = useTombFinance();
 
   const fetchCashPrice = useCallback(async () => {
+    console.log('fetchCashPrice 000 ');
     setPrice(await tombFinance.getTombPriceInLastTWAP());
   }, [tombFinance]);
 
   useEffect(() => {
-    fetchCashPrice().catch((err) => console.error(`Failed to fetch TOMB price: ${err.stack}`));
+    fetchCashPrice().catch((err) => console.error(`Failed to fetch ARBOMB price: ${err.stack}`));
     const refreshInterval = setInterval(fetchCashPrice, config.refreshInterval);
     return () => clearInterval(refreshInterval);
   }, [setPrice, tombFinance, fetchCashPrice]);
