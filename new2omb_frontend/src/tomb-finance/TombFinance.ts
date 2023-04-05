@@ -140,11 +140,11 @@ export class TombFinance {
 
   getContractByName(name: string): Contract {
     if (name === 'ARBOMB-ETH-LP' || name === 'ARBOMB-WETH LP') return this.ARBOMB_ETH_LP;
-    if (name === 'ARBOMB-ARB-LP') return this.ARBOMB_ARB_LP;
-    if (name === 'ARBOMB-USDC-LP') return this.ARBOMB_USDC_LP;
+    if (name === 'ARBOMB-ARB-LP' || name === 'ARBOMB-ARB LP') return this.ARBOMB_ARB_LP;
+    if (name === 'ARBOMB-USDC-LP' || name === 'ARBOMB-USDC LP') return this.ARBOMB_USDC_LP;
     if (name === 'ARBSHARE-ETH-LP' || name === 'ARBSHARE-WETH LP') return this.ARBSHARE_ETH_LP;
-    if (name === 'ARBSHARE-ARB-LP') return this.ARBSHARE_ARB_LP;
-    if (name === 'ARBSHARE-USDC-LP') return this.ARBSHARE_USDC_LP;
+    if (name === 'ARBSHARE-ARB-LP' || name === 'ARBSHARE-ARB LP') return this.ARBSHARE_ARB_LP;
+    if (name === 'ARBSHARE-USDC-LP' || name === 'ARBSHARE-USDC LP') return this.ARBSHARE_USDC_LP;
   }
   /**
    * Calculates various stats for the requested LP
