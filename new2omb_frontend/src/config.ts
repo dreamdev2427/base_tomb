@@ -17,6 +17,7 @@ const configurations: { [env: string]: Configuration } = {
     ],
     deployments: require('./tomb-finance/deployments/deployments.mainnet.json'),
     externalTokens: {
+      ARB: ['0x912CE59144191C1204E64559FE8253a0e49E6548', 18],
       WETH: ['0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 18],
       USDC: ['0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8', 6],
       wETH: ['0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 18],

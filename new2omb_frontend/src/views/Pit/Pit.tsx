@@ -20,7 +20,6 @@ import { getDisplayBalance } from '../../utils/formatBalance';
 import { BOND_REDEEM_PRICE, BOND_REDEEM_PRICE_BN } from '../../tomb-finance/constants';
 import { Typography } from '@material-ui/core';
 
-
 const BackgroundImage = createGlobalStyle`
   body {
     background-color: var(--black);
@@ -42,13 +41,13 @@ const Pit: React.FC = () => {
   const cashPrice = useCashPriceInLastTWAP();
   const bondsPurchasable = useBondsPurchasable();
 
-  const bondBalance = useTokenBalance(tombFinance?.TBOND);
+  const bondBalance = useTokenBalance(tombFinance?.ARBOND);
 
   const handleBuyBonds = useCallback(
     async (amount: string) => {
       const tx = await tombFinance.buyBonds(amount);
       addTransaction(tx, {
-        summary: `Buy ${Number(amount).toFixed(2)} TBOND with ${amount} TOMB`,
+        summary: `Buy ${Number(amount).toFixed(2)} ARBOND with ${amount} ARBOMB`,
       });
     },
     [tombFinance, addTransaction],
@@ -57,7 +56,7 @@ const Pit: React.FC = () => {
   const handleRedeemBonds = useCallback(
     async (amount: string) => {
       const tx = await tombFinance.redeemBonds(amount);
-      addTransaction(tx, { summary: `Redeem ${amount} TBOND` });
+      addTransaction(tx, { summary: `Redeem ${amount} ARBOND` });
     },
     [tombFinance, addTransaction],
   );
@@ -80,9 +79,9 @@ const Pit: React.FC = () => {
               <StyledCardWrapper>
                 <ExchangeCard
                   action="Purchase"
-                  fromToken={tombFinance.TOMB}
+                  fromToken={tombFinance.ARBOMB}
                   fromTokenName="ARBOMB"
-                  toToken={tombFinance.TBOND}
+                  toToken={tombFinance.ARBOND}
                   toTokenName="ARBOND"
                   priceDesc={
                     !isBondPurchasable
@@ -109,9 +108,9 @@ const Pit: React.FC = () => {
               <StyledCardWrapper>
                 <ExchangeCard
                   action="Redeem"
-                  fromToken={tombFinance.TBOND}
+                  fromToken={tombFinance.ARBOND}
                   fromTokenName="ARBOND"
-                  toToken={tombFinance.TOMB}
+                  toToken={tombFinance.ARBOMB}
                   toTokenName="ARBOMB"
                   priceDesc={`${getDisplayBalance(bondBalance)} ARBOND Available in wallet`}
                   onExchange={handleRedeemBonds}

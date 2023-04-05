@@ -99,8 +99,8 @@ const Bank: React.FC = () => {
 
 const LPTokenHelpText: React.FC<{ bank: BankEntity }> = ({ bank }) => {
   const tombFinance = useTombFinance();
-  const tombAddr = tombFinance.TOMB.address;
-  const tshareAddr = tombFinance.TSHARE.address;
+  const tombAddr = tombFinance.ARBOMB.address;
+  const tshareAddr = tombFinance.ARBSHARE.address;
 
   let pairName: string;
   let uniswapUrl: string;

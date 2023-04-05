@@ -1,5 +1,5 @@
-export const TOMB_TICKER = 'ARBOMB';
-export const TSHARE_TICKER = 'ARBSHARE';
+export const ARBOMB_TICKER = 'ARBOMB';
+export const ARSHARE_TICKER = 'ARBSHARE';
 export const TBOND_TICKER = 'ARBOND';
 export const ETH_TICKER = 'ETH';
 export const WETH_TICKER = 'WETH';

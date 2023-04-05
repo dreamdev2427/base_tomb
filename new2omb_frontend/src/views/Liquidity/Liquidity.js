@@ -33,7 +33,7 @@ const ProvideLiquidity = () => {
   const tombStats = useTombStats();
   const tombFinance = useTombFinance();
   const [approveTaxOfficeStatus, approveTaxOffice] = useApproveTaxOffice();
-  const tombBalance = useTokenBalance(tombFinance.TOMB);
+  const tombBalance = useTokenBalance(tombFinance.ARBOMB);
   const ethBalance = (balance / 1e18).toFixed(4);
   const { onProvideTombEthLP } = useProvideTombEthLP();
   const tombEthLpStats = useLpStats('RRBOMB-ETH-LP');

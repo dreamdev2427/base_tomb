@@ -1,4 +1,4 @@
-import React, { /*useCallback, useEffect, */useMemo, useState } from 'react';
+import React, { /*useCallback, useEffect, */ useMemo, useState } from 'react';
 import Page from '../../components/Page';
 import PitImage from '../../assets/img/pit.png';
 import { createGlobalStyle } from 'styled-components';
@@ -6,12 +6,12 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { useWallet } from 'use-wallet';
 import UnlockWallet from '../../components/UnlockWallet';
 import PageHeader from '../../components/PageHeader';
-import { Box,/* Paper, Typography,*/ Button, Grid } from '@material-ui/core';
+import { Box, /* Paper, Typography,*/ Button, Grid } from '@material-ui/core';
 import styled from 'styled-components';
 import Spacer from '../../components/Spacer';
 import useTombFinance from '../../hooks/useTombFinance';
-import { getDisplayBalance/*, getBalance*/ } from '../../utils/formatBalance';
-import { BigNumber/*, ethers*/ } from 'ethers';
+import { getDisplayBalance /*, getBalance*/ } from '../../utils/formatBalance';
+import { BigNumber /*, ethers*/ } from 'ethers';
 import useSwapTBondToTShare from '../../hooks/TShareSwapper/useSwapTBondToTShare';
 import useApprove, { ApprovalState } from '../../hooks/useApprove';
 import useTShareSwapperStats from '../../hooks/TShareSwapper/useTShareSwapperStats';
@@ -38,35 +38,44 @@ const Sbs: React.FC = () => {
   const [tbondAmount, setTbondAmount] = useState('');
   const [tshareAmount, setTshareAmount] = useState('');
 
-  const [approveStatus, approve] = useApprove(tombFinance.TBOND, tombFinance.contracts.TShareSwapper.address);
+  const [approveStatus, approve] = useApprove(tombFinance.ARBOND, tombFinance.contracts.TShareSwapper.address);
   const { onSwapTShare } = useSwapTBondToTShare();
   const tshareSwapperStat = useTShareSwapperStats(account);
 
-  const tshareBalance = useMemo(() => (tshareSwapperStat ? Number(tshareSwapperStat.tshareBalance) : 0), [tshareSwapperStat]);
-  const bondBalance = useMemo(() => (tshareSwapperStat ? Number(tshareSwapperStat.tbondBalance) : 0), [tshareSwapperStat]);
+  const tshareBalance = useMemo(
+    () => (tshareSwapperStat ? Number(tshareSwapperStat.tshareBalance) : 0),
+    [tshareSwapperStat],
+  );
+  const bondBalance = useMemo(
+    () => (tshareSwapperStat ? Number(tshareSwapperStat.tbondBalance) : 0),
+    [tshareSwapperStat],
+  );
 
   const handleTBondChange = async (e: any) => {
     if (e.currentTarget.value === '') {
       setTbondAmount('');
       setTshareAmount('');
-      return
+      return;
     }
     if (!isNumeric(e.currentTarget.value)) return;
     setTbondAmount(e.currentTarget.value);
     const updateTShareAmount = await tombFinance.estimateAmountOfTShare(e.currentTarget.value);
-    setTshareAmount(updateTShareAmount);  
+    setTshareAmount(updateTShareAmount);
   };
 
   const handleTBondSelectMax = async () => {
     setTbondAmount(String(bondBalance));
     const updateTShareAmount = await tombFinance.estimateAmountOfTShare(String(bondBalance));
-    setTshareAmount(updateTShareAmount); 
+    setTshareAmount(updateTShareAmount);
   };
 
   const handleTShareSelectMax = async () => {
     setTshareAmount(String(tshareBalance));
     const rateTSharePerTomb = (await tombFinance.getTShareSwapperStat(account)).rateTSharePerTomb;
-    const updateTBondAmount = ((BigNumber.from(10).pow(30)).div(BigNumber.from(rateTSharePerTomb))).mul(Number(tshareBalance) * 1e6);
+    const updateTBondAmount = BigNumber.from(10)
+      .pow(30)
+      .div(BigNumber.from(rateTSharePerTomb))
+      .mul(Number(tshareBalance) * 1e6);
     setTbondAmount(getDisplayBalance(updateTBondAmount, 18, 6));
   };
 
@@ -75,14 +84,17 @@ const Sbs: React.FC = () => {
     if (inputData === '') {
       setTshareAmount('');
       setTbondAmount('');
-      return
+      return;
     }
     if (!isNumeric(inputData)) return;
     setTshareAmount(inputData);
     const rateTSharePerTomb = (await tombFinance.getTShareSwapperStat(account)).rateTSharePerTomb;
-    const updateTBondAmount = ((BigNumber.from(10).pow(30)).div(BigNumber.from(rateTSharePerTomb))).mul(Number(inputData) * 1e6);
+    const updateTBondAmount = BigNumber.from(10)
+      .pow(30)
+      .div(BigNumber.from(rateTSharePerTomb))
+      .mul(Number(inputData) * 1e6);
     setTbondAmount(getDisplayBalance(updateTBondAmount, 18, 6));
-  }
+  };
 
   return (
     <Switch>
@@ -105,7 +117,7 @@ const Sbs: React.FC = () => {
                             <StyledExchanger>
                               <StyledToken>
                                 <StyledCardIcon>
-                                  <TokenSymbol symbol={tombFinance.TBOND.symbol} size={54} />
+                                  <TokenSymbol symbol={tombFinance.ARBOND.symbol} size={54} />
                                 </StyledCardIcon>
                               </StyledToken>
                             </StyledExchanger>
@@ -123,7 +135,7 @@ const Sbs: React.FC = () => {
                         </CardContent>
                       </Card>
                     </StyledCardWrapper>
-                    <Spacer size="lg"/>
+                    <Spacer size="lg" />
                     <StyledCardWrapper>
                       <Card>
                         <CardContent>
@@ -132,7 +144,7 @@ const Sbs: React.FC = () => {
                             <StyledExchanger>
                               <StyledToken>
                                 <StyledCardIcon>
-                                  <TokenSymbol symbol={tombFinance.TSHARE.symbol} size={54} />
+                                  <TokenSymbol symbol={tombFinance.ARBSHARE.symbol} size={54} />
                                 </StyledCardIcon>
                               </StyledToken>
                             </StyledExchanger>
@@ -149,7 +161,6 @@ const Sbs: React.FC = () => {
                           </StyledCardContentInner>
                         </CardContent>
                       </Card>
-              
                     </StyledCardWrapper>
                   </StyledCardsWrapper>
                 </StyledBoardroom>
@@ -162,26 +173,26 @@ const Sbs: React.FC = () => {
                   <Card>
                     <CardContent>
                       <StyledApproveWrapper>
-                      {approveStatus !== ApprovalState.APPROVED ? (
-                        <Button
-                          disabled={approveStatus !== ApprovalState.NOT_APPROVED}
-                          color="primary"
-                          variant="contained"
-                          onClick={approve}
-                          size="medium"
-                        >
-                          Approve TBOND
-                        </Button>
-                      ) : (
-                        <Button
-                          color="primary"
-                          variant="contained"
-                          onClick={() => onSwapTShare(tbondAmount.toString())}
-                          size="medium"
-                        >
-                          Swap
-                        </Button>
-                      )}
+                        {approveStatus !== ApprovalState.APPROVED ? (
+                          <Button
+                            disabled={approveStatus !== ApprovalState.NOT_APPROVED}
+                            color="primary"
+                            variant="contained"
+                            onClick={approve}
+                            size="medium"
+                          >
+                            Approve TBOND
+                          </Button>
+                        ) : (
+                          <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={() => onSwapTShare(tbondAmount.toString())}
+                            size="medium"
+                          >
+                            Swap
+                          </Button>
+                        )}
                       </StyledApproveWrapper>
                     </CardContent>
                   </Card>

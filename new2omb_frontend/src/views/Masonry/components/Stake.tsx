@@ -29,16 +29,17 @@ import useUnstakeTimerMasonry from '../../../hooks/masonry/useUnstakeTimerMasonr
 import TokenSymbol from '../../../components/TokenSymbol';
 import useStakeToMasonry from '../../../hooks/useStakeToMasonry';
 import useWithdrawFromMasonry from '../../../hooks/useWithdrawFromMasonry';
+import { ARSHARE_TICKER } from '../../../utils/constants';
 
 const Stake: React.FC = () => {
   const tombFinance = useTombFinance();
-  const [approveStatus, approve] = useApprove(tombFinance.TSHARE, tombFinance.contracts.Masonry.address);
+  const [approveStatus, approve] = useApprove(tombFinance.ARBSHARE, tombFinance.contracts.Masonry.address);
 
-  const tokenBalance = useTokenBalance(tombFinance.TSHARE);
+  const tokenBalance = useTokenBalance(tombFinance.ARBSHARE);
   const stakedBalance = useStakedBalanceOnMasonry();
   const { from, to } = useUnstakeTimerMasonry();
 
-  const stakedTokenPriceInDollars = useStakedTokenPriceInDollars('TSHARE', tombFinance.TSHARE);
+  const stakedTokenPriceInDollars = useStakedTokenPriceInDollars('ARBSHARE', tombFinance.ARBSHARE);
   const tokenPriceInDollars = useMemo(
     () =>
       stakedTokenPriceInDollars
@@ -59,7 +60,7 @@ const Stake: React.FC = () => {
         onStake(value);
         onDismissDeposit();
       }}
-      tokenName={'3Shares'}
+      tokenName={ARSHARE_TICKER}
     />,
   );
 
@@ -70,7 +71,7 @@ const Stake: React.FC = () => {
         onWithdraw(value);
         onDismissWithdraw();
       }}
-      tokenName={'3Shares'}
+      tokenName={ARSHARE_TICKER}
     />,
   );
 
@@ -81,7 +82,7 @@ const Stake: React.FC = () => {
           <StyledCardContentInner>
             <StyledCardHeader>
               <CardIcon>
-                <TokenSymbol symbol="TSHARE" />
+                <TokenSymbol symbol="ARBSHARE" />
               </CardIcon>
               <Value value={getDisplayBalance(stakedBalance)} />
               <Label text={`≈ $${tokenPriceInDollars}`} />
