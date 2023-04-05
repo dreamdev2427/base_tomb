@@ -152,8 +152,6 @@ export class TombFinance {
    * @returns
    */
   async getLPStat(name: string): Promise<LPStat> {
-    console.log('name ===> ', name);
-    console.log('name.split ==> ', name.split('-'));
     let tokens = name.split('-');
     if (tokens.length >= 2) {
       const lpToken = this.getContractByName(name);
@@ -199,14 +197,6 @@ export class TombFinance {
         let lpTokenPrice = await this.getLPTokenPrice(lpTokenERC20, token0, isTomb, false);
         lpTokenPriceFixed = Number(lpTokenPrice).toFixed(2).toString();
         liquidity = (Number(lpTokenSupply) * Number(lpTokenPrice)).toFixed(2).toString();
-
-        console.log('token0 ===> ', token0);
-        console.log('lp address ===> ', lpToken.address);
-        console.log('tokenAmount ===> ', tokenAmount);
-        console.log('tokenAmountInOneLP ===> ', tokenAmountInOneLP);
-        console.log('stokenAmount ===> ', stokenAmount);
-        console.log('ethAmountInOneLP ===> ', ethAmountInOneLP);
-        console.log('liquidity ===> ', liquidity);
       }
 
       return {
@@ -304,6 +294,7 @@ export class TombFinance {
     const depositToken = bank.depositToken;
     const poolContract = this.contracts[bank.contract];
     const depositTokenPrice = await this.getDepositTokenPriceInDollars(bank.depositTokenName, depositToken);
+    console.log('deposittokenprice ===> ', depositTokenPrice);
     const stakeInPool = await depositToken.balanceOf(bank.address);
     const TVL = Number(depositTokenPrice) * Number(getDisplayBalance(stakeInPool, depositToken.decimal));
     const stat = bank.earnTokenName === 'ARBOMB' ? await this.getTombStat() : await this.getShareStat();
@@ -403,8 +394,41 @@ export class TombFinance {
       } else if (tokenName === 'ARBSHARE-WETH LP') {
         tokenPrice = await this.getLPTokenPrice(token, this.ARBSHARE, false, false);
       } else {
-        tokenPrice = await this.getTokenPriceFromPancakeswap(token);
-        tokenPrice = (Number(tokenPrice) * Number(priceOfOneEthInDollars)).toString();
+        if (token.symbol.toString().includes('LP') === true || token.symbol.toString().includes('lp') === true) {
+          let tokens = token.symbol.split(/[\s- ]+/);
+          if (tokens.length >= 2) {
+            const lpToken = token;
+            const lpTokenSupplyBN = await lpToken.totalSupply();
+            const lpTokenSupply = getDisplayBalance(lpTokenSupplyBN, 18, 10);
+
+            console.log('lpToken ===> ', lpToken);
+            console.log('tokens[1] ===> ', tokens[1]);
+
+            let secondToken = this.getTokenBySymbol(tokens[1]);
+            console.log('secondToken ===> ', secondToken);
+            let secondTokenAmountBN = await secondToken.balanceOf(lpToken.address);
+            let stokenAmount = getDisplayBalance(secondTokenAmountBN, secondToken.decimal, 8);
+            let stokenPrice = await this.getTokenPriceFromPancakeswap(secondToken);
+
+            if (tokens[1] === 'USDC') {
+              let lpTokenPrice = (Number(stokenAmount) * 2) / Number(lpTokenSupply);
+              tokenPrice = Number(lpTokenPrice).toFixed(10).toString();
+            } else {
+              let firstToken = this.getTokenBySymbol(tokens[0]);
+              let firstTokenAmountBN = await firstToken.balanceOf(lpToken.address);
+              let ftokenAmount = getDisplayBalance(firstTokenAmountBN, firstToken.decimal, 8);
+              let ftokenPrice = await this.getTokenPriceFromPancakeswap(firstToken);
+
+              let totoalLiquidityPrice =
+                Number(ftokenAmount) * Number(ftokenPrice) + Number(stokenAmount) * Number(stokenPrice);
+              let lpTokenPrice = totoalLiquidityPrice / Number(lpTokenSupply);
+              tokenPrice = Number(lpTokenPrice).toFixed(10).toString();
+            }
+          }
+        } else {
+          tokenPrice = await this.getTokenPriceFromPancakeswap(token);
+          tokenPrice = (Number(tokenPrice) * Number(priceOfOneEthInDollars)).toString();
+        }
       }
     }
     return tokenPrice;
