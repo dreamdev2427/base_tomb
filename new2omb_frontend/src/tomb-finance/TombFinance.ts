@@ -571,6 +571,24 @@ async getShareStatFake() {
     }
   }
 
+  async approve(token: ERC20, spender: string, amount: BigNumber, owner = this.myAccount): Promise<any> {
+    try {
+      const prevAllowance = await token.allowance(owner, spender);
+      if (prevAllowance >= amount) {
+        return {
+          success: true,
+          message: '',
+          allowance: prevAllowance,
+        };
+      }
+      await token.approve(spender, amount);
+      const newAllowance = await token.allowance(owner, spender);
+      return { success: true, message: '', allowance: newAllowance };
+    } catch (error) {
+      return { success: false, message: error && (error as any).message };
+    }
+  }
+
   /**
    * Deposits token to given pool.
    * @param poolName A name of pool contract.
@@ -579,6 +597,9 @@ async getShareStatFake() {
    */
   async stake(poolName: ContractName, poolId: Number, amount: BigNumber): Promise<TransactionResponse> {
     const pool = this.contracts[poolName];
+    console.log('pool ==> ', pool);
+    console.log('poolId ===> ', poolId.toString());
+    console.log('amount ===> ', amount.toString());
     return await pool.deposit(poolId, amount);
   }
 

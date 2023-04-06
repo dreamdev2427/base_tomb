@@ -103,7 +103,7 @@ const Stake: React.FC<StakeProps> = ({ bank }) => {
             <Label text={`${bank.depositTokenName} Staked`} />
           </StyledCardHeader>
           <StyledCardActions>
-            {approveStatus !== ApprovalState.APPROVED ? (
+            {/* {approveStatus !== ApprovalState.APPROVED ? (
               <Button
                 disabled={
                   bank.closedForStaking ||
@@ -118,26 +118,26 @@ const Stake: React.FC<StakeProps> = ({ bank }) => {
                 {`Approve ${bank.depositTokenName}`}
               </Button>
             ) : (
-              <>
-                <IconButton onClick={onPresentWithdraw}>
-                  <RemoveIcon />
-                </IconButton>
-                <StyledActionSpacer />
-                {/* <IconButton
+              <> */}
+            <IconButton onClick={onPresentWithdraw}>
+              <RemoveIcon />
+            </IconButton>
+            <StyledActionSpacer />
+            {/* <IconButton
                   disabled={bank.closedForStaking || bank.depositTokenName === 'RRBOMB-ETH-LP'}
                   onClick={() => (bank.closedForStaking ? null : onPresentZap())}
                 >
                   <FlashOnIcon style={{ color: themeColor.grey[400] }} />
                 </IconButton> */}
-                <StyledActionSpacer />
-                <IconButton
-                  disabled={bank.closedForStaking}
-                  onClick={() => (bank.closedForStaking ? null : onPresentDeposit())}
-                >
-                  <AddIcon />
-                </IconButton>
-              </>
-            )}
+            <StyledActionSpacer />
+            <IconButton
+              disabled={bank.closedForStaking}
+              onClick={() => (bank.closedForStaking ? null : onPresentDeposit())}
+            >
+              <AddIcon />
+            </IconButton>
+            {/* </>
+            )} */}
           </StyledCardActions>
         </StyledCardContentInner>
       </CardContent>

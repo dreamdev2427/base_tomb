@@ -62,7 +62,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   */
   TombWrappedEthRewardPool: {
     name: 'Earn ARBOMB by staking WETH',
-    poolId: 0,
+    poolId: 3,
     sectionInUI: 0,
     contract: 'TombWrappedEthRewardPool',
     depositTokenName: 'wETH',
@@ -72,11 +72,11 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     site: 'https://fantom.foundation',
     buyLink: 'https://app.camelot.exchange',
     sort: 7,
-    closedForStaking: true,
+    closedForStaking: false,
   },
   TombUSDCRewardPool: {
     name: 'Earn USDC by staking WETH',
-    poolId: 1,
+    poolId: 4,
     sectionInUI: 0,
     contract: 'TombUSDCRewardPool',
     depositTokenName: 'USDC',
@@ -86,11 +86,11 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     site: 'https://fantom.foundation',
     buyLink: 'https://app.camelot.exchange',
     sort: 7,
-    closedForStaking: true,
+    closedForStaking: false,
   },
   TombARBRewardPool: {
     name: 'Earn USDC by staking WETH',
-    poolId: 2,
+    poolId: 5,
     sectionInUI: 0,
     contract: 'TombARBRewardPool',
     depositTokenName: 'ARB',
@@ -100,7 +100,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     site: 'https://fantom.foundation',
     buyLink: 'https://app.camelot.exchange',
     sort: 7,
-    closedForStaking: true,
+    closedForStaking: false,
   },
   TombEthLPTombRewardPool: {
     name: 'Earn ARBOMB by ARBOMB-ETH LP',
@@ -114,7 +114,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     buyLink: 'https://app.camelot.exchange',
     site: '',
     sort: 7,
-    closedForStaking: true,
+    closedForStaking: false,
   },
   TombARBLPTShareRewardPool: {
     name: 'Earn ARBSHARE by ARB',
