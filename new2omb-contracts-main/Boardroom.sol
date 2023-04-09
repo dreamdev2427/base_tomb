@@ -6,10 +6,10 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
+import "./owner/Operator.sol";
 import "./utils/ContractGuard.sol";
 import "./interfaces/IBasisAsset.sol";
 import "./interfaces/ITreasury.sol";
-import "./owner/Operator.sol";
 
 contract ShareWrapper {
     using SafeMath for uint256;
