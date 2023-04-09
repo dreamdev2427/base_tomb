@@ -3,8 +3,6 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "@uniswap/lib/contracts/libraries/Babylonian.sol";
-import "@uniswap/lib/contracts/libraries/FixedPoint.sol";
 import "./interfaces/IUniswapV2Pair.sol";
 import "./lib/UniswapV2OracleLibrary.sol";
 import "./utils/Epoch.sol";
