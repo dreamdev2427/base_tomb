@@ -7,9 +7,9 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-// Note that this pool has no minter key of RBX (rewards).
-// Instead, the governance will call RBX distributeReward method and send reward to this pool at the beginning.
-contract RBXRewardPool is ReentrancyGuard {
+// Note that this pool has no minter key of ARBs (rewards).
+// Instead, the governance will call ARBs distributeReward method and send reward to this pool at the beginning.
+contract ARBsRewardPool is ReentrancyGuard {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
@@ -26,13 +26,13 @@ contract RBXRewardPool is ReentrancyGuard {
     struct PoolInfo {
         IERC20 token; // Address of LP token contract.
         uint256 depFee; // deposit fee that is applied to created pool.
-        uint256 allocPoint; // How many allocation points assigned to this pool. RBXs to distribute per block.
-        uint256 lastRewardTime; // Last time that RBXs distribution occurs.
-        uint256 accRBXPerShare; // Accumulated RBXs per share, times 1e18. See below.
+        uint256 allocPoint; // How many allocation points assigned to this pool. ARBs to distribute per block.
+        uint256 lastRewardTime; // Last time that ARBs distribution occurs.
+        uint256 accARBsPerShare; // Accumulated ARBs per share, times 1e18. See below.
         bool isStarted; // if lastRewardTime has passed
     }
 
-    IERC20 public rbx;
+    IERC20 public arbShare;
 
     // Info of each pool.
     PoolInfo[] public poolInfo;
@@ -43,15 +43,15 @@ contract RBXRewardPool is ReentrancyGuard {
     // Total allocation points. Must be the sum of all allocation points in all pools.
     uint256 public totalAllocPoint = 0;
 
-    // The time when RBX mining starts.
+    // The time when ARBs mining starts.
     uint256 public poolStartTime;
 
-    // The time when RBX mining ends.
+    // The time when ARBs mining ends.
     uint256 public poolEndTime;
 
     address public daoFundAddress;
 
-    uint256 public rbxPerSecond = 0.003486 ether; // 50000 rbx / (166 days * 24h * 60min * 60s)
+    uint256 public arbSharePerSecond = 0.003486 ether; // 50000 arbShare / (166 days * 24h * 60min * 60s)
     uint256 public runningTime = 166 days; // 166 days
     uint256 public constant TOTAL_REWARDS = 50000 ether;
 
@@ -61,12 +61,12 @@ contract RBXRewardPool is ReentrancyGuard {
     event RewardPaid(address indexed user, uint256 amount);
 
     constructor(
-        address _rbx,
+        address _arbShare,
         address _daoFund,
         uint256 _poolStartTime
     ) {
         require(block.timestamp < _poolStartTime, "pool cant be started in the past");
-        if (_rbx != address(0)) rbx = IERC20(_rbx);
+        if (_arbShare != address(0)) arbShare = IERC20(_arbShare);
         if(_daoFund != address(0)) daoFundAddress = _daoFund;
 
         poolStartTime = _poolStartTime;
@@ -75,14 +75,14 @@ contract RBXRewardPool is ReentrancyGuard {
     }
 
     modifier onlyOperator() {
-        require(operator == msg.sender, "RBXRewardPool: caller is not the operator");
+        require(operator == msg.sender, "ARBsRewardPool: caller is not the operator");
         _;
     }
 
     function checkPoolDuplicate(IERC20 _token) internal view {
         uint256 length = poolInfo.length;
         for (uint256 pid = 0; pid < length; ++pid) {
-            require(poolInfo[pid].token != _token, "RBXRewardPool: existing pool?");
+            require(poolInfo[pid].token != _token, "ARBsRewardPool: existing pool?");
         }
     }
 
@@ -120,7 +120,7 @@ contract RBXRewardPool is ReentrancyGuard {
             depFee: _depFee,
             allocPoint: _allocPoint,
             lastRewardTime: _lastRewardTime,
-            accRBXPerShare: 0,
+            accARBsPerShare: 0,
             isStarted: _isStarted
         }));
         if (_isStarted) {
@@ -128,7 +128,7 @@ contract RBXRewardPool is ReentrancyGuard {
         }
     }
 
-    // Update the given pool's RBX allocation point. Can only be called by the operator.
+    // Update the given pool's ARBs allocation point. Can only be called by the operator.
     // @allocPoints for TEAM can NOT be altered after added - PID 2
     // @allocPoints for main LP pools can NOT be smaller than 12,000
     function set(uint256 _pid, uint256 _allocPoint, uint256 _depFee) public onlyOperator {
@@ -160,27 +160,27 @@ contract RBXRewardPool is ReentrancyGuard {
         if (_fromTime >= _toTime) return 0;
         if (_toTime >= poolEndTime) {
             if (_fromTime >= poolEndTime) return 0;
-            if (_fromTime <= poolStartTime) return poolEndTime.sub(poolStartTime).mul(rbxPerSecond);
-            return poolEndTime.sub(_fromTime).mul(rbxPerSecond);
+            if (_fromTime <= poolStartTime) return poolEndTime.sub(poolStartTime).mul(arbSharePerSecond);
+            return poolEndTime.sub(_fromTime).mul(arbSharePerSecond);
         } else {
             if (_toTime <= poolStartTime) return 0;
-            if (_fromTime <= poolStartTime) return _toTime.sub(poolStartTime).mul(rbxPerSecond);
-            return _toTime.sub(_fromTime).mul(rbxPerSecond);
+            if (_fromTime <= poolStartTime) return _toTime.sub(poolStartTime).mul(arbSharePerSecond);
+            return _toTime.sub(_fromTime).mul(arbSharePerSecond);
         }
     }
 
-    // View function to see pending RBXs on frontend.
+    // View function to see pending ARBs on frontend.
     function pendingShare(uint256 _pid, address _user) external view returns (uint256) {
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][_user];
-        uint256 accRBXPerShare = pool.accRBXPerShare;
+        uint256 accARBsPerShare = pool.accARBsPerShare;
         uint256 tokenSupply = pool.token.balanceOf(address(this));
         if (block.timestamp > pool.lastRewardTime && tokenSupply != 0) {
             uint256 _generatedReward = getGeneratedReward(pool.lastRewardTime, block.timestamp);
-            uint256 _rbxReward = _generatedReward.mul(pool.allocPoint).div(totalAllocPoint);
-            accRBXPerShare = accRBXPerShare.add(_rbxReward.mul(1e18).div(tokenSupply));
+            uint256 _arbShareReward = _generatedReward.mul(pool.allocPoint).div(totalAllocPoint);
+            accARBsPerShare = accARBsPerShare.add(_arbShareReward.mul(1e18).div(tokenSupply));
         }
-        return user.amount.mul(accRBXPerShare).div(1e18).sub(user.rewardDebt);
+        return user.amount.mul(accARBsPerShare).div(1e18).sub(user.rewardDebt);
     }
 
     // Update reward variables for all pools. Be careful of gas spending!
@@ -208,8 +208,8 @@ contract RBXRewardPool is ReentrancyGuard {
         }
         if (totalAllocPoint > 0) {
             uint256 _generatedReward = getGeneratedReward(pool.lastRewardTime, block.timestamp);
-            uint256 _rbxReward = _generatedReward.mul(pool.allocPoint).div(totalAllocPoint);
-            pool.accRBXPerShare = pool.accRBXPerShare.add(_rbxReward.mul(1e18).div(tokenSupply));
+            uint256 _arbShareReward = _generatedReward.mul(pool.allocPoint).div(totalAllocPoint);
+            pool.accARBsPerShare = pool.accARBsPerShare.add(_arbShareReward.mul(1e18).div(tokenSupply));
         }
         pool.lastRewardTime = block.timestamp;
     }
@@ -221,9 +221,9 @@ contract RBXRewardPool is ReentrancyGuard {
         UserInfo storage user = userInfo[_pid][_sender];
         updatePool(_pid);
         if (user.amount > 0) {
-            uint256 _pending = user.amount.mul(pool.accRBXPerShare).div(1e18).sub(user.rewardDebt);
+            uint256 _pending = user.amount.mul(pool.accARBsPerShare).div(1e18).sub(user.rewardDebt);
             if (_pending > 0) {
-                safeRBXTransfer(_sender, _pending);
+                safeARBsTransfer(_sender, _pending);
                 emit RewardPaid(_sender, _pending);
             }
         }
@@ -233,7 +233,7 @@ contract RBXRewardPool is ReentrancyGuard {
             user.amount = user.amount.add(_amount.sub(depositDebt));
             pool.token.safeTransfer(daoFundAddress, depositDebt);
         }
-        user.rewardDebt = user.amount.mul(pool.accRBXPerShare).div(1e18);
+        user.rewardDebt = user.amount.mul(pool.accARBsPerShare).div(1e18);
         emit Deposit(_sender, _pid, _amount);
     }
 
@@ -244,16 +244,16 @@ contract RBXRewardPool is ReentrancyGuard {
         UserInfo storage user = userInfo[_pid][_sender];
         require(user.amount >= _amount, "withdraw: not good");
         updatePool(_pid);
-        uint256 _pending = user.amount.mul(pool.accRBXPerShare).div(1e18).sub(user.rewardDebt);
+        uint256 _pending = user.amount.mul(pool.accARBsPerShare).div(1e18).sub(user.rewardDebt);
         if (_pending > 0) {
-            safeRBXTransfer(_sender, _pending);
+            safeARBsTransfer(_sender, _pending);
             emit RewardPaid(_sender, _pending);
         }
         if (_amount > 0) {
             user.amount = user.amount.sub(_amount);
             pool.token.safeTransfer(_sender, _amount);
         }
-        user.rewardDebt = user.amount.mul(pool.accRBXPerShare).div(1e18);
+        user.rewardDebt = user.amount.mul(pool.accARBsPerShare).div(1e18);
         emit Withdraw(_sender, _pid, _amount);
     }
 
@@ -268,14 +268,14 @@ contract RBXRewardPool is ReentrancyGuard {
         emit EmergencyWithdraw(msg.sender, _pid, _amount);
     }
 
-    // Safe rbx transfer function, just in case if rounding error causes pool to not have enough RBXs.
-    function safeRBXTransfer(address _to, uint256 _amount) internal {
-        uint256 _rbxBal = rbx.balanceOf(address(this));
-        if (_rbxBal > 0) {
-            if (_amount > _rbxBal) {
-                rbx.safeTransfer(_to, _rbxBal);
+    // Safe arbShare transfer function, just in case if rounding error causes pool to not have enough ARBs.
+    function safeARBsTransfer(address _to, uint256 _amount) internal {
+        uint256 _arbShareBal = arbShare.balanceOf(address(this));
+        if (_arbShareBal > 0) {
+            if (_amount > _arbShareBal) {
+                arbShare.safeTransfer(_to, _arbShareBal);
             } else {
-                rbx.safeTransfer(_to, _amount);
+                arbShare.safeTransfer(_to, _amount);
             }
         }
     }

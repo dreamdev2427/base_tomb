@@ -40,16 +40,16 @@ contract Treasury is ContractGuard, Operator {
     ];
 
     // core components
-    address public rb;
-    address public rbond;
-    address public rbx;
+    address public arbt;
+    address public arbBond;
+    address public arbShare;
 
     address public boardroom;
-    address public rbOracle;
+    address public arbtOracle;
 
     // price
-    uint256 public rbPriceOne;
-    uint256 public rbPriceCeiling;
+    uint256 public arbtPriceOne;
+    uint256 public arbtPriceCeiling;
 
     uint256 public seigniorageSaved;
 
@@ -62,18 +62,18 @@ contract Treasury is ContractGuard, Operator {
     uint256 public maxSupplyContractionPercent;
     uint256 public maxDebtRatioPercent;
 
-    // 14 first epochs (0.5 week) with 4.5% expansion regardless of RB price
+    // 14 first epochs (0.5 week) with 4.5% expansion regardless of ARBt price
     uint256 public bootstrapEpochs;
     uint256 public bootstrapSupplyExpansionPercent;
 
     /* =================== Added variables =================== */
-    uint256 public previousEpochRBPrice;
+    uint256 public previousEpochARBtPrice;
     uint256 public maxDiscountRate; // when purchasing bond
     uint256 public maxPremiumRate;  // when redeeming bond
     uint256 public discountPercent;
     uint256 public premiumThreshold;
     uint256 public premiumPercent;
-    uint256 public mintingFactorForPayingDebt; // print extra RB during debt phase
+    uint256 public mintingFactorForPayingDebt; // print extra ARBt during debt phase
 
     address public daoFund;
     uint256 public daoFundSharedPercent;
@@ -89,8 +89,8 @@ contract Treasury is ContractGuard, Operator {
 
     event Initialized(address indexed executor, uint256 at);
     event BurnedBonds(address indexed from, uint256 bondAmount);
-    event RedeemedBonds(address indexed from, uint256 rbAmount, uint256 bondAmount);
-    event BoughtBonds(address indexed from, uint256 rbAmount, uint256 bondAmount);
+    event RedeemedBonds(address indexed from, uint256 arbtAmount, uint256 bondAmount);
+    event BoughtBonds(address indexed from, uint256 arbtAmount, uint256 bondAmount);
     event TreasuryFunded(uint256 timestamp, uint256 seigniorage);
     event AcropolisFunded(uint256 timestamp, uint256 seigniorage);
     event DaoFundFunded(uint256 timestamp, uint256 seigniorage);
@@ -111,14 +111,14 @@ contract Treasury is ContractGuard, Operator {
         _;
 
         epoch = epoch.add(1);
-        epochSupplyContractionLeft = (getRBPrice() > rbPriceCeiling) ? 0 : getRBCirculatingSupply().mul(maxSupplyContractionPercent).div(10000);
+        epochSupplyContractionLeft = (getARBtPrice() > arbtPriceCeiling) ? 0 : getARBtCirculatingSupply().mul(maxSupplyContractionPercent).div(10000);
     }
 
     modifier checkOperator {
         require(
-                IBasisAsset(rb).operator() == address(this) &&
-                IBasisAsset(rbond).operator() == address(this) &&
-                IBasisAsset(rbx).operator() == address(this) &&
+                IBasisAsset(arbt).operator() == address(this) &&
+                IBasisAsset(arbBond).operator() == address(this) &&
+                IBasisAsset(arbShare).operator() == address(this) &&
                 Operator(boardroom).operator() == address(this),
             "Treasury: need more permission"
         );
@@ -144,19 +144,19 @@ contract Treasury is ContractGuard, Operator {
     }
 
     // oracle
-    function getRBPrice() public view returns (uint256 rbPrice) {
-        try IOracle(rbOracle).consult(rb, 1e18) returns (uint144 price) {
+    function getARBtPrice() public view returns (uint256 arbtPrice) {
+        try IOracle(arbtOracle).consult(arbt, 1e18) returns (uint144 price) {
             return uint256(price);
         } catch {
-            revert("Treasury: failed to consult RB price from the oracle");
+            revert("Treasury: failed to consult ARBt price from the oracle");
         }
     }
 
-    function getRBUpdatedPrice() public view returns (uint256 _rbPrice) {
-        try IOracle(rbOracle).twap(rb, 1e18) returns (uint144 price) {
+    function getRBUpdatedPrice() public view returns (uint256 _arbtPrice) {
+        try IOracle(arbtOracle).twap(arbt, 1e18) returns (uint144 price) {
             return uint256(price);
         } catch {
-            revert("Treasury: failed to consult RB price from the oracle");
+            revert("Treasury: failed to consult ARBt price from the oracle");
         }
     }
 
@@ -165,41 +165,41 @@ contract Treasury is ContractGuard, Operator {
         return seigniorageSaved;
     }
 
-    function getBurnableRBLeft() public view returns (uint256 _burnableRBLeft) {
-        uint256 _rbPrice = getRBPrice();
-        if (_rbPrice <= rbPriceOne) {
-            uint256 _rbSupply = getRBCirculatingSupply();
-            uint256 _bondMaxSupply = _rbSupply.mul(maxDebtRatioPercent).div(10000);
-            uint256 _bondSupply = IERC20(rbond).totalSupply();
+    function getBurnableARBtLeft() public view returns (uint256 _burnableARBtLeft) {
+        uint256 _arbtPrice = getARBtPrice();
+        if (_arbtPrice <= arbtPriceOne) {
+            uint256 _arbtSupply = getARBtCirculatingSupply();
+            uint256 _bondMaxSupply = _arbtSupply.mul(maxDebtRatioPercent).div(10000);
+            uint256 _bondSupply = IERC20(arbBond).totalSupply();
             if (_bondMaxSupply > _bondSupply) {
                 uint256 _maxMintableBond = _bondMaxSupply.sub(_bondSupply);
-                uint256 _maxBurnableRB = _maxMintableBond.mul(_rbPrice).div(1e18);
-                _burnableRBLeft = Math.min(epochSupplyContractionLeft, _maxBurnableRB);
+                uint256 _maxBurnableRB = _maxMintableBond.mul(_arbtPrice).div(1e18);
+                _burnableARBtLeft = Math.min(epochSupplyContractionLeft, _maxBurnableRB);
             }
         }
     }
 
     function getRedeemableBonds() public view returns (uint256 _redeemableBonds) {
-        uint256 _rbPrice = getRBPrice();
-        if (_rbPrice > rbPriceCeiling) {
-            uint256 _totalRB = IERC20(rb).balanceOf(address(this));
+        uint256 _arbtPrice = getARBtPrice();
+        if (_arbtPrice > arbtPriceCeiling) {
+            uint256 _totalARBt = IERC20(arbt).balanceOf(address(this));
             uint256 _rate = getBondPremiumRate();
             if (_rate > 0) {
-                _redeemableBonds = _totalRB.mul(1e18).div(_rate);
+                _redeemableBonds = _totalARBt.mul(1e18).div(_rate);
             }
         }
     }
 
     function getBondDiscountRate() public view returns (uint256 _rate) {
-        uint256 _rbPrice = getRBPrice();
-        if (_rbPrice <= rbPriceOne) {
+        uint256 _arbtPrice = getARBtPrice();
+        if (_arbtPrice <= arbtPriceOne) {
             if (discountPercent == 0) {
                 // no discount
-                _rate = rbPriceOne;
+                _rate = arbtPriceOne;
             } else {
-                uint256 _bondAmount = rbPriceOne.mul(1e18).div(_rbPrice); // to burn 1 RB
-                uint256 _discountAmount = _bondAmount.sub(rbPriceOne).mul(discountPercent).div(10000);
-                _rate = rbPriceOne.add(_discountAmount);
+                uint256 _bondAmount = arbtPriceOne.mul(1e18).div(_arbtPrice); // to burn 1 ARBt
+                uint256 _discountAmount = _bondAmount.sub(arbtPriceOne).mul(discountPercent).div(10000);
+                _rate = arbtPriceOne.add(_discountAmount);
                 if (maxDiscountRate > 0 && _rate > maxDiscountRate) {
                     _rate = maxDiscountRate;
                 }
@@ -208,19 +208,19 @@ contract Treasury is ContractGuard, Operator {
     }
 
     function getBondPremiumRate() public view returns (uint256 _rate) {
-        uint256 _rbPrice = getRBPrice();
-        if (_rbPrice > rbPriceCeiling) {
-            uint256 _rbPricePremiumThreshold = rbPriceOne.mul(premiumThreshold).div(100);
-            if (_rbPrice >= _rbPricePremiumThreshold) {
+        uint256 _arbtPrice = getARBtPrice();
+        if (_arbtPrice > arbtPriceCeiling) {
+            uint256 _arbtPricePremiumThreshold = arbtPriceOne.mul(premiumThreshold).div(100);
+            if (_arbtPrice >= _arbtPricePremiumThreshold) {
                 //Price > 1.10
-                uint256 _premiumAmount = _rbPrice.sub(rbPriceOne).mul(premiumPercent).div(10000);
-                _rate = rbPriceOne.add(_premiumAmount);
+                uint256 _premiumAmount = _arbtPrice.sub(arbtPriceOne).mul(premiumPercent).div(10000);
+                _rate = arbtPriceOne.add(_premiumAmount);
                 if (maxPremiumRate > 0 && _rate > maxPremiumRate) {
                     _rate = maxPremiumRate;
                 }
             } else {
                 // no premium bonus
-                _rate = rbPriceOne;
+                _rate = arbtPriceOne;
             }
         }
     }
@@ -228,22 +228,22 @@ contract Treasury is ContractGuard, Operator {
     /* ========== GOVERNANCE ========== */
 
     function initialize(
-        address _rb,
-        address _rbond,
-        address _rbx,
-        address _rbOracle,
+        address _arbt,
+        address _arbBond,
+        address _arbShare,
+        address _arbtOracle,
         address _boardroom,
         uint256 _startTime
     ) public notInitialized onlyOperator {
-        rb = _rb;
-        rbond = _rbond;
-        rbx = _rbx;
-        rbOracle = _rbOracle;
+        arbt = _arbt;
+        arbBond = _arbBond;
+        arbShare = _arbShare;
+        arbtOracle = _arbtOracle;
         boardroom = _boardroom;
         startTime = _startTime;
 
-        rbPriceOne = 10 ** 18;
-        rbPriceCeiling = rbPriceOne.mul(101).div(100);
+        arbtPriceOne = 10 ** 18;
+        arbtPriceCeiling = arbtPriceOne.mul(101).div(100);
 
         // Dynamic max expansion percent
         supplyTiers = [0 ether, 206000 ether, 386000 ether, 530000 ether, 1300000 ether, 5000000 ether, 10000000 ether];
@@ -253,7 +253,7 @@ contract Treasury is ContractGuard, Operator {
 
         bondDepletionFloorPercent = 10000; // 100% of Bond supply for depletion floor
         seigniorageExpansionFloorPercent = 3500; // At least 35% of expansion reserved for boardroom
-        maxSupplyContractionPercent = 300; // Upto 3.0% supply for contraction (to burn RB and mint RBOND)
+        maxSupplyContractionPercent = 300; // Upto 3.0% supply for contraction (to burn ARBt and mint RBOND)
         maxDebtRatioPercent = 3500; // Upto 35% supply of RBOND to purchase
 
         premiumThreshold = 110;
@@ -264,7 +264,7 @@ contract Treasury is ContractGuard, Operator {
         bootstrapSupplyExpansionPercent = 600;
 
         // set seigniorageSaved to it's balance
-        seigniorageSaved = IERC20(rb).balanceOf(address(this));
+        seigniorageSaved = IERC20(arbt).balanceOf(address(this));
 
         initialized = true;
         emit Initialized(msg.sender, block.number);
@@ -282,13 +282,13 @@ contract Treasury is ContractGuard, Operator {
         boardroom = _boardroom;
     }
 
-    function setRBOracle(address _rbOracle) external onlyOperator {
-        rbOracle = _rbOracle;
+    function setRBOracle(address _arbtOracle) external onlyOperator {
+        arbtOracle = _arbtOracle;
     }
 
-    function setRBPriceCeiling(uint256 _rbPriceCeiling) external onlyOperator {
-        require(_rbPriceCeiling >= rbPriceOne && _rbPriceCeiling <= rbPriceOne.mul(120).div(100), "out of range"); // [$1.0, $1.2]
-        rbPriceCeiling = _rbPriceCeiling;
+    function setRBPriceCeiling(uint256 _arbtPriceCeiling) external onlyOperator {
+        require(_arbtPriceCeiling >= arbtPriceOne && _arbtPriceCeiling <= arbtPriceOne.mul(120).div(100), "out of range"); // [$1.0, $1.2]
+        arbtPriceCeiling = _arbtPriceCeiling;
     }
 
     function setMaxSupplyExpansionPercents(uint256 _maxSupplyExpansionPercent) external onlyOperator {
@@ -378,7 +378,7 @@ contract Treasury is ContractGuard, Operator {
     }
 
     function setPremiumThreshold(uint256 _premiumThreshold) external onlyOperator {
-        require(_premiumThreshold >= rbPriceCeiling, "_premiumThreshold exceeds rbPriceCeiling");
+        require(_premiumThreshold >= arbtPriceCeiling, "_premiumThreshold exceeds arbtPriceCeiling");
         require(_premiumThreshold <= 150, "_premiumThreshold is higher than 1.5");
         premiumThreshold = _premiumThreshold;
     }
@@ -395,110 +395,110 @@ contract Treasury is ContractGuard, Operator {
 
     /* ========== MUTABLE FUNCTIONS ========== */
 
-    function _updateRBPrice() internal {
-        try IOracle(rbOracle).update() {} catch {}
+    function _updateARBtPrice() internal {
+        try IOracle(arbtOracle).update() {} catch {}
     }
 
-    function getRBCirculatingSupply() public view returns (uint256) {
-        IERC20 rbErc20 = IERC20(rb);
-        uint256 totalSupply = rbErc20.totalSupply();
+    function getARBtCirculatingSupply() public view returns (uint256) {
+        IERC20 arbtErc20 = IERC20(arbt);
+        uint256 totalSupply = arbtErc20.totalSupply();
         uint256 balanceExcluded = 0;
         for (uint8 entryId = 0; entryId < excludedFromTotalSupply.length; ++entryId) {
-            balanceExcluded = balanceExcluded.add(rbErc20.balanceOf(excludedFromTotalSupply[entryId]));
+            balanceExcluded = balanceExcluded.add(arbtErc20.balanceOf(excludedFromTotalSupply[entryId]));
         }
         return totalSupply.sub(balanceExcluded);
     }
 
-    function buyBonds(uint256 _rbAmount, uint256 targetPrice) external onlyOneBlock checkCondition checkOperator {
-        require(_rbAmount > 0, "Treasury: cannot purchase bonds with zero amount");
+    function buyBonds(uint256 _arbtAmount, uint256 targetPrice) external onlyOneBlock checkCondition checkOperator {
+        require(_arbtAmount > 0, "Treasury: cannot purchase bonds with zero amount");
 
-        uint256 rbPrice = getRBPrice();
-        require(rbPrice == targetPrice, "Treasury: RB price moved");
+        uint256 arbtPrice = getARBtPrice();
+        require(arbtPrice == targetPrice, "Treasury: ARBt price moved");
         require(
-            rbPrice < rbPriceOne, // price < $1
-            "Treasury: rbPrice not eligible for bond purchase"
+            arbtPrice < arbtPriceOne, // price < $1
+            "Treasury: arbtPrice not eligible for bond purchase"
         );
 
-        require(_rbAmount <= epochSupplyContractionLeft, "Treasury: not enough bond left to purchase");
+        require(_arbtAmount <= epochSupplyContractionLeft, "Treasury: not enough bond left to purchase");
 
         uint256 _rate = getBondDiscountRate();
         require(_rate > 0, "Treasury: invalid bond rate");
 
-        uint256 _bondAmount = _rbAmount.mul(_rate).div(1e18);
-        uint256 rbSupply = getRBCirculatingSupply();
-        uint256 newBondSupply = IERC20(rbond).totalSupply().add(_bondAmount);
-        require(newBondSupply <= rbSupply.mul(maxDebtRatioPercent).div(10000), "over max debt ratio");
+        uint256 _bondAmount = _arbtAmount.mul(_rate).div(1e18);
+        uint256 arbtSupply = getARBtCirculatingSupply();
+        uint256 newBondSupply = IERC20(arbBond).totalSupply().add(_bondAmount);
+        require(newBondSupply <= arbtSupply.mul(maxDebtRatioPercent).div(10000), "over max debt ratio");
 
-        IBasisAsset(rb).burnFrom(msg.sender, _rbAmount);
-        IBasisAsset(rbond).mint(msg.sender, _bondAmount);
+        IBasisAsset(arbt).burnFrom(msg.sender, _arbtAmount);
+        IBasisAsset(arbBond).mint(msg.sender, _bondAmount);
 
-        epochSupplyContractionLeft = epochSupplyContractionLeft.sub(_rbAmount);
-        _updateRBPrice();
+        epochSupplyContractionLeft = epochSupplyContractionLeft.sub(_arbtAmount);
+        _updateARBtPrice();
 
-        emit BoughtBonds(msg.sender, _rbAmount, _bondAmount);
+        emit BoughtBonds(msg.sender, _arbtAmount, _bondAmount);
     }
 
     function redeemBonds(uint256 _bondAmount, uint256 targetPrice) external onlyOneBlock checkCondition checkOperator {
         require(_bondAmount > 0, "Treasury: cannot redeem bonds with zero amount");
 
-        uint256 rbPrice = getRBPrice();
-        require(rbPrice == targetPrice, "Treasury: RB price moved");
+        uint256 arbtPrice = getARBtPrice();
+        require(arbtPrice == targetPrice, "Treasury: ARBt price moved");
         require(
-            rbPrice > rbPriceCeiling, // price > $1.01
-            "Treasury: rbPrice not eligible for bond purchase"
+            arbtPrice > arbtPriceCeiling, // price > $1.01
+            "Treasury: arbtPrice not eligible for bond purchase"
         );
 
         uint256 _rate = getBondPremiumRate();
         require(_rate > 0, "Treasury: invalid bond rate");
 
-        uint256 _rbAmount = _bondAmount.mul(_rate).div(1e18);
-        require(IERC20(rb).balanceOf(address(this)) >= _rbAmount, "Treasury: treasury has no more budget");
+        uint256 _arbtAmount = _bondAmount.mul(_rate).div(1e18);
+        require(IERC20(arbt).balanceOf(address(this)) >= _arbtAmount, "Treasury: treasury has no more budget");
 
-        seigniorageSaved = seigniorageSaved.sub(Math.min(seigniorageSaved, _rbAmount));
+        seigniorageSaved = seigniorageSaved.sub(Math.min(seigniorageSaved, _arbtAmount));
 
-        IBasisAsset(rbond).burnFrom(msg.sender, _bondAmount);
-        IERC20(rb).safeTransfer(msg.sender, _rbAmount);
+        IBasisAsset(arbBond).burnFrom(msg.sender, _bondAmount);
+        IERC20(arbt).safeTransfer(msg.sender, _arbtAmount);
 
-        _updateRBPrice();
+        _updateARBtPrice();
 
-        emit RedeemedBonds(msg.sender, _rbAmount, _bondAmount);
+        emit RedeemedBonds(msg.sender, _arbtAmount, _bondAmount);
     }
 
     function _sendToAcropolis(uint256 _amount) internal {
-        IBasisAsset(rb).mint(address(this), _amount);
+        IBasisAsset(arbt).mint(address(this), _amount);
 
         uint256 _daoFundSharedAmount = 0;
         if (daoFundSharedPercent > 0) {
             _daoFundSharedAmount = _amount.mul(daoFundSharedPercent).div(10000);
-            IERC20(rb).transfer(daoFund, _daoFundSharedAmount);
+            IERC20(arbt).transfer(daoFund, _daoFundSharedAmount);
             emit DaoFundFunded(block.timestamp, _daoFundSharedAmount);
         }
 
         uint256 _devFundSharedAmount = 0;
         if (devFundSharedPercent > 0) {
             _devFundSharedAmount = _amount.mul(devFundSharedPercent).div(10000);
-            IERC20(rb).transfer(devFund, _devFundSharedAmount);
+            IERC20(arbt).transfer(devFund, _devFundSharedAmount);
             emit DevFundFunded(block.timestamp, _devFundSharedAmount);
         }
 
         uint256 _teamFundSharedAmount = 0;
         if (teamFundSharedPercent > 0) {
             _teamFundSharedAmount = _amount.mul(teamFundSharedPercent).div(10000);
-            IERC20(rb).transfer(teamFund, _teamFundSharedAmount);
+            IERC20(arbt).transfer(teamFund, _teamFundSharedAmount);
             emit TeamFundFunded(block.timestamp, _teamFundSharedAmount);
         }
 
         _amount = _amount.sub(_daoFundSharedAmount).sub(_devFundSharedAmount).sub(_teamFundSharedAmount);
 
-        IERC20(rb).safeApprove(boardroom, 0);
-        IERC20(rb).safeApprove(boardroom, _amount);
+        IERC20(arbt).safeApprove(boardroom, 0);
+        IERC20(arbt).safeApprove(boardroom, _amount);
         IBoardroom(boardroom).allocateSeigniorage(_amount);
         emit AcropolisFunded(block.timestamp, _amount);
     }
 
-    function _calculateMaxSupplyExpansionPercent(uint256 _rbSupply) internal returns (uint256) {
+    function _calculateMaxSupplyExpansionPercent(uint256 _arbtSupply) internal returns (uint256) {
         for (uint8 tierId = 6; tierId >= 0; --tierId) {
-            if (_rbSupply >= supplyTiers[tierId]) {
+            if (_arbtSupply >= supplyTiers[tierId]) {
                 maxSupplyExpansionPercent = maxExpansionTiers[tierId];
                 break;
             }
@@ -507,29 +507,29 @@ contract Treasury is ContractGuard, Operator {
     }
 
     function allocateSeigniorage() external onlyOneBlock checkCondition checkEpoch checkOperator {
-        _updateRBPrice();
-        previousEpochRBPrice = getRBPrice();
-        uint256 rbSupply = getRBCirculatingSupply().sub(seigniorageSaved);
+        _updateARBtPrice();
+        previousEpochARBtPrice = getARBtPrice();
+        uint256 arbtSupply = getARBtCirculatingSupply().sub(seigniorageSaved);
         if (epoch < bootstrapEpochs) {
             // 14 first epochs with 6% expansion
-            _sendToAcropolis(rbSupply.mul(bootstrapSupplyExpansionPercent).div(10000));
+            _sendToAcropolis(arbtSupply.mul(bootstrapSupplyExpansionPercent).div(10000));
         } else {
-            if (previousEpochRBPrice > rbPriceCeiling) {
-                // Expansion ($RB Price > 1 $FTM): there is some seigniorage to be allocated
-                uint256 bondSupply = IERC20(rbond).totalSupply();
-                uint256 _percentage = previousEpochRBPrice.sub(rbPriceOne);
+            if (previousEpochARBtPrice > arbtPriceCeiling) {
+                // Expansion ($ARBt Price > 1 $FTM): there is some seigniorage to be allocated
+                uint256 bondSupply = IERC20(arbBond).totalSupply();
+                uint256 _percentage = previousEpochARBtPrice.sub(arbtPriceOne);
                 uint256 _savedForBond;
                 uint256 _savedForAcropolis;
-                uint256 _mse = _calculateMaxSupplyExpansionPercent(rbSupply).mul(1e14);
+                uint256 _mse = _calculateMaxSupplyExpansionPercent(arbtSupply).mul(1e14);
                 if (_percentage > _mse) {
                     _percentage = _mse;
                 }
                 if (seigniorageSaved >= bondSupply.mul(bondDepletionFloorPercent).div(10000)) {
                     // saved enough to pay debt, mint as usual rate
-                    _savedForAcropolis = rbSupply.mul(_percentage).div(1e18);
+                    _savedForAcropolis = arbtSupply.mul(_percentage).div(1e18);
                 } else {
                     // have not saved enough to pay debt, mint more
-                    uint256 _seigniorage = rbSupply.mul(_percentage).div(1e18);
+                    uint256 _seigniorage = arbtSupply.mul(_percentage).div(1e18);
                     _savedForAcropolis = _seigniorage.mul(seigniorageExpansionFloorPercent).div(10000);
                     _savedForBond = _seigniorage.sub(_savedForAcropolis);
                     if (mintingFactorForPayingDebt > 0) {
@@ -541,7 +541,7 @@ contract Treasury is ContractGuard, Operator {
                 }
                 if (_savedForBond > 0) {
                     seigniorageSaved = seigniorageSaved.add(_savedForBond);
-                    IBasisAsset(rb).mint(address(this), _savedForBond);
+                    IBasisAsset(arbt).mint(address(this), _savedForBond);
                     emit TreasuryFunded(block.timestamp, _savedForBond);
                 }
             }
@@ -555,9 +555,9 @@ contract Treasury is ContractGuard, Operator {
         address _to
     ) external onlyOperator {
         // do not allow to drain core tokens
-        require(address(_token) != address(rb), "rb");
-        require(address(_token) != address(rbond), "bond");
-        require(address(_token) != address(rbx), "share");
+        require(address(_token) != address(arbt), "arbt");
+        require(address(_token) != address(arbBond), "bond");
+        require(address(_token) != address(arbShare), "share");
         _token.safeTransfer(_to, _amount);
     }
 

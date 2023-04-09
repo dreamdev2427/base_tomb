@@ -9,15 +9,15 @@ import "./lib/SafeMath8.sol";
 import "./owner/Operator.sol";
 import "./interfaces/IOracle.sol";
 
-contract RB is ERC20Burnable, Operator {
+contract ARBt is ERC20Burnable, Operator {
     using SafeMath8 for uint8;
     using SafeMath for uint256;
 
     // Initial distribution for the first 48h genesis pools
-    // total of rb we pay to users during genesis
+    // total of ARBt we pay to users during genesis
     uint256 public constant INITIAL_GENESIS_POOL_DISTRIBUTION = 27500 ether;
 
-    // DAO FUND INITIAL ALLOCATION IS 1000 RB
+    // DAO FUND INITIAL ALLOCATION IS 1000 ARBt
     uint256 public constant INITIAL_DAOFUND_DISTRIBUTION = 1000 ether;
 
 
@@ -26,35 +26,35 @@ contract RB is ERC20Burnable, Operator {
 
 
     // Address of the Oracle
-    address public rbOracle;
+    address public arbtOracle;
 
     /**
-     * @notice Constructs the RB ERC-20 contract.
+     * @notice Constructs the ARBt ERC-20 contract.
      */
-    constructor() ERC20("RB Finance", "RB") {
-        // Mints 5000 RB to contract creator for initial pool setup
+    constructor() ERC20("ARBtomb", "ARBt") {
+        // Mints 5000 ARBt to contract creator for initial pool setup
 
         _mint(msg.sender, 5000 ether);
 
     }
 
-    function _getRBPrice() internal view returns (uint256 _rbPrice) {
-        try IOracle(rbOracle).consult(address(this), 1e18) returns (uint144 _price) {
+    function _getARBtPrice() internal view returns (uint256 _arbtPrice) {
+        try IOracle(arbtOracle).consult(address(this), 1e18) returns (uint144 _price) {
             return uint256(_price);
         } catch {
-            revert("RB: failed to fetch RB price from Oracle");
+            revert("ARBt: failed to fetch ARBt price from Oracle");
         }
     }
 
-    function setRBOracle(address _rbOracle) public onlyOperator {
-        require(_rbOracle != address(0), "oracle address cannot be 0 address");
-        rbOracle = _rbOracle;
+    function setARBtOracle(address _arbtOracle) public onlyOperator {
+        require(_arbtOracle != address(0), "oracle address cannot be 0 address");
+        arbtOracle = _arbtOracle;
     }
 
     /**
-     * @notice Operator mints RB to a recipient
+     * @notice Operator mints ARBt to a recipient
      * @param recipient_ The address of recipient
-     * @param amount_ The amount of RB to mint to
+     * @param amount_ The amount of ARBt to mint to
      * @return whether the process has been done
      */
     function mint(address recipient_, uint256 amount_) public onlyOperator returns (bool) {

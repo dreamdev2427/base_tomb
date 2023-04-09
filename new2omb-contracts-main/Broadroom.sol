@@ -15,7 +15,7 @@ contract ShareWrapper {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
-    IERC20 public rbx;
+    IERC20 public arbShare;
 
     uint256 private _totalSupply;
     mapping(address => uint256) private _balances;
@@ -31,7 +31,7 @@ contract ShareWrapper {
     function stake(uint256 amount) public virtual {
         _totalSupply = _totalSupply.add(amount);
         _balances[msg.sender] = _balances[msg.sender].add(amount);
-        rbx.safeTransferFrom(msg.sender, address(this), amount);
+        arbShare.safeTransferFrom(msg.sender, address(this), amount);
     }
 
     function withdraw(uint256 amount) public virtual {
@@ -39,7 +39,7 @@ contract ShareWrapper {
         require(andrasShare >= amount, "Boardroom: withdraw request greater than staked amount");
         _totalSupply = _totalSupply.sub(amount);
         _balances[msg.sender] = andrasShare.sub(amount);
-        rbx.safeTransfer(msg.sender, amount);
+        arbShare.safeTransfer(msg.sender, amount);
     }
 }
 
@@ -67,7 +67,7 @@ contract Boardroom is ShareWrapper, ContractGuard, Operator {
     // flags
     bool public initialized = false;
 
-    IERC20 public rb;
+    IERC20 public arbt;
     ITreasury public treasury;
 
     mapping(address => Ecclesiaseat) public demos;
@@ -109,12 +109,12 @@ contract Boardroom is ShareWrapper, ContractGuard, Operator {
     /* ========== GOVERNANCE ========== */
 
     function initialize(
-        IERC20 _rb,
-        IERC20 _rbx,
+        IERC20 _arbt,
+        IERC20 _arbShare,
         ITreasury _treasury
     ) public notInitialized onlyOperator {
-        rb = _rb;
-        rbx = _rbx;
+        arbt = _arbt;
+        arbShare = _arbShare;
         treasury = _treasury;
 
         BoardroomSnapshot memory genesisSnapshot = BoardroomSnapshot({time : block.number, rewardReceived : 0, rewardPerShare : 0});
@@ -222,7 +222,7 @@ contract Boardroom is ShareWrapper, ContractGuard, Operator {
             require(demos[msg.sender].epochTimerStart.add(rewardLockupEpochs) <= treasury.epoch(), "Boardroom: still in reward lockup");
             demos[msg.sender].epochTimerStart = treasury.epoch(); // reset timer
             demos[msg.sender].rewardEarned = 0;
-            rb.safeTransfer(msg.sender, reward);
+            arbt.safeTransfer(msg.sender, reward);
             emit RewardPaid(msg.sender, reward);
         }
     }
@@ -242,14 +242,14 @@ contract Boardroom is ShareWrapper, ContractGuard, Operator {
         });
         boardroomHistory.push(newSnapshot);
 
-        rb.safeTransferFrom(msg.sender, address(this), amount);
+        arbt.safeTransferFrom(msg.sender, address(this), amount);
         emit RewardAdded(msg.sender, amount);
     }
 
     function governanceRecoverUnsupported(IERC20 _token, uint256 _amount, address _to) external onlyOperator {
         // do not allow to drain core tokens
-        require(address(_token) != address(rb), "rb");
-        require(address(_token) != address(rbx), "rbx");
+        require(address(_token) != address(arbt), "arbt");
+        require(address(_token) != address(arbShare), "arbShare");
         _token.safeTransfer(_to, _amount);
     }
 }
