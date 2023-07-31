@@ -1,0 +1,5 @@
+15% of $ARBT Emissions will go to the Treasury 
+
+There will be deposit fees of 0.5% for the genesis deposits.
+
+All Non Native Pools will have an initial deposit fees of 1% subject to change.
