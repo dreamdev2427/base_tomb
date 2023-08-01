@@ -1,11 +1,11 @@
 import React from 'react';
 
 //Graveyard ecosystem logos
-import tombLogo from '../../assets/img/ARBOMB.png';
-import tShareLogo from '../../assets/img/ARBSHARE.png';
-import tombLogoPNG from '../../assets/img/ARBOMB.png';
-import tShareLogoPNG from '../../assets/img/ARBSHARE.png';
-import tBondLogo from '../../assets/img/ARBOND-01.png';
+import tombLogo from '../../assets/img/BOMB.png';
+import tShareLogo from '../../assets/img/BSHARE.png';
+import tombLogoPNG from '../../assets/img/BOMB.png';
+import tShareLogoPNG from '../../assets/img/BSHARE.png';
+import tBondLogo from '../../assets/img/BBOND-01.png';
 
 import tombEthLpLogo from '../../assets/img/tomb_weth_lp.png';
 import tshareEthLpLogo from '../../assets/img/tshare_weth_lp.png';
@@ -30,14 +30,14 @@ import TwoombTwosharesLPLogo from '../../assets/img/2OMB-2SHARES.png';
 
 import UsdcLogo from '../../assets/img/USDC.png';
 
-import ThreeombLPLogo from '../../assets/img/ARBOMB-WETH.png';
-import ThreesharesLPLogo from '../../assets/img/ARBSHARE-WETH.png';
+import ThreeombLPLogo from '../../assets/img/BOMB-WETH.png';
+import ThreesharesLPLogo from '../../assets/img/BSHARE-WETH.png';
 
 const logosBySymbol: { [title: string]: string } = {
   //Real tokens
   //=====================
-  ARBOMB: tombLogo,
-  ARBOND: tBondLogo,
+  BOMB: tombLogo,
+  BBOND: tBondLogo,
   TOMB: tombLogo,
   TOMBPNG: tombLogoPNG,
   TSHAREPNG: tShareLogoPNG,
@@ -52,16 +52,14 @@ const logosBySymbol: { [title: string]: string } = {
   MIM: mimLogo,
   USDC: UsdcLogo,
   BLOOM: bloomLogo,
-  'ARBOMB-WETH LP': ThreeombLPLogo,
-  'ARBSHARE-WETH LP': ThreesharesLPLogo,
+  'BOMB-WETH LP': ThreeombLPLogo,
+  'BSHARE-WETH LP': ThreesharesLPLogo,
 
   wETH: wethLogo,
-  'ARBOMB-ETH-LP': tombEthLpLogo,
-  'ARBSHARE-ETH-LP': tshareEthLpLogo,
-  'ARBOMB-ARB-LP': tombArbLpLogo,
-  'ARBSHARE-ARB-LP': tshareArbLpLogo,
-  'ARBOMB-USDC-LP': tombUsdcLpLogo,
-  'ARBSHARE-USDC-LP': tshareUsdcLpLogo,
+  'BOMB-ETH-LP': tombEthLpLogo,
+  'BSHARE-ETH-LP': tshareEthLpLogo,
+  'BOMB-USDC-LP': tombUsdcLpLogo,
+  'BSHARE-USDC-LP': tshareUsdcLpLogo,
 };
 
 type LogoProps = {
@@ -71,7 +69,7 @@ type LogoProps = {
 
 const TokenSymbol: React.FC<LogoProps> = ({ symbol, size = 64 }) => {
   if (!logosBySymbol[symbol]) {
-    return <img src={logosBySymbol['ARBOMB']} alt={`${symbol} Logo`} width={size} height={size} />;
+    return <img src={logosBySymbol['BOMB']} alt={`${symbol} Logo`} width={size} height={size} />;
     // throw new Error(`Invalid Token Logo symbol: ${symbol}`);
   }
   return <img src={logosBySymbol[symbol]} alt={`${symbol} Logo`} width={size} height={size} />;

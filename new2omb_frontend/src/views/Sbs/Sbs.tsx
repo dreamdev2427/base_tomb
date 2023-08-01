@@ -38,7 +38,7 @@ const Sbs: React.FC = () => {
   const [tbondAmount, setTbondAmount] = useState('');
   const [tshareAmount, setTshareAmount] = useState('');
 
-  const [approveStatus, approve] = useApprove(tombFinance.ARBOND, tombFinance.contracts.TShareSwapper.address);
+  const [approveStatus, approve] = useApprove(tombFinance.BBOND, tombFinance.contracts.TShareSwapper.address);
   const { onSwapTShare } = useSwapTBondToTShare();
   const tshareSwapperStat = useTShareSwapperStats(account);
 
@@ -117,7 +117,7 @@ const Sbs: React.FC = () => {
                             <StyledExchanger>
                               <StyledToken>
                                 <StyledCardIcon>
-                                  <TokenSymbol symbol={tombFinance.ARBOND.symbol} size={54} />
+                                  <TokenSymbol symbol={tombFinance.BBOND.symbol} size={54} />
                                 </StyledCardIcon>
                               </StyledToken>
                             </StyledExchanger>
@@ -144,7 +144,7 @@ const Sbs: React.FC = () => {
                             <StyledExchanger>
                               <StyledToken>
                                 <StyledCardIcon>
-                                  <TokenSymbol symbol={tombFinance.ARBSHARE.symbol} size={54} />
+                                  <TokenSymbol symbol={tombFinance.BSHARE.symbol} size={54} />
                                 </StyledCardIcon>
                               </StyledToken>
                             </StyledExchanger>

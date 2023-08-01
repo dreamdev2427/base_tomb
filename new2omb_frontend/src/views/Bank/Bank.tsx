@@ -99,16 +99,16 @@ const Bank: React.FC = () => {
 
 const LPTokenHelpText: React.FC<{ bank: BankEntity }> = ({ bank }) => {
   const tombFinance = useTombFinance();
-  const tombAddr = tombFinance.ARBOMB.address;
-  const tshareAddr = tombFinance.ARBSHARE.address;
+  const tombAddr = tombFinance.BOMB.address;
+  const tshareAddr = tombFinance.BSHARE.address;
 
   let pairName: string;
   let uniswapUrl: string;
-  if (bank.depositTokenName.includes('ARBOMB')) {
-    pairName = 'ARBOMB-WETH pair';
+  if (bank.depositTokenName.includes('BOMB')) {
+    pairName = 'BOMB-WETH pair';
     uniswapUrl = 'https://app.camelot.exchange/add/ETH/' + tombAddr;
   } else {
-    pairName = 'ARBSHARE-WETH pair';
+    pairName = 'BSHARE-WETH pair';
     uniswapUrl = 'https://app.camelot.exchange/add/ETH/' + tshareAddr;
   }
   return (

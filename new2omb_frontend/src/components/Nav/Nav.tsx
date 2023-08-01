@@ -14,8 +14,7 @@ import {
   ListItemText,
   Divider,
 } from '@material-ui/core';
-import styled from "styled-components";
-
+import styled from 'styled-components';
 
 import ListItemLink from '../ListItemLink';
 
@@ -24,7 +23,6 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AccountButton from './AccountButton';
-
 
 const useStyles = makeStyles((theme) => ({
   '@global': {
@@ -37,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     color: 'var(--white)',
     'background-color': '#ff494940',
-    'backdrop-filter': "blur(2px)",
+    'backdrop-filter': 'blur(2px)',
     // borderBottom: `1px solid ${theme.palette.divider}`,
     padding: '0 10px',
     marginBottom: '3rem',
@@ -45,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     width: 240,
     flexShrink: 0,
-    backgroundColor: 'var(--accent)'
+    backgroundColor: 'var(--accent)',
   },
   drawerPaper: {
     width: 240,
@@ -103,7 +101,7 @@ const Nav = () => {
             <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
               {/* <a className={ classes.brandLink } href="/">2omb Finance</a> */}
               <Link to="/" color="inherit" className={classes.brandLink}>
-                ArbTomb Finance
+                BaseTomb Finance
               </Link>
             </Typography>
             <Box mr={5}>

@@ -94,7 +94,7 @@ const Cemetery = () => {
                       gutterBottom
                       style={{ marginTop: '35px', marginBottom: '30px' }}
                     >
-                      Earn ARBSHARE by staking LP Tokens
+                      Earn BSHARE by staking LP Tokens
                     </Typography>
                     <Grid container spacing={3}>
                       {activeBanks

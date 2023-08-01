@@ -3,7 +3,7 @@ import { useCallback, useMemo } from 'react';
 import { useHasPendingApproval, useTransactionAdder } from '../state/transactions/hooks';
 import useAllowance from './useAllowance';
 import ERC20 from '../tomb-finance/ERC20';
-import { ETH_TICKER, ARBOMB_TICKER, ARSHARE_TICKER } from '../utils/constants';
+import { ETH_TICKER, BOMB_TICKER, ARSHARE_TICKER } from '../utils/constants';
 import useTombFinance from './useTombFinance';
 
 const APPROVE_AMOUNT = ethers.constants.MaxUint256;
@@ -21,8 +21,8 @@ function useApproveZapper(zappingToken: string): [ApprovalState, () => Promise<v
   // const tombFinance = useTombFinance();
   // let token: ERC20;
   // if (zappingToken === ETH_TICKER) token = tombFinance.ETH;
-  // else if (zappingToken === ARBOMB_TICKER) token = tombFinance.ARBOMB;
-  // else if (zappingToken === ARSHARE_TICKER) token = tombFinance.ARBSHARE;
+  // else if (zappingToken === BOMB_TICKER) token = tombFinance.BOMB;
+  // else if (zappingToken === ARSHARE_TICKER) token = tombFinance.BSHARE;
   // const pendingApproval = useHasPendingApproval(token.address, ZAPPER_ROUTER_ADDR);
   // const currentAllowance = useAllowance(token, ZAPPER_ROUTER_ADDR, pendingApproval);
 

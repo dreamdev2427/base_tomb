@@ -15,7 +15,7 @@ import useTokenBalance from '../../../hooks/useTokenBalance';
 import useTombFinance from '../../../hooks/useTombFinance';
 import { useWallet } from 'use-wallet';
 import useApproveZapper, { ApprovalState } from '../../../hooks/useApproveZapper';
-import { ARBOMB_TICKER, ARSHARE_TICKER, ETH_TICKER } from '../../../utils/constants';
+import { BOMB_TICKER, ARSHARE_TICKER, ETH_TICKER } from '../../../utils/constants';
 import { Alert } from '@material-ui/lab';
 
 interface ZapProps extends ModalProps {
@@ -28,8 +28,8 @@ const ZapModal: React.FC<ZapProps> = ({ onConfirm, onDismiss, tokenName = '', de
   const tombFinance = useTombFinance();
   const { balance } = useWallet();
   const ethBalance = (Number(balance) / 1e18).toFixed(4).toString();
-  const tombBalance = useTokenBalance(tombFinance.ARBOMB);
-  const tshareBalance = useTokenBalance(tombFinance.ARBSHARE);
+  const tombBalance = useTokenBalance(tombFinance.BOMB);
+  const tshareBalance = useTokenBalance(tombFinance.BSHARE);
   const [val, setVal] = useState('');
   const [zappingToken, setZappingToken] = useState(ETH_TICKER);
   const [zappingTokenBalance, setZappingTokenBalance] = useState(ethBalance);
@@ -39,7 +39,7 @@ const ZapModal: React.FC<ZapProps> = ({ onConfirm, onDismiss, tokenName = '', de
   const tShareEthLpStats = useLpStats('RRBSHARE-ETH-LP');
   const tombLPStats = useMemo(() => (tombEthLpStats ? tombEthLpStats : null), [tombEthLpStats]);
   const tshareLPStats = useMemo(() => (tShareEthLpStats ? tShareEthLpStats : null), [tShareEthLpStats]);
-  const ethAmountPerLP = tokenName.startsWith(ARBOMB_TICKER) ? tombLPStats?.ethAmount : tshareLPStats?.ethAmount;
+  const ethAmountPerLP = tokenName.startsWith(BOMB_TICKER) ? tombLPStats?.ethAmount : tshareLPStats?.ethAmount;
   /**
    * Checks if a value is a valid number or not
    * @param n is the value to be evaluated for a number
@@ -55,7 +55,7 @@ const ZapModal: React.FC<ZapProps> = ({ onConfirm, onDismiss, tokenName = '', de
     if (event.target.value === ARSHARE_TICKER) {
       setZappingTokenBalance(getDisplayBalance(tshareBalance, decimals));
     }
-    if (event.target.value === ARBOMB_TICKER) {
+    if (event.target.value === BOMB_TICKER) {
       setZappingTokenBalance(getDisplayBalance(tombBalance, decimals));
     }
   };
@@ -101,7 +101,7 @@ const ZapModal: React.FC<ZapProps> = ({ onConfirm, onDismiss, tokenName = '', de
         <StyledMenuItem value={ETH_TICKER}>ETH</StyledMenuItem>
         <StyledMenuItem value={ARSHARE_TICKER}>TSHARE</StyledMenuItem>
         {/* Tomb as an input for zapping will be disabled due to issues occuring with the Gatekeeper system */}
-        {/* <StyledMenuItem value={ARBOMB_TICKER}>TOMB</StyledMenuItem> */}
+        {/* <StyledMenuItem value={BOMB_TICKER}>TOMB</StyledMenuItem> */}
       </Select>
       <TokenInput
         onSelectMax={handleSelectMax}
@@ -118,7 +118,7 @@ const ZapModal: React.FC<ZapProps> = ({ onConfirm, onDismiss, tokenName = '', de
       <StyledDescriptionText>
         {' '}
         ({Number(estimate.token0)} {ETH_TICKER} / {Number(estimate.token1)}{' '}
-        {tokenName.startsWith(ARBOMB_TICKER) ? ARBOMB_TICKER : ARSHARE_TICKER}){' '}
+        {tokenName.startsWith(BOMB_TICKER) ? BOMB_TICKER : ARSHARE_TICKER}){' '}
       </StyledDescriptionText>
       <ModalActions>
         <Button

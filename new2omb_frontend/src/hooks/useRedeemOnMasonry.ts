@@ -7,7 +7,7 @@ const useRedeemOnMasonry = (description?: string) => {
   const handleTransactionReceipt = useHandleTransactionReceipt();
 
   const handleRedeem = useCallback(() => {
-    const alertDesc = description || 'Redeem ARBSHARE from Room ';
+    const alertDesc = description || 'Redeem BSHARE from Room ';
     handleTransactionReceipt(tombFinance.exitFromMasonry(), alertDesc);
   }, [tombFinance, description, handleTransactionReceipt]);
   return { onRedeem: handleRedeem };

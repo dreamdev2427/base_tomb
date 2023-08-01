@@ -7,10 +7,9 @@ import Modal, { ModalProps } from '../../../components/Modal';
 import ModalActions from '../../../components/ModalActions';
 import ModalTitle from '../../../components/ModalTitle';
 import TokenInput from '../../../components/TokenInput';
-import useRebateTreasury from "../../../hooks/useRebateTreasury"
+import useRebateTreasury from '../../../hooks/useRebateTreasury';
 import useTombFinance from '../../../hooks/useTombFinance';
 import useFantomPrice from '../../../hooks/useFantomPrice';
-
 
 import { getFullDisplayBalance } from '../../../utils/formatBalance';
 import { BigNumber } from 'ethers';
@@ -42,28 +41,32 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
   );
 
   const handleSelectMax = useCallback(() => {
-    setVal((rebateStats.tombAvailable > +fullBalance ? fullBalance : rebateStats.tombAvailable.toString()));
+    setVal(rebateStats.tombAvailable > +fullBalance ? fullBalance : rebateStats.tombAvailable.toString());
   }, [fullBalance, setVal, rebateStats]);
 
   function getAssetPrice(token: String) {
-    const address = tombFinance.externalTokens[tokenName].address
-    const assetPrice = rebateStats.assets.find((a: any) => a.token === address).price
-    return assetPrice
+    const address = tombFinance.externalTokens[tokenName].address;
+    const assetPrice = rebateStats.assets.find((a: any) => a.token === address).price;
+    return assetPrice;
   }
 
   function getOutAmount() {
-    const toBondPrice = getAssetPrice(tokenName)
-    const outAmount = +val * (toBondPrice / rebateStats.tombPrice * (1 + (rebateStats.bondPremium / 100)) * (token.params.multiplier / 1000000))
-    return outAmount
+    const toBondPrice = getAssetPrice(tokenName);
+    const outAmount =
+      +val *
+      ((toBondPrice / rebateStats.tombPrice) *
+        (1 + rebateStats.bondPremium / 100) *
+        (token.params.multiplier / 1000000));
+    return outAmount;
   }
 
   function formatOutAmount() {
-    const outAmount = getOutAmount()
-    return `Receiving: ${outAmount.toFixed(4)} ARBOMB ($${(outAmount * rebateStats.tombPrice * ethPrice).toFixed(2)})`
+    const outAmount = getOutAmount();
+    return `Receiving: ${outAmount.toFixed(4)} BOMB ($${(outAmount * rebateStats.tombPrice * ethPrice).toFixed(2)})`;
   }
 
   function formatInAmount() {
-    return `Input: ${(+val).toFixed(4)} ${tokenName} ($${((+val) * getAssetPrice(tokenName) * ethPrice).toFixed(2)})`
+    return `Input: ${(+val).toFixed(4)} ${tokenName} ($${(+val * getAssetPrice(tokenName) * ethPrice).toFixed(2)})`;
   }
 
   return (
@@ -76,17 +79,18 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
         max={fullBalance}
         symbol={tokenName}
       />
-      <StyledMaxText style={{ marginTop: "14px" }}>
-        {formatInAmount()}
-      </StyledMaxText>
-      <StyledMaxText>
-        {formatOutAmount()}
-      </StyledMaxText>
-      <StyledMaxText style={{ color: getOutAmount() < rebateStats.tombAvailable ? "black" : "var(--accent)" }}>
-        {rebateStats.tombAvailable > 0 ? `${rebateStats.tombAvailable.toFixed(4)} ARBOMB Available` : "Bond Sold Out"}
+      <StyledMaxText style={{ marginTop: '14px' }}>{formatInAmount()}</StyledMaxText>
+      <StyledMaxText>{formatOutAmount()}</StyledMaxText>
+      <StyledMaxText style={{ color: getOutAmount() < rebateStats.tombAvailable ? 'black' : 'var(--accent)' }}>
+        {rebateStats.tombAvailable > 0 ? `${rebateStats.tombAvailable.toFixed(4)} BOMB Available` : 'Bond Sold Out'}
       </StyledMaxText>
       <ModalActions>
-        <Button color={(getOutAmount() < rebateStats.tombAvailable ? "primary" : "secondary")} variant="contained" disabled={getOutAmount() >= rebateStats.tombAvailable} onClick={() => onConfirm(+val)}>
+        <Button
+          color={getOutAmount() < rebateStats.tombAvailable ? 'primary' : 'secondary'}
+          variant="contained"
+          disabled={getOutAmount() >= rebateStats.tombAvailable}
+          onClick={() => onConfirm(+val)}
+        >
           Confirm
         </Button>
       </ModalActions>
@@ -103,6 +107,5 @@ const StyledMaxText = styled.div`
   font-weight: 700;
   justify-content: flex-start;
 `;
-
 
 export default DepositModal;

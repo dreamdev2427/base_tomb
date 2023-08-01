@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import Page from '../../components/Page';
-import CashHomeImage from '../../assets/img/ARBOMB.svg';
+import CashHomeImage from '../../assets/img/BOMB.svg';
 import CashImage from '../../assets/img/title.png';
 import CashImage2 from '../../assets/img/title2.png';
 import styled from 'styled-components';
@@ -100,8 +100,8 @@ const Home = () => {
   );
   const tBondTotalSupply = useMemo(() => (tBondStats ? String(tBondStats.totalSupply) : null), [tBondStats]);
 
-  const tombLpZap = useZap({ depositTokenName: 'ARBOMB-ETH-LP' });
-  const tshareLpZap = useZap({ depositTokenName: 'ARBSHARE-ETH-LP' });
+  const tombLpZap = useZap({ depositTokenName: 'BOMB-ETH-LP' });
+  const tshareLpZap = useZap({ depositTokenName: 'BSHARE-ETH-LP' });
 
   const StyledLink = styled.a`
     font-weight: 700;
@@ -117,7 +117,7 @@ const Home = () => {
         tombLpZap.onZap(zappingToken, tokenName, amount);
         onDissmissTombZap();
       }}
-      tokenName={'ARBOMB-ETH-LP'}
+      tokenName={'BOMB-ETH-LP'}
     />,
   );
 
@@ -129,7 +129,7 @@ const Home = () => {
         tshareLpZap.onZap(zappingToken, tokenName, amount);
         onDissmissTshareZap();
       }}
-      tokenName={'ARBSHARE-ETH-LP'}
+      tokenName={'BSHARE-ETH-LP'}
     />,
   );
 
@@ -153,13 +153,13 @@ const Home = () => {
         {/*<Grid item xs={12} sm={6}>
           <Paper style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <Box p={4}>
-              <h2>Welcome to ARBOMB Finance!</h2>
+              <h2>Welcome to BOMB Finance!</h2>
               <p>An algorithmic stablecoin on the Arbitrum blockchain, pegged to the price of 1 ETH</p>
-               <p>ARBOMB utilizes multiple bonding mechanisms at the <StyledLink href="/">3DAO</StyledLink> as well as seigniorage.</p>
+               <p>BOMB utilizes multiple bonding mechanisms at the <StyledLink href="/">3DAO</StyledLink> as well as seigniorage.</p>
               <p>Built on top of <StyledLink target="_blank" href="https://2omb.finance">2omb.finance</StyledLink>.</p> 
               <p>
-                Stake your ARBOMB-WETH LP in the <StyledLink href="/farms">Farms</StyledLink> to earn ARBSHARE rewards.
-                Then stake your earned ARBSHARE in the <StyledLink href="/">Room</StyledLink> to maximize profits!
+                Stake your BOMB-WETH LP in the <StyledLink href="/farms">Farms</StyledLink> to earn BSHARE rewards.
+                Then stake your earned BSHARE in the <StyledLink href="/">Room</StyledLink> to maximize profits!
               </p>
             </Box> 
           </Paper>
@@ -167,7 +167,7 @@ const Home = () => {
         {/* <Grid container justify="center">
           <Box mt={3} style={{ width: '1000px' }}>
             <Alert variant="filled" severity="warning">
-              Do your own research before investing. Investing is risky and may result in monetary loss. ARBOMB is beta software and may contain bugs. By using ARBOMB, you agree that the 2omb and ARBOMB team is not responsible for any financial losses from investing in 2omb or ARBOMB.
+              Do your own research before investing. Investing is risky and may result in monetary loss. BOMB is beta software and may contain bugs. By using BOMB, you agree that the 2omb and BOMB team is not responsible for any financial losses from investing in 2omb or BOMB.
             </Alert>
           </Box>
         </Grid> */}
@@ -181,7 +181,6 @@ const Home = () => {
         </Grid>
         </Grid> */}
 
-        {/* TVL */}
         <Grid item xs={12} sm={4}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center">
@@ -191,7 +190,6 @@ const Home = () => {
           </Card>
         </Grid>
 
-        {/* Wallet */}
         <Grid item xs={12} sm={8}>
           <Card
             style={{
@@ -226,7 +224,7 @@ const Home = () => {
                 style={{ marginRight: '10px' }}
                 className={classes.button}
               >
-                Buy ARBOMB
+                Buy BOMB
               </Button>
               <Button
                 variant="contained"
@@ -235,7 +233,7 @@ const Home = () => {
                 style={{ marginRight: '10px' }}
                 className={classes.button}
               >
-                Buy ARBSHARE
+                Buy BSHARE
               </Button>
               <Button
                 variant="contained"
@@ -244,7 +242,7 @@ const Home = () => {
                 style={{ marginRight: '10px' }}
                 className={classes.button}
               >
-                ARBOMB Chart
+                BOMB Chart
               </Button>
               <Button
                 variant="contained"
@@ -252,13 +250,12 @@ const Home = () => {
                 href="https://dexscreener.com/arbitrum/0xd352dac95a91afefb112dbbb3463ccfa5ec15b65"
                 className={classes.button}
               >
-                ARBSHARE Chart
+                BSHARE Chart
               </Button>
             </CardContent>
           </Card>
         </Grid>
 
-        {/* TOMB */}
         <Grid item xs={12} sm={3}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center" style={{ position: 'relative' }}>
@@ -282,11 +279,10 @@ const Home = () => {
           </Card>
         </Grid>
 
-        {/* TOMB */}
         <Grid item xs={12} sm={3}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center" style={{ position: 'relative' }}>
-              <h2>ARBOMB</h2>
+              <h2>BOMB</h2>
               {/* <Button
                 onClick={() => {
                   tombFinance.watchAssetInMetamask('TOMB');
@@ -325,7 +321,7 @@ const Home = () => {
         <Grid item xs={12} sm={3}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center" style={{ position: 'relative' }}>
-              <h2>ARBSHARE</h2>
+              <h2>BSHARE</h2>
               {/* <Button
                 onClick={() => {
                   tombFinance.watchAssetInMetamask('TSHARE');
@@ -363,7 +359,7 @@ const Home = () => {
         <Grid item xs={12} sm={3}>
           <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
             <CardContent align="center" style={{ position: 'relative' }}>
-              <h2>ARBOND</h2>
+              <h2>BBOND</h2>
               {/* <Button
                 onClick={() => {
                   tombFinance.watchAssetInMetamask('TBOND');
@@ -395,9 +391,8 @@ const Home = () => {
             </CardContent>
           </Card>
         </Grid>
-        <LpBox tombLp="ARBOMB-ETH-LP" tShareLp="ARBSHARE-ETH-LP" pairSymbol="ETH" />
-        <LpBox tombLp="ARBOMB-ARB-LP" tShareLp="ARBSHARE-ARB-LP" pairSymbol="ARB" />
-        <LpBox tombLp="ARBOMB-USDC-LP" tShareLp="ARBSHARE-USDC-LP" pairSymbol="USDC" />
+        <LpBox tombLp="BOMB-ETH-LP" tShareLp="BSHARE-ETH-LP" pairSymbol="ETH" />
+        <LpBox tombLp="BOMB-USDC-LP" tShareLp="BSHARE-USDC-LP" pairSymbol="USDC" />
       </Grid>
     </Page>
   );

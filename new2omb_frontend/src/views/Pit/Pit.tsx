@@ -41,13 +41,13 @@ const Pit: React.FC = () => {
   const cashPrice = useCashPriceInLastTWAP();
   const bondsPurchasable = useBondsPurchasable();
 
-  const bondBalance = useTokenBalance(tombFinance?.ARBOND);
+  const bondBalance = useTokenBalance(tombFinance?.BBOND);
 
   const handleBuyBonds = useCallback(
     async (amount: string) => {
       const tx = await tombFinance.buyBonds(amount);
       addTransaction(tx, {
-        summary: `Buy ${Number(amount).toFixed(2)} ARBOND with ${amount} ARBOMB`,
+        summary: `Buy ${Number(amount).toFixed(2)} BBOND with ${amount} BOMB`,
       });
     },
     [tombFinance, addTransaction],
@@ -56,7 +56,7 @@ const Pit: React.FC = () => {
   const handleRedeemBonds = useCallback(
     async (amount: string) => {
       const tx = await tombFinance.redeemBonds(amount);
-      addTransaction(tx, { summary: `Redeem ${amount} ARBOND` });
+      addTransaction(tx, { summary: `Redeem ${amount} BBOND` });
     },
     [tombFinance, addTransaction],
   );
@@ -79,14 +79,14 @@ const Pit: React.FC = () => {
               <StyledCardWrapper>
                 <ExchangeCard
                   action="Purchase"
-                  fromToken={tombFinance.ARBOMB}
-                  fromTokenName="ARBOMB"
-                  toToken={tombFinance.ARBOND}
-                  toTokenName="ARBOND"
+                  fromToken={tombFinance.BOMB}
+                  fromTokenName="BOMB"
+                  toToken={tombFinance.BBOND}
+                  toTokenName="BBOND"
                   priceDesc={
                     !isBondPurchasable
-                      ? 'ARBOMB is over peg'
-                      : getDisplayBalance(bondsPurchasable, 18, 4) + ' ARBOND available for purchase'
+                      ? 'BOMB is over peg'
+                      : getDisplayBalance(bondsPurchasable, 18, 4) + ' BBOND available for purchase'
                   }
                   onExchange={handleBuyBonds}
                   disabled={!bondStat || isBondRedeemable}
@@ -94,28 +94,28 @@ const Pit: React.FC = () => {
               </StyledCardWrapper>
               <StyledStatsWrapper>
                 <ExchangeStat
-                  tokenName="ARBOMB"
+                  tokenName="BOMB"
                   description="Last-Hour TWAP Price"
                   price={getDisplayBalance(cashPrice, 18, 4)}
                 />
                 <Spacer size="md" />
                 <ExchangeStat
-                  tokenName="ARBOND"
-                  description="Current Price: (ARBOMB)^2"
+                  tokenName="BBOND"
+                  description="Current Price: (BOMB)^2"
                   price={Number(bondStat?.tokenInEth).toFixed(2) || '-'}
                 />
               </StyledStatsWrapper>
               <StyledCardWrapper>
                 <ExchangeCard
                   action="Redeem"
-                  fromToken={tombFinance.ARBOND}
-                  fromTokenName="ARBOND"
-                  toToken={tombFinance.ARBOMB}
-                  toTokenName="ARBOMB"
-                  priceDesc={`${getDisplayBalance(bondBalance)} ARBOND Available in wallet`}
+                  fromToken={tombFinance.BBOND}
+                  fromTokenName="BBOND"
+                  toToken={tombFinance.BOMB}
+                  toTokenName="BOMB"
+                  priceDesc={`${getDisplayBalance(bondBalance)} BBOND Available in wallet`}
                   onExchange={handleRedeemBonds}
                   disabled={!bondStat || bondBalance.eq(0) || !isBondRedeemable}
-                  disabledDescription={!isBondRedeemable ? `Enabled when ARBOMB > ${BOND_REDEEM_PRICE}ETH` : null}
+                  disabledDescription={!isBondRedeemable ? `Enabled when BOMB > ${BOND_REDEEM_PRICE}ETH` : null}
                 />
               </StyledCardWrapper>
             </StyledBond>

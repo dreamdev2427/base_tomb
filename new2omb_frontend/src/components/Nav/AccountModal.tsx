@@ -12,13 +12,13 @@ import TokenSymbol from '../TokenSymbol';
 const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
   const tombFinance = useTombFinance();
 
-  const tombBalance = useTokenBalance(tombFinance.ARBOMB);
+  const tombBalance = useTokenBalance(tombFinance.BOMB);
   const displayTombBalance = useMemo(() => getDisplayBalance(tombBalance), [tombBalance]);
 
-  const tshareBalance = useTokenBalance(tombFinance.ARBSHARE);
+  const tshareBalance = useTokenBalance(tombFinance.BSHARE);
   const displayTshareBalance = useMemo(() => getDisplayBalance(tshareBalance), [tshareBalance]);
 
-  const tbondBalance = useTokenBalance(tombFinance.ARBOND);
+  const tbondBalance = useTokenBalance(tombFinance.BBOND);
   const displayTbondBalance = useMemo(() => getDisplayBalance(tbondBalance), [tbondBalance]);
 
   return (
@@ -30,7 +30,7 @@ const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
           <TokenSymbol symbol="TOMB" />
           <StyledBalance>
             <StyledValue>{displayTombBalance}</StyledValue>
-            <Label text="ARBOMB Available" variant="primary" />
+            <Label text="BOMB Available" variant="primary" />
           </StyledBalance>
         </StyledBalanceWrapper>
 
@@ -38,7 +38,7 @@ const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
           <TokenSymbol symbol="TSHARE" />
           <StyledBalance>
             <StyledValue>{displayTshareBalance}</StyledValue>
-            <Label text="ARBSHARE Available" variant="primary" />
+            <Label text="BSHARE Available" variant="primary" />
           </StyledBalance>
         </StyledBalanceWrapper>
 
@@ -46,7 +46,7 @@ const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
           <TokenSymbol symbol="TBOND" />
           <StyledBalance>
             <StyledValue>{displayTbondBalance}</StyledValue>
-            <Label text="ARBOND Available" variant="primary" />
+            <Label text="BBOND Available" variant="primary" />
           </StyledBalance>
         </StyledBalanceWrapper>
       </Balances>

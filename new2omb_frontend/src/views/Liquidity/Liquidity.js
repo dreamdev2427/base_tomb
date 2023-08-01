@@ -33,10 +33,10 @@ const ProvideLiquidity = () => {
   const tombStats = useTombStats();
   const tombFinance = useTombFinance();
   const [approveTaxOfficeStatus, approveTaxOffice] = useApproveTaxOffice();
-  const tombBalance = useTokenBalance(tombFinance.ARBOMB);
+  const tombBalance = useTokenBalance(tombFinance.BOMB);
   const ethBalance = (balance / 1e18).toFixed(4);
   const { onProvideTombEthLP } = useProvideTombEthLP();
-  const tombEthLpStats = useLpStats('RRBOMB-ETH-LP');
+  const tombEthLpStats = useLpStats('BOMB-ETH-LP');
 
   const tombLPStats = useMemo(() => (tombEthLpStats ? tombEthLpStats : null), [tombEthLpStats]);
   const tombPriceInETH = useMemo(() => (tombStats ? Number(tombStats.tokenInEth).toFixed(2) : null), [tombStats]);
@@ -49,7 +49,7 @@ const ProvideLiquidity = () => {
     }
     if (!isNumeric(e.currentTarget.value)) return;
     setTombAmount(e.currentTarget.value);
-    const quoteFromSpooky = await tombFinance.quoteFromSpooky(e.currentTarget.value, 'TOMB');
+    const quoteFromSpooky = await tombFinance.quoteFromSpooky(e.currentTarget.value, 'BOMB');
     setEthAmount(quoteFromSpooky);
     setLpTokensAmount(quoteFromSpooky / tombLPStats.ethAmount);
   };
@@ -66,7 +66,7 @@ const ProvideLiquidity = () => {
     setLpTokensAmount(quoteFromSpooky / tombLPStats.tokenAmount);
   };
   const handleTombSelectMax = async () => {
-    const quoteFromSpooky = await tombFinance.quoteFromSpooky(getDisplayBalance(tombBalance), 'TOMB');
+    const quoteFromSpooky = await tombFinance.quoteFromSpooky(getDisplayBalance(tombBalance), 'BOMB');
     setTombAmount(getDisplayBalance(tombBalance));
     setEthAmount(quoteFromSpooky);
     setLpTokensAmount(quoteFromSpooky / tombLPStats.ethAmount);
@@ -92,7 +92,7 @@ const ProvideLiquidity = () => {
               <a href="https://app.camelot.exchange/" rel="noopener noreferrer" target="_blank">
                 Spookyswap
               </a>{' '}
-              are the only ways to provide Liquidity on TOMB-ETH pair without paying tax.
+              are the only ways to provide Liquidity on BOMB-ETH pair without paying tax.
             </b>
           </Alert>
           <Grid item xs={12} sm={12}>
@@ -107,7 +107,7 @@ const ProvideLiquidity = () => {
                           onChange={handleTombChange}
                           value={tombAmount}
                           max={getDisplayBalance(tombBalance)}
-                          symbol={'TOMB'}
+                          symbol={'BOMB'}
                         ></TokenInput>
                       </Grid>
                       <Grid item xs={12}>
@@ -120,8 +120,8 @@ const ProvideLiquidity = () => {
                         ></TokenInput>
                       </Grid>
                       <Grid item xs={12}>
-                        <p>1 TOMB = {tombPriceInETH} ETH</p>
-                        <p>1 ETH = {ethPriceInTOMB} TOMB</p>
+                        <p>1 BOMB = {tombPriceInETH} ETH</p>
+                        <p>1 ETH = {ethPriceInTOMB} BOMB</p>
                         <p>LP tokens ≈ {lpTokensAmount.toFixed(2)}</p>
                       </Grid>
                       <Grid xs={12} justifyContent="center" style={{ textAlign: 'center' }}>

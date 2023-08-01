@@ -95,7 +95,7 @@ const Providers: React.FC = ({ children }) => {
             walletconnect: { rpcUrl: config.defaultProvider },
             walletlink: {
               url: config.defaultProvider,
-              appName: 'ArbTomb Finance',
+              appName: 'BaseTomb Finance',
               appLogoUrl: '',
             },
           }}

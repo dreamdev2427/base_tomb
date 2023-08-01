@@ -1,4 +1,4 @@
-# ArbTomb Interface
+# BaseTomb Interface
 
 Thanks for taking the time to contribute!
 You can start by reading our [Contribution guidelines](CONTRIBUTING.md) first.
@@ -12,7 +12,7 @@ yarn
 yarn start
 ```
 
-// RRBOBM-WETH Traderjoe pool address 0x1dE807C94D1637be2267A937fd5aB07a16c30579
+// BOMB-WETH Traderjoe pool address 0x1dE807C94D1637be2267A937fd5aB07a16c30579
 
 Make sure you've configured your IDE with `prettier`.
 

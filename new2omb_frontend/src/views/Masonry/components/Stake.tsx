@@ -33,13 +33,13 @@ import { ARSHARE_TICKER } from '../../../utils/constants';
 
 const Stake: React.FC = () => {
   const tombFinance = useTombFinance();
-  const [approveStatus, approve] = useApprove(tombFinance.ARBSHARE, tombFinance.contracts.Masonry.address);
+  const [approveStatus, approve] = useApprove(tombFinance.BSHARE, tombFinance.contracts.Masonry.address);
 
-  const tokenBalance = useTokenBalance(tombFinance.ARBSHARE);
+  const tokenBalance = useTokenBalance(tombFinance.BSHARE);
   const stakedBalance = useStakedBalanceOnMasonry();
   const { from, to } = useUnstakeTimerMasonry();
 
-  const stakedTokenPriceInDollars = useStakedTokenPriceInDollars('ARBSHARE', tombFinance.ARBSHARE);
+  const stakedTokenPriceInDollars = useStakedTokenPriceInDollars('BSHARE', tombFinance.BSHARE);
   const tokenPriceInDollars = useMemo(
     () =>
       stakedTokenPriceInDollars
@@ -82,11 +82,11 @@ const Stake: React.FC = () => {
           <StyledCardContentInner>
             <StyledCardHeader>
               <CardIcon>
-                <TokenSymbol symbol="ARBSHARE" />
+                <TokenSymbol symbol="BSHARE" />
               </CardIcon>
               <Value value={getDisplayBalance(stakedBalance)} />
               <Label text={`≈ $${tokenPriceInDollars}`} />
-              <Label text={'ARBSHARE Staked'} />
+              <Label text={'BSHARE Staked'} />
             </StyledCardHeader>
             <StyledCardActions>
               {approveStatus !== ApprovalState.APPROVED ? (
@@ -97,7 +97,7 @@ const Stake: React.FC = () => {
                   style={{ marginTop: '20px' }}
                   onClick={approve}
                 >
-                  Approve ARBSHARE
+                  Approve BSHARE
                 </Button>
               ) : (
                 <>

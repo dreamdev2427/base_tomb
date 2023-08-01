@@ -16,7 +16,7 @@ const LpBox = ({ tombLp, tShareLp, pairSymbol }) => {
       <Grid item xs={12} sm={6}>
         <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
           <CardContent align="center">
-            <h2>ARBOMB-{pairSymbol} Camelot LP</h2>
+            <h2>BOMB-{pairSymbol} Camelot LP</h2>
             <Box mt={2}>
               <CardIcon>
                 <TokenSymbol symbol={tombLp} />
@@ -30,7 +30,7 @@ const LpBox = ({ tombLp, tShareLp, pairSymbol }) => {
               </Box>*/}
             <Box mt={2}>
               <span style={{ fontSize: '26px' }}>
-                {tombLPStats?.tokenAmount ? tombLPStats?.tokenAmount : '-.--'} ARBOMB /{' '}
+                {tombLPStats?.tokenAmount ? tombLPStats?.tokenAmount : '-.--'} BOMB /{' '}
                 {tombLPStats?.ethAmount ? tombLPStats?.ethAmount : '-.--'} {pairSymbol}
               </span>
             </Box>
@@ -45,7 +45,7 @@ const LpBox = ({ tombLp, tShareLp, pairSymbol }) => {
       <Grid item xs={12} sm={6}>
         <Card style={{ backgroundColor: 'transparent', boxShadow: 'none', border: '1px solid var(--white)' }}>
           <CardContent align="center">
-            <h2>ARBSHARE-{pairSymbol} Camelot LP</h2>
+            <h2>BSHARE-{pairSymbol} Camelot LP</h2>
             <Box mt={2}>
               <CardIcon>
                 <TokenSymbol symbol={tShareLp} />
@@ -58,7 +58,7 @@ const LpBox = ({ tombLp, tShareLp, pairSymbol }) => {
             </Box>*/}
             <Box mt={2}>
               <span style={{ fontSize: '26px' }}>
-                {tshareLPStats?.tokenAmount ? tshareLPStats?.tokenAmount : '-.--'} ARBSHARE /{' '}
+                {tshareLPStats?.tokenAmount ? tshareLPStats?.tokenAmount : '-.--'} BSHARE /{' '}
                 {tshareLPStats?.ethAmount ? tshareLPStats?.ethAmount : '-.--'} {pairSymbol}
               </span>
             </Box>
