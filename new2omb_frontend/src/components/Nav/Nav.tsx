@@ -165,7 +165,7 @@ const Nav = () => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap>
-              ArbTomb
+              BaseTomb
             </Typography>
 
             <Drawer
