@@ -7,10 +7,10 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
 import "./owner/Operator.sol";
 
-contract ARBs is ERC20Burnable, Operator {
+contract BShare is ERC20Burnable, Operator {
     using SafeMath for uint256;
 
-    // TOTAL MAX SUPPLY = 50,000 ARBs
+    // TOTAL MAX SUPPLY = 50,000 BShare
     uint256 public constant FARMING_POOL_REWARD_ALLOCATION = 50000 ether;
 
 
@@ -18,8 +18,8 @@ contract ARBs is ERC20Burnable, Operator {
 
     constructor(
 
-    ) ERC20("ARBshare", "ARBs") {
-        _mint(msg.sender, 10 ether); // mint 10 ARBs for initial pools deployment
+    ) ERC20("BShare", "bshare") {
+        _mint(msg.sender, 10 ether); // mint 10 BShare for initial pools deployment
     }
     /**
      * @notice distribute to reward pool (only once)

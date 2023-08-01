@@ -7,9 +7,9 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-// Note that this pool has no minter key of AARB (rewards).
-// Instead, the governance will call ARB distributeReward method and send reward to this pool at the beginning.
-contract AARBGenesisRewardPool is ReentrancyGuard {
+// Note that this pool has no minter key of Bomb (rewards).
+// Instead, the governance will call Bomb distributeReward method and send reward to this pool at the beginning.
+contract BombGenesisRewardPool is ReentrancyGuard {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
@@ -25,13 +25,13 @@ contract AARBGenesisRewardPool is ReentrancyGuard {
     // Info of each pool.
     struct PoolInfo {
         IERC20 token; // Address of LP token contract.
-        uint256 allocPoint; // How many allocation points assigned to this pool. ARB to distribute.
-        uint256 lastRewardTime; // Last time that ARB distribution occurs.
-        uint256 accARBPerShare; // Accumulated ARB per share, times 1e18. See below.
+        uint256 allocPoint; // How many allocation points assigned to this pool. Bomb to distribute.
+        uint256 lastRewardTime; // Last time that Bomb distribution occurs.
+        uint256 accBombPerShare; // Accumulated Bomb per share, times 1e18. See below.
         bool isStarted; // if lastRewardBlock has passed
     }
 
-    IERC20 public arb;
+    IERC20 public bomb;
 
 
     // Info of each pool.
@@ -43,16 +43,15 @@ contract AARBGenesisRewardPool is ReentrancyGuard {
     // Total allocation points. Must be the sum of all allocation points in all pools.
     uint256 public totalAllocPoint = 0;
 
-    // The time when ARB mining starts.
+    // The time when Bomb mining starts.
     uint256 public poolStartTime;
 
-    // The time when ARB mining ends.
+    // The time when Bomb mining ends.
     uint256 public poolEndTime;
 
     address public daoFundAddress;
 
-
-    uint256 public rbPerSecond = 0.159143 ether; // 27500 ARB / (48h * 60min * 60s)
+    uint256 public bombPerSecond = 0.159143 ether; // 27500 Bomb / (48h * 60min * 60s)
     uint256 public runningTime = 48 hours;
     uint256 public constant TOTAL_REWARDS = 27500 ether;
 
@@ -63,12 +62,12 @@ contract AARBGenesisRewardPool is ReentrancyGuard {
     event RewardPaid(address indexed user, uint256 amount);
 
     constructor(
-        address _rb,
+        address _bond,
         address _daoFund,
         uint256 _poolStartTime
     ) {
         require(block.timestamp < _poolStartTime, "late");
-        if (_rb != address(0)) arb = IERC20(_rb);
+        if (_bond != address(0)) bomb = IERC20(_bond);
         if (_daoFund != address(0)) daoFundAddress = _daoFund;
 
         poolStartTime = _poolStartTime;
@@ -78,14 +77,14 @@ contract AARBGenesisRewardPool is ReentrancyGuard {
     }
 
     modifier onlyOperator() {
-        require(operator == msg.sender, "ARBGenesisPool: caller is not the operator");
+        require(operator == msg.sender, "BombGenesisPool: caller is not the operator");
         _;
     }
 
     function checkPoolDuplicate(IERC20 _token) internal view {
         uint256 length = poolInfo.length;
         for (uint256 pid = 0; pid < length; ++pid) {
-            require(poolInfo[pid].token != _token, "ARBGenesisPool: existing pool?");
+            require(poolInfo[pid].token != _token, "BombGenesisPool: existing pool?");
         }
     }
 
@@ -124,7 +123,7 @@ contract AARBGenesisRewardPool is ReentrancyGuard {
         token : _token,
         allocPoint : _allocPoint,
         lastRewardTime : _lastRewardTime,
-        accARBPerShare : 0,
+        accBombPerShare : 0,
         isStarted : _isStarted
         }));
         if (_isStarted) {
@@ -132,7 +131,7 @@ contract AARBGenesisRewardPool is ReentrancyGuard {
         }
     }
 
-    // Update the given pool's ARB allocation point. Can only be called by the owner.
+    // Update the given pool's Bomb allocation point. Can only be called by the owner.
     function set(uint256 _pid, uint256 _allocPoint) public onlyOperator {
         massUpdatePools();
         PoolInfo storage pool = poolInfo[_pid];
@@ -149,29 +148,29 @@ contract AARBGenesisRewardPool is ReentrancyGuard {
         if (_fromTime >= _toTime) return 0;
         if (_toTime >= poolEndTime) {
             if (_fromTime >= poolEndTime) return 0;
-            if (_fromTime <= poolStartTime) return poolEndTime.sub(poolStartTime).mul(rbPerSecond);
-            return poolEndTime.sub(_fromTime).mul(rbPerSecond);
+            if (_fromTime <= poolStartTime) return poolEndTime.sub(poolStartTime).mul(bombPerSecond);
+            return poolEndTime.sub(_fromTime).mul(bombPerSecond);
         } else {
             if (_toTime <= poolStartTime) return 0;
-            if (_fromTime <= poolStartTime) return _toTime.sub(poolStartTime).mul(rbPerSecond);
-            return _toTime.sub(_fromTime).mul(rbPerSecond);
+            if (_fromTime <= poolStartTime) return _toTime.sub(poolStartTime).mul(bombPerSecond);
+            return _toTime.sub(_fromTime).mul(bombPerSecond);
         }
     }
 
-    // View function to see pending ARB on frontend.
-    function pendingARB(uint256 _pid, address _user) external view returns (uint256) {
+    // View function to see pending Bomb on frontend.
+    function pendingBomb(uint256 _pid, address _user) external view returns (uint256) {
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][_user];
-        uint256 accARBPerShare = pool.accARBPerShare;
+        uint256 accBombPerShare = pool.accBombPerShare;
         uint256 tokenSupply = pool.token.balanceOf(address(this));
         if (block.timestamp > pool.lastRewardTime && tokenSupply != 0) {
             uint256 _generatedReward = getGeneratedReward(pool.lastRewardTime, block.timestamp);
             uint256 _multiplyHelper =  _generatedReward.mul(pool.allocPoint); // intermidiate var to avoid multiply and division calc errors
-            uint256 _rbReward = _multiplyHelper.div(totalAllocPoint);
-            accARBPerShare = accARBPerShare.add(_rbReward.mul(1e18).div(tokenSupply));
+            uint256 _bondReward = _multiplyHelper.div(totalAllocPoint);
+            accBombPerShare = accBombPerShare.add(_bondReward.mul(1e18).div(tokenSupply));
         }
         // ok so all multiplication can go first and then all divisions go last....same 1 line like before
-        return user.amount.mul(accARBPerShare).div(1e18).sub(user.rewardDebt);
+        return user.amount.mul(accBombPerShare).div(1e18).sub(user.rewardDebt);
     }
 
     // Update reward variables for all pools. Be careful of gas spending!
@@ -200,8 +199,8 @@ contract AARBGenesisRewardPool is ReentrancyGuard {
         if (totalAllocPoint > 0) {
             uint256 _generatedReward = getGeneratedReward(pool.lastRewardTime, block.timestamp);
             uint256 multiplyHelper = _generatedReward.mul(pool.allocPoint);
-            uint256 _rbReward = multiplyHelper.div(totalAllocPoint);
-            pool.accARBPerShare = pool.accARBPerShare.add(_rbReward.mul(1e18).div(tokenSupply));
+            uint256 _bondReward = multiplyHelper.div(totalAllocPoint);
+            pool.accBombPerShare = pool.accBombPerShare.add(_bondReward.mul(1e18).div(tokenSupply));
         }
         pool.lastRewardTime = block.timestamp;
     }
@@ -215,10 +214,10 @@ contract AARBGenesisRewardPool is ReentrancyGuard {
         updatePool(_pid);
         if (user.amount > 0) {
             // transfer rewards to user if any pending rewards
-            uint256 _pending = user.amount.mul(pool.accARBPerShare).div(1e18).sub(user.rewardDebt);
+            uint256 _pending = user.amount.mul(pool.accBombPerShare).div(1e18).sub(user.rewardDebt);
             if (_pending > 0) {
                 // send pending reward to user, if rewards accumulating in _pending
-                safeARBTransfer(_sender, _pending);
+                safeBombTransfer(_sender, _pending);
                 emit RewardPaid(_sender, _pending);
             }
         }
@@ -228,7 +227,7 @@ contract AARBGenesisRewardPool is ReentrancyGuard {
             user.amount = user.amount.add(_amount.sub(depositDebt));
             pool.token.safeTransfer(daoFundAddress, depositDebt);
         }
-        user.rewardDebt = user.amount.mul(pool.accARBPerShare).div(1e18);
+        user.rewardDebt = user.amount.mul(pool.accBombPerShare).div(1e18);
         emit Deposit(_sender, _pid, _amount);
     }
 
@@ -239,9 +238,9 @@ contract AARBGenesisRewardPool is ReentrancyGuard {
         UserInfo storage user = userInfo[_pid][_sender];
         require(user.amount >= _amount, "withdraw: not good");
         updatePool(_pid);
-        uint256 _pending = user.amount.mul(pool.accARBPerShare).div(1e18).sub(user.rewardDebt);
+        uint256 _pending = user.amount.mul(pool.accBombPerShare).div(1e18).sub(user.rewardDebt);
         if (_pending > 0) {
-            safeARBTransfer(_sender, _pending);
+            safeBombTransfer(_sender, _pending);
             emit RewardPaid(_sender, _pending);
         }
         if (_amount > 0) {
@@ -249,7 +248,7 @@ contract AARBGenesisRewardPool is ReentrancyGuard {
             pool.token.safeTransfer(_sender, _amount);
 
         }
-        user.rewardDebt = user.amount.mul(pool.accARBPerShare).div(1e18);
+        user.rewardDebt = user.amount.mul(pool.accBombPerShare).div(1e18);
         emit Withdraw(_sender, _pid, _amount);
     }
 
@@ -264,14 +263,14 @@ contract AARBGenesisRewardPool is ReentrancyGuard {
         emit EmergencyWithdraw(msg.sender, _pid, _amount);
     }
 
-    // Safe ARB transfer function, in case if rounding error causes pool to not have enough ARBs.
-    function safeARBTransfer(address _to, uint256 _amount) internal {
-        uint256 _rbBalance = arb.balanceOf(address(this));
-        if (_rbBalance > 0) {
-            if (_amount > _rbBalance) {
-                arb.safeTransfer(_to, _rbBalance);
+    // Safe Bomb transfer function, in case if rounding error causes pool to not have enough Bombs.
+    function safeBombTransfer(address _to, uint256 _amount) internal {
+        uint256 _bondBalance = bomb.balanceOf(address(this));
+        if (_bondBalance > 0) {
+            if (_amount > _bondBalance) {
+                bomb.safeTransfer(_to, _bondBalance);
             } else {
-                arb.safeTransfer(_to, _amount);
+                bomb.safeTransfer(_to, _amount);
             }
         }
     }
