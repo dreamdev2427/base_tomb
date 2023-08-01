@@ -1,4 +1,4 @@
-import { Fetcher as FetcherSpirit, Token as TokenSpirit } from '@spiritswap/sdk';
+import { ChainId, Fetcher as FetcherSpirit, Token as TokenSpirit } from '@spiritswap/sdk';
 import { Configuration } from './config';
 import { ContractName, TokenStat, AllocationTime, LPStat, Bank, PoolStats, TShareSwapperStat } from './types';
 import { BigNumber, Contract, ethers, EventFilter } from 'ethers';
@@ -663,8 +663,8 @@ async getShareStatFake() {
 
     const { WETH } = this.externalTokens;
 
-    const weth = new TokenSpirit(chainId, WETH.address, WETH.decimal);
-    const token = new TokenSpirit(chainId, tokenContract.address, tokenContract.decimal, tokenContract.symbol);
+    const weth = new TokenSpirit(chainId | ChainId.MAINNET, WETH.address, WETH.decimal);
+    const token = new TokenSpirit(chainId | ChainId.MAINNET, tokenContract.address, tokenContract.decimal, tokenContract.symbol);
     try {
       const wethToToken = await FetcherSpirit.fetchPairData(weth, token, this.provider);
       const liquidityToken = wethToToken.liquidityToken;
