@@ -1,6 +1,4 @@
-// import { Fetcher, Route, Token } from '@uniswap/sdk';
 import { Fetcher as FetcherSpirit, Token as TokenSpirit } from '@spiritswap/sdk';
-import { Fetcher, Route, Token } from '@spookyswap/sdk';
 import { Configuration } from './config';
 import { ContractName, TokenStat, AllocationTime, LPStat, Bank, PoolStats, TShareSwapperStat } from './types';
 import { BigNumber, Contract, ethers, EventFilter } from 'ethers';
@@ -32,16 +30,13 @@ export class TombFinance {
 
   BOMB_ETH_LP: Contract;
   BOMB_USDC_LP: Contract;
-  BOMB_ARB_LP: Contract;
   BSHARE_ETH_LP: Contract;
   BSHARE_USDC_LP: Contract;
-  BSHARE_ARB_LP: Contract;
   BOMB: ERC20;
   BSHARE: ERC20;
   BBOND: ERC20;
   ETH: ERC20;
   USDC: ERC20;
-  ARB: ERC20;
 
   constructor(cfg: Configuration) {
     const { deployments, externalTokens } = cfg;
@@ -59,7 +54,6 @@ export class TombFinance {
     this.BOMB = new ERC20(deployments.tomb.address, provider, 'BOMB');
     this.BSHARE = new ERC20(deployments.tShare.address, provider, 'BSHARE');
     this.BBOND = new ERC20(deployments.tBond.address, provider, 'BBOND');
-    this.ARB = new ERC20(deployments.arb.address, provider, 'ARB');
     this.USDC = new ERC20(deployments.usdc.address, provider, 'USDC', 6);
     this.ETH = this.externalTokens['WETH'];
 

@@ -31,7 +31,7 @@ const assetList = [
     depositTokenName: 'BSHARE',
   },
   {
-    depositTokenName: 'RRBSHARE-WETH LP',
+    depositTokenName: 'BSHARE-WETH LP',
   },
 ];
 
@@ -133,7 +133,7 @@ const Cemetery = () => {
                         <CountUp style={{ fontSize: '25px' }} end={balance_3omb_weth} separator="," prefix="$" />
                       </CardContent>
                       <CardContent align="center">
-                        <Typography variant="h5">RRBSHARE-WETH LP:</Typography>
+                        <Typography variant="h5">BSHARE-WETH LP:</Typography>
                         <CountUp style={{ fontSize: '25px' }} end={balance_3shares_weth} separator="," prefix="$" />
                       </CardContent>
                       <CardContent align="center">
