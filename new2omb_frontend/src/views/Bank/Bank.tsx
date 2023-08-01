@@ -106,10 +106,10 @@ const LPTokenHelpText: React.FC<{ bank: BankEntity }> = ({ bank }) => {
   let uniswapUrl: string;
   if (bank.depositTokenName.includes('BOMB')) {
     pairName = 'BOMB-WETH pair';
-    uniswapUrl = 'https://app.camelot.exchange/add/ETH/' + tombAddr;
+    uniswapUrl = 'https://app.rocketswap.cc/exchange/add/ETH' + tombAddr;
   } else {
     pairName = 'BSHARE-WETH pair';
-    uniswapUrl = 'https://app.camelot.exchange/add/ETH/' + tshareAddr;
+    uniswapUrl = 'https://app.rocketswap.cc/exchange/add/ETH' + tshareAddr;
   }
   return (
     <Card>

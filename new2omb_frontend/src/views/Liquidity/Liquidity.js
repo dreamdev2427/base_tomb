@@ -89,7 +89,7 @@ const ProvideLiquidity = () => {
           <Alert variant="filled" severity="warning" style={{ marginBottom: '10px' }}>
             <b>
               This and{' '}
-              <a href="https://app.camelot.exchange/" rel="noopener noreferrer" target="_blank">
+              <a href="https://app.rocketswap.cc/exchange/swap" rel="noopener noreferrer" target="_blank">
                 Spookyswap
               </a>{' '}
               are the only ways to provide Liquidity on BOMB-ETH pair without paying tax.

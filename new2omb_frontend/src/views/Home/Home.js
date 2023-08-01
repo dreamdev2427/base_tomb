@@ -64,8 +64,8 @@ const Home = () => {
   tShare = tShareProd;
   // }
 
-  const buyTombAddress = 'https://app.camelot.exchange/';
-  const buyTShareAddress = 'https://app.camelot.exchange/';
+  const buyTombAddress = 'https://app.rocketswap.cc/exchange/swap';
+  const buyTShareAddress = 'https://app.rocketswap.cc/exchange/swap';
 
   const tombPriceInDollars = useMemo(
     () => (tombStats ? Number(tombStats.priceInDollars).toFixed(2) : null),
@@ -219,7 +219,7 @@ const Home = () => {
               </Button> */}
               <Button
                 target="_blank"
-                href="https://app.camelot.exchange/swap?outputCurrency=0x14def7584a6c52f470ca4f4b9671056b22f4ffde"
+                href="https://app.rocketswap.cc/exchange/swapswap?outputCurrency=0x14def7584a6c52f470ca4f4b9671056b22f4ffde"
                 variant="contained"
                 style={{ marginRight: '10px' }}
                 className={classes.button}
@@ -229,7 +229,7 @@ const Home = () => {
               <Button
                 variant="contained"
                 target="_blank"
-                href="https://app.camelot.exchange/swap?outputCurrency=0x6437adac543583c4b31bf0323a0870430f5cc2e7"
+                href="https://app.rocketswap.cc/exchange/swapswap?outputCurrency=0x6437adac543583c4b31bf0323a0870430f5cc2e7"
                 style={{ marginRight: '10px' }}
                 className={classes.button}
               >
